@@ -7,10 +7,17 @@ import 'firebase_options.dart';
 
 // Método main de mi app
 void main() async {
+  // Garantiza que el motor de Flutter esté listo antes de ejecutar
+  // código nativo. Necesario siempre que hagamos await antes de runApp()
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializa Firebase con la configuración generada automáticamente
+  // por FlutterFire CLI para cada plataforma (Android, iOS, Web...)
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Arranca la app una vez Firebase está listo
   runApp(const MyApp());
 }
 
