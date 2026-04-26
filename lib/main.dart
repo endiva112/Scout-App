@@ -25,7 +25,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key}); //Constructor, usando un identificador interno que flutter comprende
 
-  //Sin esto mi widget no sabria que pintar
+  //Sin esto, mi widget no sabria que pintar
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
