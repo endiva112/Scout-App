@@ -5,6 +5,9 @@ import 'screens/sandbox_screen.dart';
 import 'screens/auth_test.dart';
 //import 'screens/main_lists.dart';
 
+import 'screens/lists_screen.dart';
+import 'screens/list_detail_screen.dart';
+
 final GoRouter router = GoRouter(
   initialLocation: '/',
   routes: [
@@ -20,6 +23,17 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/authTest',
       builder: (context, state) => const AuthSandboxScreen(),
+    ),
+
+    GoRoute(
+      path: '/lists',
+      builder: (context, state) => const ListsScreen(),
+    ),
+    GoRoute(
+      path: '/list/:listId',
+      builder: (context, state) => ListDetailScreen(
+        listId: state.pathParameters['listId']!,
+      ),
     ),
   ],
 );

@@ -11,7 +11,8 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             ElevatedButton(onPressed: () => context.go('/sandbox'), child: const Text('Ir al Sandbox')),
-            ElevatedButton(onPressed: () => context.go('/authTest'), child: const Text('Ir a test de autenticación'))
+            ElevatedButton(onPressed: () => context.go('/authTest'), child: const Text('Ir a test de autenticación')),
+            ElevatedButton(onPressed: () => context.go('/lists'), child: const Text('Listas'))
           ],
         )
       ),
