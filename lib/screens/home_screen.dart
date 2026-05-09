@@ -8,15 +8,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: () => context.go('/sandbox'),
-          child: const Text('Ir al Sandbox')
-        ),
+        child: Column(
+          children: [
+            ElevatedButton(onPressed: () => context.go('/sandbox'), child: const Text('Ir al Sandbox')),
+            ElevatedButton(onPressed: () => context.go('/authTest'), child: const Text('Ir a test de autenticación'))
+          ],
+        )
       ),
     );
   }
 }
-
 
 // Scaffold
 // Es solo la cáscara del widget. Aquí van los parámetros que le pasas desde fuera
