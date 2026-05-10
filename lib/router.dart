@@ -1,12 +1,12 @@
 //import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'screens/home_screen.dart';
-import 'screens/sandbox_screen.dart';
-import 'screens/auth_test.dart';
+import 'oldscreens/home_screen.dart';
+import 'oldscreens/sandbox_screen.dart';
+import 'oldscreens/auth_test.dart';
 //import 'screens/main_lists.dart';
 
-import 'screens/lists_screen.dart';
-import 'screens/list_detail_screen.dart';
+import 'oldscreens/lists_screen.dart';
+import 'oldscreens/list_detail_screen.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
