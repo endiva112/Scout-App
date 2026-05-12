@@ -106,7 +106,7 @@ class CollaborativeBalancesScreen extends StatelessWidget {
                   child: ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     itemCount: _miembros.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    separatorBuilder: (_, _) => const SizedBox(height: 10),
                     itemBuilder: (_, i) => _buildMiembroCard(_miembros[i]),
                   ),
                 ),
