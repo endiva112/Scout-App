@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PerfilRegistradoScreen extends StatelessWidget {
-  const PerfilRegistradoScreen({super.key});
+class RemoveCollaboratorWidget extends StatelessWidget {
+  const RemoveCollaboratorWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BorrarInvitacion extends StatelessWidget {
-  const BorrarInvitacion({super.key});
+class KillInvitationsWidget extends StatelessWidget {
+  const KillInvitationsWidget({super.key});
 
   static const String routeName = 'borrar-invitacion';
   static const String routePath = '/borrarInvitacion';

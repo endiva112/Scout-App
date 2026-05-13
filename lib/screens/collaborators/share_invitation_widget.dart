@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class GenerarInvitacion extends StatelessWidget {
-  const GenerarInvitacion({super.key});
+class ShareInvitationWidget extends StatelessWidget {
+  const ShareInvitationWidget({super.key});
 
   static const String routeName = 'generar-invitacion';
   static const String routePath = '/generarInvitacion';
