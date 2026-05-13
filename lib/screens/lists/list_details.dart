@@ -139,7 +139,7 @@ class _CollaboratorList extends StatelessWidget {
   const _CollaboratorList();
 
   // accent3 in FlutterFlow default theme is typically a light grey border color
-  static const Color _accent = Color(0xFFE0E3E7);
+  //static const Color _accent = Color(0xFFE0E3E7);
 
   @override
   Widget build(BuildContext context) {
