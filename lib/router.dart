@@ -1,5 +1,6 @@
 //import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:scout_app/screens/payments/collaborative_lists_payments/collaborators/info_collaborative_purchase_screen.dart';
 import 'oldscreens/home_screen.dart';
 import 'oldscreens/sandbox_screen.dart';
 import 'oldscreens/auth_test.dart';
@@ -8,9 +9,14 @@ import 'oldscreens/auth_test.dart';
 import 'oldscreens/lists_screen.dart';
 import 'oldscreens/list_detail_screen.dart';
 
+
 final GoRouter router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/test',
   routes: [
+    GoRoute(
+      path: '/test',
+      builder: (context, state) => const InfoCollaborativePurchaseScreen(),
+    ),
     GoRoute(
       path: '/',
       builder: (context, state) => const HomeScreen(),
