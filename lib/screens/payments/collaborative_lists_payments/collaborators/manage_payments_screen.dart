@@ -92,7 +92,7 @@ class GestionarPagosScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
                           itemCount: _deudas.length,
-                          separatorBuilder: (_, __) =>
+                          separatorBuilder: (_, _) =>
                               const SizedBox(height: 10),
                           itemBuilder: (context, index) =>
                               _buildDeudaCard(context, _deudas[index]),

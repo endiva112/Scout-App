@@ -170,7 +170,7 @@ class GestionarPagosExternosScreen extends StatelessWidget {
                                   child: ListView.separated(
                                     padding: EdgeInsets.zero,
                                     itemCount: _miembros.length,
-                                    separatorBuilder: (_, __) =>
+                                    separatorBuilder: (_, _) =>
                                         const SizedBox(height: 10),
                                     itemBuilder: (context, index) =>
                                         _buildMemberRow(_miembros[index]),

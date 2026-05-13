@@ -105,7 +105,7 @@ class _EditarExternosPageState extends State<EditarExternosPage> {
             Expanded(
               child: ListView.separated(
                 itemCount: _controllers.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
                 itemBuilder: (_, i) => _buildMiembroRow(_controllers[i]),
               ),
             ),
