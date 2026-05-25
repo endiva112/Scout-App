@@ -17,12 +17,21 @@ class CustomDivider extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           _buildStartContainer(context),
-          const SizedBox(width: 10),
-          _buildDividerText(),
+
           const SizedBox(width: 10),
 
-          
-          Expanded(child: _buildFinalContainer())
+          Flexible(
+            child: _buildDividerText(),
+          ),
+
+          const SizedBox(width: 10),
+
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: MediaQuery.sizeOf(context).width * 0.1,
+            ),
+            child: _buildFinalContainer(),
+          )
         ],
       )
     );
@@ -42,7 +51,12 @@ class CustomDivider extends StatelessWidget {
 
   // Texto
   Widget _buildDividerText() {
-    return Text(separatorText, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textTerciary));
+    return Text(
+      separatorText,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textTerciary)
+    );
   }
 
   // Contenedor final

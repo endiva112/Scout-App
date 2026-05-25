@@ -21,7 +21,6 @@ class _Primitives {
   static const green500   = Color.fromARGB(255, 67, 230, 34);
   static const red500     = Color.fromARGB(255, 219, 20, 20);
   
-  static const grey400    = Color(0xFF888888);
 }
 
 // Capa pública — roles semánticos
