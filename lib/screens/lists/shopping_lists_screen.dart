@@ -27,8 +27,7 @@ class ShoppingListsScreen extends StatelessWidget {
               MainHeader(),
               Expanded(child: _buildBody(context)),
               BottomNavBar(activeIndex: 0)
-            ],
-
+            ]
           )
         )
       )

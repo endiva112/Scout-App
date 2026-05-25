@@ -1,0 +1,366 @@
+import 'package:flutter/material.dart';
+
+class ScoutScreen extends StatelessWidget {
+  const ScoutScreen({super.key});
+
+  // Colores propios de esta pantalla, los usamos en varios sitios
+  static const Color _green      = Color(0xFF7CD2B9);
+  static const Color _greenDark  = Color(0xFF4E7566);
+  static const Color _orange     = Color(0xFFD67A31);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: Colors.grey[100],
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildHeader(),
+              Expanded(child: _buildBody(context)),
+              _buildBottomNav(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      constraints: const BoxConstraints(minHeight: 70),
+      color: Colors.grey[100],
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Buenas tardes!'),
+              Text('Scout001'),
+            ],
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: Image.network(
+              'https://picsum.photos/seed/758/600',
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          // ── Tarjeta de nivel ────────────────────────────────────
+          _buildLevelCard(),
+
+          // ── Fila: rango + misiones disponibles ──────────────────
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: Row(
+              children: [
+                Expanded(child: _buildRankCard(context)),
+                const SizedBox(width: 10),
+                Expanded(child: _buildMissionsAvailableCard()),
+              ],
+            ),
+          ),
+
+          // ── Sección misiones diarias ─────────────────────────────
+          Expanded(child: _buildDailyMissions(context)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLevelCard() {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Material(
+        color: Colors.transparent,
+        elevation: 10,
+        borderRadius: BorderRadius.circular(24),
+        child: Container(
+          decoration: BoxDecoration(
+            color: _green,
+            borderRadius: BorderRadius.circular(24),
+          ),
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text(
+                'Tu nivel actual',
+                style: TextStyle(fontSize: 16, color: Colors.white70),
+              ),
+              const SizedBox(height: 10),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Nivel 6',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: _greenDark)),
+                  Text('380 puntos',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: _greenDark)),
+                ],
+              ),
+              const SizedBox(height: 10),
+              // Sustituye a LinearPercentIndicator del paquete percent_indicator
+              ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: LinearProgressIndicator(
+                  value: 0.5,
+                  minHeight: 10,
+                  backgroundColor: Colors.white,
+                  valueColor: const AlwaysStoppedAnimation<Color>(_greenDark),
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Nivel 6',
+                      style: TextStyle(fontSize: 14, color: _greenDark)),
+                  Text('Nivel 7',
+                      style: TextStyle(fontSize: 14, color: _greenDark)),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRankCard(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      elevation: 10,
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 170),
+        decoration: BoxDecoration(
+          color: _orange,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Tu rango de Scout',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.white)),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                'https://picsum.photos/seed/619/600',
+                height: MediaQuery.of(context).size.height * 0.1,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const Text('ORO',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMissionsAvailableCard() {
+    return Material(
+      color: Colors.transparent,
+      elevation: 10,
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 170),
+        decoration: BoxDecoration(
+          color: _green,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Tiendas con misiones',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: _greenDark)),
+            const Text('3',
+                style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.w800,
+                    color: _greenDark)),
+            // FFButtonWidget → ElevatedButton nativo
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _greenDark,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                minimumSize: const Size(0, 40),
+              ),
+              child: const Text('Configuración'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDailyMissions(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Divider(thickness: 2, color: Colors.black12),
+          const Text('Misiones diarias!'),
+          const Divider(thickness: 2, color: Colors.black12),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                _buildMissionCard(context, store: 'Carrefour',  products: '4 productos', points: '80 puntos'),
+                _buildMissionCard(context, store: 'Mercadona',  products: '3 productos', points: '60 puntos'),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text('SIN MISIONES PARA ESTA REGIÓN',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.grey)),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text('ESTABLECE UNA LOCALIZACIÓN Y CONTRIBUYE A TU COMUNIDAD',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.grey)),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text('INICIA SESIÓN Y AYUDANOS A OTROS SCOUTS A MANTENER LOS PRECIOS AL DÍA',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.grey)),
+                ),
+                _buildMissionCard(context, store: 'Aldi', products: '3 productos', points: '60 puntos'),
+              ].map((w) => Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: w,
+              )).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMissionCard(BuildContext context, {
+    required String store,
+    required String products,
+    required String points,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Material(
+        color: Colors.transparent,
+        elevation: 5,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey[400]!),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 20, 10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    'https://picsum.photos/seed/964/600',
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(store,
+                          style: const TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.w600)),
+                      const SizedBox(height: 5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(products),
+                          Text(points),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNav() {
+    return Container(
+      constraints: const BoxConstraints(minHeight: 70),
+      color: Colors.grey[100],
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildNavItem(Icons.filter_list, 'Listas'),
+          _buildNavItem(Icons.money_off_csred, 'Pagos'),
+          _buildNavItem(Icons.star_rounded, 'Notas'),
+          _buildNavItem(Icons.flag_sharp, 'Scout', active: true),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(IconData icon, String label, {bool active = false}) {
+    final color = active ? const Color(0xFFEE8B60) : Colors.black;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 32, color: color),
+        Text(label,
+            style: TextStyle(
+                fontSize: 12, fontWeight: FontWeight.w300, color: color)),
+      ],
+    );
+  }
+}

@@ -6,27 +6,12 @@ class ShoppingListsScreen extends StatelessWidget {
 
 
 
-  Widget _buildBody(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Stack(
-        children: [
-          // Lista de contenido
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
-                child: Text(
-                  'Listas activas',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                ),
-              ),
               Expanded(
                 child: ListView(
                   padding: const EdgeInsets.only(bottom: 100),
                   children: [
-                    _buildSectionDivider(context, 'Mis listas'),
+
+
                     _buildListCard(
                       color: const Color(0xFFFEAD28),
                       icon: Icons.restart_alt,
@@ -34,6 +19,8 @@ class ShoppingListsScreen extends StatelessWidget {
                       subtitle1: '12 items',
                       subtitle2: '10 días para el cobro',
                     ),
+
+
                     _buildListCard(
                       color: const Color(0xFFFEAD28),
                       icon: Icons.restart_alt,
@@ -55,19 +42,7 @@ class ShoppingListsScreen extends StatelessWidget {
                       subtitle1: '1 item',
                       subtitle2: 'SiSoloHay Una Tienda Se Pone El Nombre De La Misma',
                     ),
-                    _buildSectionDivider(context, 'Nombre muy largo a ver que termina'),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        'CREA LISTAS DE LA COMPRA, LISTAS COLABORATIVAS O GASTOS RECURRENTES',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
+
                   ].map((w) => Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: w,
@@ -84,45 +59,7 @@ class ShoppingListsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionDivider(BuildContext context, String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.1,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(24),
-            ),
-          ),
-          const SizedBox(width: 10),
-          // El texto del divisor tiene ancho máximo para no comerse la línea derecha
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.6,
-            ),
-            child: Text(
-              label,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.grey),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Container(
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(24),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  
 
   Widget _buildListCard({
     required Color color,
@@ -185,6 +122,3 @@ class ShoppingListsScreen extends StatelessWidget {
       ),
     );
   }
-
-
-}
