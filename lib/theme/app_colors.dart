@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 
 // Capa privada — valores hex puros, nadie los usa directamente
 class _Primitives {
-  static const white        = Color(0xFFFFFFFF);
-  static const grey50       = Color(0xFFF1F4F8);
+  //fondos
+  static const white          = Color(0xFFFFFFFF);
+  static const grey50         = Color(0xFFF1F4F8);
 
-  static const orange500    = Color(0xFFEE8B60);
+  //acción principal
+  static const orange500      = Color(0xFFEE8B60);
 
   //textos
-  static const darkgrey     = Color(0xFF14181B);
+  static const black          = Color(0xFF14181B);
+  static const darkgrey       = Color(0xFF14181B);
+  static const grey           = Color(0xFF57636C);
 
+  //eliminar
   static const yellow500  = Color(0xFFFEAD28);
   static const magenta500 = Color(0xFFFE4370);
   static const cyan500    = Color(0xFF0588FE);
-  static const green500   = Color(0xFF000000); // reemplaza con tu hex
-  static const red500     = Color(0xFF000000); // reemplaza con tu hex
-  static const black      = Color(0xFF1A1A1A);
+  static const green500   = Color.fromARGB(255, 67, 230, 34);
+  static const red500     = Color.fromARGB(255, 219, 20, 20);
+  
   static const grey400    = Color(0xFF888888);
 }
 
@@ -35,10 +40,10 @@ class AppColors {
   // Acción principal
   static const actionPrimary = _Primitives.orange500;
 
-  // Texto
+  // Textos
   static const textPrimary   = _Primitives.black;
   static const textSecondary = _Primitives.darkgrey;
-  static const textTerciary = _Primitives.grey400;
+  static const textTerciary = _Primitives.grey;
 
   // Monetario
   static const amountPositive = _Primitives.green500;

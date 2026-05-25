@@ -45,8 +45,8 @@ Widget _buildNavItem(BuildContext context, IconData icon, String label, {require
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon,size: 32,color: color),
-            Text(label,style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: color))
+            Icon(icon, size: 32,color: color),
+            Text(label, style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: color))
           ]
         )
       )

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
+import 'package:scout_app/widgets/custom_divider.dart';
 
-import 'package:scout_app/widgets/bottom_navbar.dart';
 import 'package:scout_app/widgets/main_header.dart';
+import 'package:scout_app/widgets/simple_title.dart';
+import 'package:scout_app/widgets/bottom_navbar.dart';
+
 
 class ShoppingListsScreen extends StatelessWidget {
   const ShoppingListsScreen({super.key});
@@ -25,9 +28,9 @@ class ShoppingListsScreen extends StatelessWidget {
               BottomNavBar(activeIndex: 0)
             ],
 
-          ),
-        ),
-      ),
+          )
+        )
+      )
     );
   }
 
@@ -50,7 +53,25 @@ class ShoppingListsScreen extends StatelessWidget {
   //Listado de listas de la compra
   Widget _buildBodyContent() {
     return Column(
+      mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SimpleTitle(title: 'Listas activas'),
+        Expanded(child: _buildShoppingListCollection())
+      ]
+    );
+  }
+
+  // Listado de listas. COMPONENTE MÁS IMPORTANTE DE ESTA VISTA
+  Widget _buildShoppingListCollection() {
+    return ListView(
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 300),
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      children: [
+        CustomDivider(separatorText: 'Mis listas'),
+        CustomDivider(separatorText: 'Mis listas Mis listas Mis listas Mis listas Mis listas Mis listas Mis listas Mis listas Mis listas')
+      ],
     );
   }
 
