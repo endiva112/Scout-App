@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/custom_divider.dart';
 import 'package:scout_app/widgets/default_tip_text.dart';
+import 'package:scout_app/widgets/floating_create_button.dart';
 
 import 'package:scout_app/widgets/main_header.dart';
 import 'package:scout_app/widgets/simple_title.dart';
@@ -26,6 +26,7 @@ class NotesScreen extends StatelessWidget {
               MainHeader(),
               
               //TODO
+              Expanded(child: _buildBody(context)),
 
               BottomNavBar(activeIndex: 2)
             ]
@@ -34,4 +35,46 @@ class NotesScreen extends StatelessWidget {
       )
     );
   }
+
+  // Cuerpo de la vista
+  Widget _buildBody(BuildContext context) {
+    return Container(
+      color: AppColors.bgSecondary,
+      child: Stack(
+        children: [
+          //Listado de listas de la compra
+          _buildBodyContent(),
+
+          //Botón de creación de lista
+          FloatingCreateButton()
+        ]
+      )
+    );
+  }
+
+  // Cuerpo del listado de notas
+  Widget _buildBodyContent() {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SimpleTitle(title: 'Listas activas'),
+        Expanded(child: _buildNotesCollection())
+      ]
+    );
+  }
+
+  // Listado DINÁMICO de notas. COMPONENTE MÁS IMPORTANTE DE ESTA VISTA
+  Widget _buildNotesCollection() {
+    return ListView(
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 300),
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      children: [
+        const SizedBox(height: 10),
+        DefaultTipText(tip: 'CREA Y GESTIONA FÁCILMENTE COMPARACIONES DE PRECIO O LISTAS DE DESEADOS')
+      ],
+    );
+  }
+
 }

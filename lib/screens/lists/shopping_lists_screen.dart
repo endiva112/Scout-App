@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/custom_divider.dart';
 import 'package:scout_app/widgets/default_tip_text.dart';
+import 'package:scout_app/widgets/floating_create_button.dart';
 
 import 'package:scout_app/widgets/main_header.dart';
 import 'package:scout_app/widgets/simple_title.dart';
@@ -44,13 +45,13 @@ class ShoppingListsScreen extends StatelessWidget {
           _buildBodyContent(),
 
           //Botón de creación de lista
-          _buildAddButton()
+          FloatingCreateButton()
         ]
       )
     );
   }
 
-  //Listado de listas de la compra
+  // Cuerpo del listado de listas de la compra
   Widget _buildBodyContent() {
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -62,7 +63,7 @@ class ShoppingListsScreen extends StatelessWidget {
     );
   }
 
-  // Listado de listas. COMPONENTE MÁS IMPORTANTE DE ESTA VISTA
+  // Listado DINÁMICO de listas. COMPONENTE MÁS IMPORTANTE DE ESTA VISTA
   Widget _buildShoppingListCollection() {
     return ListView(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 300),
@@ -80,26 +81,6 @@ class ShoppingListsScreen extends StatelessWidget {
         DefaultTipText(tip: 'CREA LISTAS DE LA COMPRA, LISTAS COLABORATIVAS O GASTOS RECURRENTES')
   
       ],
-    );
-  }
-
-  // Botón de creación de lista
-  Widget _buildAddButton() {
-    return Positioned(
-      bottom: 20,
-      left: 0,
-      right: 0,
-      child: Center(
-        child: Container(
-          width: 80,
-          height: 80,
-          decoration: BoxDecoration(
-            color: AppColors.actionPrimary,
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: const Icon(Icons.add, color: Colors.white, size: 48),
-        )
-      )
     );
   }
 }
