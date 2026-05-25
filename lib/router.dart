@@ -1,12 +1,25 @@
 import 'package:go_router/go_router.dart';
-import 'package:scout_app/screens/notes/notes_screen.dart';
-import 'package:scout_app/screens/payments/collaborative_lists_payments/collaborators/info_collaborative_purchase_screen.dart';
-import 'package:scout_app/screens/payments/purchased_lists_screen.dart';
-import 'package:scout_app/screens/scout/scout_screen.dart';
+
+// Listas
+import 'screens/lists/shopping_lists_screen.dart';
+
+// Pagos
+import 'screens/payments/purchased_lists_screen.dart';
+import 'screens/payments/collaborative_lists_payments/collaborators/info_collaborative_purchase_screen.dart';
+
+// Notas
+import 'screens/notes/notes_screen.dart';
+
+// Scout
+import 'screens/scout/scout_screen.dart';
+
+// Perfil
+import 'screens/profile/unregistered_profile_screen.dart';
+
 //import 'oldscreens/home_screen.dart';
 import 'oldscreens/sandbox_screen.dart';
 import 'oldscreens/auth_test.dart';
-import 'screens/lists/shopping_lists_screen.dart';
+
 
 import 'oldscreens/lists_screen.dart';
 import 'oldscreens/list_detail_screen.dart';
@@ -15,6 +28,7 @@ import 'oldscreens/list_detail_screen.dart';
 final GoRouter router = GoRouter(
   initialLocation: '/lists',
   routes: [
+    // Los 4 principales
     GoRoute(
       path: '/lists',
       //builder: (context, state) => const HomeScreen(),
@@ -32,6 +46,22 @@ final GoRouter router = GoRouter(
       path: '/scout',
       builder: (context, state) => const ScoutScreen(),
     ),
+
+    // Perfil
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const UnregisteredProfileScreen(),
+    ),
+
+
+
+
+
+
+
+
+
+
     GoRoute(
       path: '/test',
       builder: (context, state) => const InfoCollaborativePurchaseScreen(),

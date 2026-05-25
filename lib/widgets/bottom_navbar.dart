@@ -25,8 +25,8 @@ class BottomNavBar extends StatelessWidget {
           _buildNavItem(context, Icons.money_off_csred, 'Pagos', index: 1, route: '/payments'),
           _buildNavItem(context, Icons.star_rounded, 'Notas', index: 2, route: '/notes'),
           _buildNavItem(context, Icons.flag_rounded, 'Scout', index: 3, route: '/scout'),
-        ],
-      ),
+        ]
+      )
     );
   }
 
@@ -40,17 +40,17 @@ Widget _buildNavItem(BuildContext context, IconData icon, String label, {require
     child: MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-      onTap: () => context.go(route),
-      behavior: HitTestBehavior.opaque,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon,size: 32,color: color),
-          Text(label,style: TextStyle(fontSize: 12,fontWeight: FontWeight.w300,color: color))
-        ],
-      ),
-    ),
-    ),
+        onTap: () => context.go(route),
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon,size: 32,color: color),
+            Text(label,style: TextStyle(fontSize: 12,fontWeight: FontWeight.w300,color: color))
+          ]
+        )
+      )
+    )
   );
 }
 }

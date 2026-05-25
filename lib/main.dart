@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'router.dart';
 
 // Imports para Firebase
@@ -16,6 +17,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Si no hay sesión activa (ni anónima ni con cuenta), crea una anónima.
+  // Si ya hay sesión, Firebase la recupera automáticamente y esto no hace nada.
+  if (FirebaseAuth.instance.currentUser == null) {
+    await FirebaseAuth.instance.signInAnonymously();
+  }
 
   // Arranca la app una vez Firebase está listo
   runApp(const MyApp());
