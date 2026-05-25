@@ -21,7 +21,7 @@ class FloatingCreateButton extends StatelessWidget {
             color: AppColors.actionPrimary,
             borderRadius: BorderRadius.circular(24),
           ),
-          child: const Icon(Icons.add, color: Colors.white, size: 48),
+          child: const Icon(Icons.add, color: AppColors.bgPrimary, size: 48),
         )
       )
     );

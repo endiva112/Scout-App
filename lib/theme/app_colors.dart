@@ -14,10 +14,15 @@ class _Primitives {
   static const darkgrey       = Color(0xFF14181B);
   static const grey           = Color(0xFF57636C);
 
-  //eliminar
+  //colores de las listas
   static const yellow500  = Color(0xFFFEAD28);
   static const magenta500 = Color(0xFFFE4370);
   static const cyan500    = Color(0xFF0588FE);
+
+  //eliminar
+  
+  
+  
   static const green500   = Color.fromARGB(255, 67, 230, 34);
   static const red500     = Color.fromARGB(255, 219, 20, 20);
   
@@ -32,9 +37,9 @@ class AppColors {
   static const bgSecondary = _Primitives.grey50;
 
   // Tipos de lista
-  static const listTypeSimple        = _Primitives.yellow500;
+  static const listTypeSimple        = _Primitives.cyan500;
   static const listTypeCollaborative = _Primitives.magenta500;
-  static const listTypeRecurring     = _Primitives.cyan500;
+  static const listTypeRecurring     = _Primitives.yellow500;
 
   // Acción principal
   static const actionPrimary = _Primitives.orange500;

@@ -3,6 +3,7 @@ import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/custom_divider.dart';
 import 'package:scout_app/widgets/default_tip_text.dart';
 import 'package:scout_app/widgets/floating_create_button.dart';
+import 'package:scout_app/widgets/list_card.dart';
 
 import 'package:scout_app/widgets/main_header.dart';
 import 'package:scout_app/widgets/simple_title.dart';
@@ -65,22 +66,35 @@ class ShoppingListsScreen extends StatelessWidget {
 
   // Listado DINÁMICO de listas. COMPONENTE MÁS IMPORTANTE DE ESTA VISTA
   Widget _buildShoppingListCollection() {
-    return ListView(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 300),
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      children: [
-        CustomDivider(separatorText: 'Mis listas'),
+    final widgets = [
+      CustomDivider(separatorText: 'Mis listas'),
 
-        const SizedBox(height: 10),
+      ListCard(type: ListType.simple, title: 'Gastos de la casa', items: 6, extraInfo: '3 tiendas'),
 
-        CustomDivider(separatorText: 'Mis listas Mis listas Mis listas Mis listas Mis listas Mis listas Mis listas Mis listas Mis listas'),
+      ListCard(type: ListType.collaborative, title: 'Barbacoa', items: 2, extraInfo: 'Lidl'),
 
-        const SizedBox(height: 10),
-        
-        DefaultTipText(tip: 'CREA LISTAS DE LA COMPRA, LISTAS COLABORATIVAS O GASTOS RECURRENTES')
-  
-      ],
+      ListCard(type: ListType.recurring, title: 'Pago del piso de Huelva', items: 6, extraInfo: '10 días para el cobro'),
+
+      ListCard(type: ListType.recurring, title: 'Pago del piso de Sevilla', items: 6, extraInfo: 'DESACTIVADA'),
+
+      ListCard(type: ListType.simple, title: 'Gastos de casa de esos que tienen el nombre exageradamente largo y que rompen la UI', items: 6, extraInfo: '3 tiendas'),
+
+      CustomDivider(separatorText:'Mis listas Mis listas Mis listas Mis listas'),
+
+      DefaultTipText(tip: 'CREA LISTAS DE LA COMPRA, LISTAS COLABORATIVAS O GASTOS RECURRENTES'),
+    ];
+
+    return ListView.separated(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 300),
+      itemCount: widgets.length,
+
+      itemBuilder: (context, index) {
+        return widgets[index];
+      },
+
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: 10);
+      },
     );
   }
 }
