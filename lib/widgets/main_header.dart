@@ -59,9 +59,7 @@ Widget _buildGreetingMessage() {
     message = 'Buenas noches!';
   }
 
-  return Text(
-    message
-  );
+  return Text(message, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400));
 }
 
 // Obtener el nombre del usuario desde firebase
@@ -76,5 +74,5 @@ Widget _buildUserName() {
     userName = user.displayName ?? 'Scout_${user.uid.substring(0, 6).toUpperCase()}';
   }
 
-  return Text(userName);
+  return Text(userName, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500));
 }

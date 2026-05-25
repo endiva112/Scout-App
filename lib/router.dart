@@ -31,7 +31,6 @@ final GoRouter router = GoRouter(
     // Los 4 principales
     GoRoute(
       path: '/lists',
-      //builder: (context, state) => const HomeScreen(),
       builder: (context, state) => const ShoppingListsScreen(),
     ),
     GoRoute(
@@ -64,6 +63,7 @@ final GoRouter router = GoRouter(
 
     GoRoute(
       path: '/test',
+            //builder: (context, state) => const HomeScreen(),
       builder: (context, state) => const InfoCollaborativePurchaseScreen(),
     ),
     GoRoute(

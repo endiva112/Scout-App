@@ -15,9 +15,9 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 70),
+      height: 70,
       color: AppColors.bgPrimary,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -46,7 +46,7 @@ Widget _buildNavItem(BuildContext context, IconData icon, String label, {require
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon,size: 32,color: color),
-            Text(label,style: TextStyle(fontSize: 12,fontWeight: FontWeight.w300,color: color))
+            Text(label,style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: color))
           ]
         )
       )
