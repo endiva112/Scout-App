@@ -69,15 +69,15 @@ class ShoppingListsScreen extends StatelessWidget {
     final widgets = [
       CustomDivider(separatorText: 'Mis listas'),
 
-      ListCard(type: ListType.simple, title: 'Gastos de la casa', items: 6, extraInfo: '3 tiendas'),
+      ListCard(type: ListType.simple, title: 'Gastos de la casa', items: 6, extraInfo: '3 tiendas', listId: 'zmZYM6O1aWkWdL3pnai8'),
 
-      ListCard(type: ListType.collaborative, title: 'Barbacoa', items: 2, extraInfo: 'Lidl'),
+      ListCard(type: ListType.collaborative, title: 'Barbacoa', items: 2, extraInfo: 'Lidl', listId: 'zmZYM6O1aWkWdL3pnai8'),
 
-      ListCard(type: ListType.recurring, title: 'Pago del piso de Huelva', items: 6, extraInfo: '10 días para el cobro'),
+      ListCard(type: ListType.recurring, title: 'Pago del piso de Huelva', items: 6, extraInfo: '10 días para el cobro', listId: 'zmZYM6O1aWkWdL3pnai8'),
 
-      ListCard(type: ListType.recurring, title: 'Pago del piso de Sevilla', items: 6, extraInfo: 'DESACTIVADA'),
+      ListCard(type: ListType.recurring, title: 'Pago del piso de Sevilla', items: 6, extraInfo: 'DESACTIVADA', listId: 'zmZYM6O1aWkWdL3pnai8'),
 
-      ListCard(type: ListType.simple, title: 'Gastos de casa de esos que tienen el nombre exageradamente largo y que rompen la UI', items: 6, extraInfo: '3 tiendas'),
+      ListCard(type: ListType.simple, title: 'Gastos de casa de esos que tienen el nombre exageradamente largo y que rompen la UI', items: 6, extraInfo: '3 tiendas', listId: 'zmZYM6O1aWkWdL3pnai8'),
 
       CustomDivider(separatorText:'Mis listas Mis listas Mis listas Mis listas'),
 

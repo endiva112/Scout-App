@@ -18,14 +18,14 @@ class _AppColors {
 
 // ─── Pantalla ─────────────────────────────────────────────────────────────────
 
-class RecurringCreateModeScreen extends StatefulWidget {
-  const RecurringCreateModeScreen({super.key});
+class RecurringPlanningModeScreen extends StatefulWidget {
+  const RecurringPlanningModeScreen({super.key});
 
   @override
-  State<RecurringCreateModeScreen> createState() => _RecurringCreateModeScreenState();
+  State<RecurringPlanningModeScreen> createState() => _RecurringPlanningModeScreenState();
 }
 
-class _RecurringCreateModeScreenState extends State<RecurringCreateModeScreen> {
+class _RecurringPlanningModeScreenState extends State<RecurringPlanningModeScreen> {
   // Dropdown state
   String _repeatAt = 'FINALES';
   String _repeatEvery = 'MES';

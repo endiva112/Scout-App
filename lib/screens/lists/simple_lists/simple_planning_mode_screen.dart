@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class SimpleCreateModeScreen extends StatefulWidget {
-  const SimpleCreateModeScreen({super.key});
+class SimplePlanningModeScreen extends StatefulWidget {
+  const SimplePlanningModeScreen({super.key});
 
   @override
-  State<SimpleCreateModeScreen> createState() =>
-      _ListasPlanificarSimpleScreenState();
+  State<SimplePlanningModeScreen> createState() =>
+      _SimplePlanningModeScreenState();
 }
 
-class _ListasPlanificarSimpleScreenState
-    extends State<SimpleCreateModeScreen> {
+class _SimplePlanningModeScreenState
+    extends State<SimplePlanningModeScreen> {
   // Controllers: índices pares = nombre, índices impares = cantidad
   final _items = [
     TextEditingController(text: 'Patatas fritas'),

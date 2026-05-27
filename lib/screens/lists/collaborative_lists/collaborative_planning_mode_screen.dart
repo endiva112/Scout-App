@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class CollaborativeCreateModeScreen extends StatefulWidget {
-  const CollaborativeCreateModeScreen({super.key});
+class CollaborativePlanningModeScreen extends StatefulWidget {
+  const CollaborativePlanningModeScreen({super.key});
 
   @override
-  State<CollaborativeCreateModeScreen> createState() =>
-      _CollaborativeCreateModeScreenState();
+  State<CollaborativePlanningModeScreen> createState() =>
+      _CollaborativePlanningModeScreenState();
 }
 
-class _CollaborativeCreateModeScreenState
-    extends State<CollaborativeCreateModeScreen> {
+class _CollaborativePlanningModeScreenState
+    extends State<CollaborativePlanningModeScreen> {
   // Cada store tiene: label, color de borde, y lista de items
   // Cada item tiene: nameController, qtyController, lockState
   final List<_StoreData> _stores = [

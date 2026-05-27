@@ -44,6 +44,7 @@ class ListCard extends StatelessWidget {
   final String title;
   final int items;
   final String extraInfo;
+  final String listId;
 
   const ListCard({
     super.key,
@@ -51,7 +52,20 @@ class ListCard extends StatelessWidget {
     required this.title,
     required this.items,
     required this.extraInfo,
+    required this.listId
   });
+
+  // Método para navegar a la ruta correcta dependiendo del tipo de tarjeta
+  String get _customRoute {
+    switch (type) {
+      case ListType.simple:
+        return '/lists/simple_lists/shopping/$listId';
+      case ListType.collaborative:
+        return '/lists/collaborative_lists/shopping/$listId';
+      case ListType.recurring:
+        return '/lists/recurring_lists/planning/$listId';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,15 +76,20 @@ class ListCard extends StatelessWidget {
       child: Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(12),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: style.borderColor, width: 2),
-          ),
-          child: _buildListInformation(context, style),
-        ),
-      ),
+        
+        // Hacer interactuable las tajetas
+        child: InkWell(
+          onTap: () => context.go(_customRoute),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: style.borderColor, width: 2),
+            ),
+            child: _buildListInformation(context, style),
+          )
+        )
+      )
     );
   }
 
@@ -152,4 +171,5 @@ class ListCard extends StatelessWidget {
       ],
     );
   }
+
 }
