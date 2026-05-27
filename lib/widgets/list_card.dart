@@ -95,13 +95,7 @@ class ListCard extends StatelessWidget {
             ),
           ),
         ),
-        MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: IconButton(
-            onPressed: () => context.go('/profile'),
-            icon: Icon(Icons.more_vert, color: AppColors.textPrimary, size: 32),
-          ),
-        ),
+        _buildVerticalOptionsButton()
       ],
     );
   }
@@ -119,6 +113,43 @@ class ListCard extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textSecondary),
+    );
+  }
+
+  Widget _buildVerticalOptionsButton() {
+    return PopupMenuButton<String>(
+      icon: Icon(Icons.more_vert, color: AppColors.textPrimary, size: 32),
+      onSelected: (value) {
+        switch (value) {
+          case 'edit':
+            // acción editar TODO
+            break;
+          case 'delete':
+            // acción eliminar TODO
+            break;
+        }
+      },
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+          value: 'edit',
+          child: ListTile(
+            dense: true,
+            title: Text('Editar lista'),
+            trailing: Icon(Icons.edit_outlined),
+            contentPadding: EdgeInsets.symmetric(horizontal: 5),
+          ),
+        ),
+        const PopupMenuItem(
+          height: 40,
+          value: 'delete',
+          child: ListTile(
+            dense: true,
+            title: Text('Eliminar lista', style: TextStyle(color: AppColors.negative)),
+            trailing: Icon(Icons.delete_outline, color: AppColors.negative),
+            contentPadding: EdgeInsets.symmetric(horizontal: 5),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -85,7 +85,7 @@ class ShoppingListsScreen extends StatelessWidget {
     ];
 
     return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 300),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 150),
       itemCount: widgets.length,
 
       itemBuilder: (context, index) {

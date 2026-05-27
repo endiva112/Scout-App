@@ -2,29 +2,28 @@ import 'package:flutter/material.dart';
 
 // Capa privada — valores hex puros, nadie los usa directamente
 class _Primitives {
-  //fondos
+  // Fondos
   static const white          = Color(0xFFFFFFFF);
   static const grey50         = Color(0xFFF1F4F8);
 
-  //acción principal
+  // Acción principal
   static const orange500      = Color(0xFFEE8B60);
 
-  //textos
+  // Textos
   static const black          = Color(0xFF14181B);
   static const darkgrey       = Color(0xFF14181B);
   static const grey           = Color(0xFF57636C);
 
-  //colores de las listas
+  // Colores de las listas
   static const yellow500  = Color(0xFFFEAD28);
   static const magenta500 = Color(0xFFFE4370);
   static const cyan500    = Color(0xFF0588FE);
 
-  //eliminar
+  // Resultados
+  static const green      = Color(0xFF60D394);
+  static const red        = Color(0xFFEE6055);
+
   
-  
-  
-  static const green500   = Color.fromARGB(255, 67, 230, 34);
-  static const red500     = Color.fromARGB(255, 219, 20, 20);
   
 }
 
@@ -49,9 +48,9 @@ class AppColors {
   static const textSecondary = _Primitives.darkgrey;
   static const textTerciary = _Primitives.grey;
 
-  // Monetario
-  static const amountPositive = _Primitives.green500;
-  static const amountNegative = _Primitives.red500;
+  // Resultados
+  static const positive = _Primitives.green;
+  static const negative = _Primitives.red;
 
   // Bordes
   static const borderAccent = _Primitives.yellow500;

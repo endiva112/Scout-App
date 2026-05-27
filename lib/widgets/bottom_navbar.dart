@@ -21,7 +21,7 @@ class BottomNavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildNavItem(context, Icons.filter_list, 'Listas', index: 0, route: '/lists'),
+          _buildNavItem(context, Icons.filter_list, 'Listas', index: 0, route: '/'),
           _buildNavItem(context, Icons.money_off_csred, 'Pagos', index: 1, route: '/payments'),
           _buildNavItem(context, Icons.star_rounded, 'Notas', index: 2, route: '/notes'),
           _buildNavItem(context, Icons.flag_rounded, 'Scout', index: 3, route: '/scout'),

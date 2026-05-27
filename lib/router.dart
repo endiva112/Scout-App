@@ -26,11 +26,11 @@ import 'oldscreens/list_detail_screen.dart';
 
 
 final GoRouter router = GoRouter(
-  initialLocation: '/lists',
+  initialLocation: '/',
   routes: [
     // Los 4 principales
     GoRoute(
-      path: '/lists',
+      path: '/',
       builder: (context, state) => const ShoppingListsScreen(),
     ),
     GoRoute(
