@@ -8,6 +8,11 @@ class _Primitives {
 
   // Acción principal
   static const orange500      = Color(0xFFEE8B60);
+  static const darkOrange = Color(0xFFD67A31);
+
+  // Acción secundaria
+  static const specialDarkGreen = Color(0xFF4E7566);
+  static const specialGreen = Color(0xFF7CD2B9);
 
   // Textos
   static const black          = Color(0xFF14181B);
@@ -15,16 +20,13 @@ class _Primitives {
   static const grey           = Color(0xFF57636C);
 
   // Colores de las listas
-  static const yellow500  = Color(0xFFFEAD28);
-  static const magenta500 = Color(0xFFFE4370);
-  static const cyan500    = Color(0xFF0588FE);
+  static const yellow500      = Color(0xFFFEAD28);
+  static const magenta500     = Color(0xFFFE4370);
+  static const cyan500        = Color(0xFF0588FE);
 
   // Resultados
-  static const green      = Color(0xFF60D394);
-  static const red        = Color(0xFFEE6055);
-
-  
-  
+  static const green          = Color(0xFF60D394);
+  static const red            = Color(0xFFEE6055);
 }
 
 // Capa pública — roles semánticos
@@ -42,6 +44,11 @@ class AppColors {
 
   // Acción principal
   static const actionPrimary = _Primitives.orange500;
+  static const contrastPrimary = _Primitives.darkOrange;
+
+  // Acción secundaria
+  static const actionSecondary = _Primitives.specialDarkGreen;
+  static const contrastSecondary = _Primitives.specialGreen;
 
   // Textos
   static const textPrimary   = _Primitives.black;
