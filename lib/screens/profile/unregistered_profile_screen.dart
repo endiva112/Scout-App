@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 
-import 'package:scout_app/widgets/bottom_navbar.dart';
+import 'package:scout_app/widgets/footers/bottom_navbar.dart';
 
 class UnregisteredProfileScreen extends StatelessWidget {
   const UnregisteredProfileScreen({super.key});

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/default_tip_text.dart';
-import 'package:scout_app/widgets/floating_create_button.dart';
+import 'package:scout_app/widgets/buttons/floating_create_button.dart';
 
-import 'package:scout_app/widgets/main_header.dart';
+import 'package:scout_app/widgets/headers/main_header.dart';
 import 'package:scout_app/widgets/simple_title.dart';
-import 'package:scout_app/widgets/bottom_navbar.dart';
+import 'package:scout_app/widgets/footers/bottom_navbar.dart';
 
 class NotesScreen extends StatelessWidget {
   const NotesScreen({super.key});
@@ -58,7 +58,7 @@ class NotesScreen extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SimpleTitle(title: 'Listas activas'),
+        SimpleTitle(title: 'Mis notas'),
         Expanded(child: _buildNotesCollection())
       ]
     );
@@ -72,7 +72,7 @@ class NotesScreen extends StatelessWidget {
       scrollDirection: Axis.vertical,
       children: [
         const SizedBox(height: 10),
-        DefaultTipText(tip: 'CREA Y GESTIONA FÁCILMENTE COMPARACIONES DE PRECIO O LISTAS DE DESEADOS')
+        DefaultTipText(tip: 'CREA LISTAS DE DESEADOS Y ORGANIZA FÁCILMENTE COMPARACIONES DE PRECIOS')
       ],
     );
   }

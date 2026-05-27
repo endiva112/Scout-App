@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/custom_divider.dart';
 import 'package:scout_app/widgets/default_tip_text.dart';
-import 'package:scout_app/widgets/floating_create_button.dart';
-import 'package:scout_app/widgets/list_card.dart';
+import 'package:scout_app/widgets/buttons/floating_create_button.dart';
+import 'package:scout_app/widgets/cards/list_card.dart';
 
-import 'package:scout_app/widgets/main_header.dart';
+import 'package:scout_app/widgets/headers/main_header.dart';
 import 'package:scout_app/widgets/simple_title.dart';
-import 'package:scout_app/widgets/bottom_navbar.dart';
+import 'package:scout_app/widgets/footers/bottom_navbar.dart';
 
 
 class ShoppingListsScreen extends StatelessWidget {
@@ -59,13 +59,13 @@ class ShoppingListsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SimpleTitle(title: 'Listas activas'),
-        Expanded(child: _buildShoppingListCollection())
+        Expanded(child: _buildShoppingListsCollection())
       ]
     );
   }
 
   // Listado DINÁMICO de listas. COMPONENTE MÁS IMPORTANTE DE ESTA VISTA
-  Widget _buildShoppingListCollection() {
+  Widget _buildShoppingListsCollection() {
     final widgets = [
       CustomDivider(separatorText: 'Mis listas'),
 

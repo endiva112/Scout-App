@@ -23,6 +23,8 @@ import 'screens/notes/notes_screen.dart';
 
 // Scout
 import 'screens/scout/scout_screen.dart';
+import 'package:scout_app/screens/scout/scout_missions_screen.dart';
+import 'package:scout_app/screens/scout/scout_options_screen.dart';
 
 // Perfil
 import 'screens/profile/unregistered_profile_screen.dart';
@@ -93,7 +95,19 @@ final GoRouter router = GoRouter(
     ),
 
 
+    // Scout
+    GoRoute(
+      path: '/scout/options',
+      builder: (context, state) => const ScoutOptionsScreen(),
+    ),
+    GoRoute(
+      path: '/scout/missions',
+      builder: (context, state) => const ScoutMissionsScreen(),
+    ),
 
+
+
+    //TODO BORRAR
     GoRoute(
       path: '/test',
             //builder: (context, state) => const HomeScreen(),
