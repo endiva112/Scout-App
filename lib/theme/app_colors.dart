@@ -5,6 +5,7 @@ class _Primitives {
   // Fondos
   static const white          = Color(0xFFFFFFFF);
   static const grey50         = Color(0xFFF1F4F8);
+  static const lightgrey      = Color(0xFFE0E3E7);
 
   // Acción principal
   static const orange500      = Color(0xFFEE8B60);
@@ -36,6 +37,7 @@ class AppColors {
   // Fondos
   static const bgPrimary   = _Primitives.white;
   static const bgSecondary = _Primitives.grey50;
+  static const bgTerciary  = _Primitives.lightgrey;
 
   // Tipos de lista
   static const listTypeSimple        = _Primitives.cyan500;

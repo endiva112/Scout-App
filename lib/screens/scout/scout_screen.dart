@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
+import 'package:scout_app/widgets/bordered_container.dart';
 
 import 'package:scout_app/widgets/default_tip_text.dart';
 import 'package:scout_app/widgets/headers/main_header.dart';
@@ -44,7 +45,11 @@ class ScoutScreen extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: _buildElevationContainer(_buildLevelCard(), AppColors.contrastSecondary)
+              child: BorderedContainer(
+                backgroundColor: AppColors.contrastSecondary,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: _buildLevelCard()
+              )
             ),
 
             Padding(
@@ -58,22 +63,6 @@ class ScoutScreen extends StatelessWidget {
             )
           ]
         )
-      )
-    );
-  }
-
-  // Elevación reusable
-  Widget _buildElevationContainer(Widget customChild, Color customColor) {
-    return Material(
-      elevation: 10,
-      borderRadius: BorderRadius.circular(24),
-      child: Container(
-        decoration: BoxDecoration(
-          color: customColor,
-          borderRadius: BorderRadius.circular(24)
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: customChild,
       )
     );
   }
@@ -115,9 +104,27 @@ class ScoutScreen extends StatelessWidget {
   Widget _buildSubContainers(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: _buildElevationContainer(_buildRankContainer(context) , AppColors.contrastPrimary)),
+        Expanded(
+          child: BorderedContainer(
+            backgroundColor: AppColors.contrastPrimary,
+            borderRadius: 24,
+            elevation: 10,
+            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10,),
+            child: _buildRankContainer(context),
+          )
+        ),
+
         const SizedBox(width: 10),
-        Expanded(child: _buildElevationContainer(_buildConfigContainer(context), AppColors.contrastSecondary)),
+
+        Expanded(
+          child: BorderedContainer(
+            backgroundColor: AppColors.contrastSecondary,
+            borderRadius: 24,
+            elevation: 10,
+            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10,),
+            child: _buildConfigContainer(context),
+          )
+        )
       ]
     );
   }
@@ -187,12 +194,24 @@ class ScoutScreen extends StatelessWidget {
     );
   }
 
+
+  Widget _buildSupermarketMission() {
+    return Container(
+
+    );
+  }
+
+
   Widget _buildMissionsCollection() {
     return ListView(
       shrinkWrap: true,
       primary: false,
       scrollDirection: Axis.vertical,
       children: [
+        BorderedContainer(
+          backgroundColor: AppColors.bgTerciary,
+          child: _buildSupermarketMission()
+        ),
         DefaultTipText(tip: 'SIN MISIONES PARA ESTA REGIÓN'),
         DefaultTipText(tip: 'ESTABLECE UNA LOCALIZACIÓN Y CONTRIBUYE A TU COMUNIDAD'),
         DefaultTipText(tip: 'INICIA SESIÓN Y AYUDANOS A OTROS SCOUTS A MANTENER LOS PRECIOS AL DÍA'),
