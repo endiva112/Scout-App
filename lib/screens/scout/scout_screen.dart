@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scout_app/widgets/bordered_container.dart';
+import 'package:scout_app/widgets/collections/missions_collection.dart';
 
-import 'package:scout_app/widgets/default_tip_text.dart';
 import 'package:scout_app/widgets/headers/main_header.dart';
 import 'package:scout_app/widgets/footers/bottom_navbar.dart';
 import 'package:scout_app/widgets/progress_bar.dart';
@@ -59,7 +59,7 @@ class ScoutScreen extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.all(10),
-              child: _buildMissionSection(),
+              child: _buildMissionSection(context),
             )
           ]
         )
@@ -181,7 +181,7 @@ class ScoutScreen extends StatelessWidget {
   }
 
   // Misiones
-  Widget _buildMissionSection() {
+  Widget _buildMissionSection(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -189,32 +189,7 @@ class ScoutScreen extends StatelessWidget {
         Divider(),
         _buildText('Misiones diarias', 14, FontWeight.w400, AppColors.textPrimary),
         Divider(),
-        _buildMissionsCollection()
-      ]
-    );
-  }
-
-
-  Widget _buildSupermarketMission() {
-    return Container(
-
-    );
-  }
-
-
-  Widget _buildMissionsCollection() {
-    return ListView(
-      shrinkWrap: true,
-      primary: false,
-      scrollDirection: Axis.vertical,
-      children: [
-        BorderedContainer(
-          backgroundColor: AppColors.bgTerciary,
-          child: _buildSupermarketMission()
-        ),
-        DefaultTipText(tip: 'SIN MISIONES PARA ESTA REGIÓN'),
-        DefaultTipText(tip: 'ESTABLECE UNA LOCALIZACIÓN Y CONTRIBUYE A TU COMUNIDAD'),
-        DefaultTipText(tip: 'INICIA SESIÓN Y AYUDANOS A OTROS SCOUTS A MANTENER LOS PRECIOS AL DÍA'),
+        MissionsCollection()
       ]
     );
   }

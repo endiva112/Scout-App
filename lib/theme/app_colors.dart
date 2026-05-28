@@ -28,6 +28,9 @@ class _Primitives {
   // Resultados
   static const green          = Color(0xFF60D394);
   static const red            = Color(0xFFEE6055);
+
+  // Bordes
+  static const golden         = Color(0x4DEE8B60);
 }
 
 // Capa pública — roles semánticos
@@ -62,5 +65,5 @@ class AppColors {
   static const negative = _Primitives.red;
 
   // Bordes
-  static const borderAccent = _Primitives.yellow500;
+  static const borderAccent = _Primitives.golden;
 }
