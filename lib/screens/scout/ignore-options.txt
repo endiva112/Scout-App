@@ -97,77 +97,7 @@ class _ScoutOptionsScreenState extends State<ScoutOptionsScreen> {
             const SizedBox(height: 10),
 
             // Lista de tiendas con checkboxes
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    children: [
-                      _buildStoreCheckbox('Mercadona', _mercadona,
-                          (v) => setState(() => _mercadona = v!)),
-                      const SizedBox(height: 10),
-                      _buildStoreCheckbox('Lidl', _lidl,
-                          (v) => setState(() => _lidl = v!)),
-                      const SizedBox(height: 10),
-                      _buildStoreCheckbox('Dia', _dia,
-                          (v) => setState(() => _dia = v!)),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // Sección de ubicación
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    const Text('== UBICACIÓN ACTUAL =='),
-                    const SizedBox(height: 10),
-                    _buildLocationField(_paisController),
-                    const SizedBox(height: 10),
-                    _buildLocationField(_regionController),
-                    const SizedBox(height: 10),
-                    _buildLocationField(_ciudadController),
-                    const SizedBox(height: 10),
-
-                    // Botón confirmar
-                    GestureDetector(
-                      onTap: () {
-                        // aquí irá la lógica de guardar
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF7CD2B9),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'ESTABLECER NUEVA UBICACIÓN',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF4E7566),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            
           ],
         ),
       ),
@@ -204,19 +134,5 @@ class _ScoutOptionsScreenState extends State<ScoutOptionsScreen> {
     );
   }
 
-  // Campo de texto para ubicación, sin borde visible (igual que en FF)
-  Widget _buildLocationField(TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        isDense: true,
-        filled: true,
-        fillColor: Colors.grey[100],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none, // sin borde visible
-        ),
-      ),
-    );
-  }
+  
 }

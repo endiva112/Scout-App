@@ -3,20 +3,20 @@ import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/bordered_container.dart';
 import 'package:go_router/go_router.dart';
 
-class MarketMissionCard extends StatelessWidget {
+class StoreMissionCard extends StatelessWidget {
   final String imageUrl;
-  final String marketName;
+  final String storeName;
   final String productCount;
   final String points;
-  final String marketId;
+  final String storeId;
 
-  const MarketMissionCard({
+  const StoreMissionCard({
     super.key,
     required this.imageUrl,
-    required this.marketName,
+    required this.storeName,
     required this.productCount,
     required this.points,
-    required this.marketId
+    required this.storeId
   });
 
   @override
@@ -26,7 +26,7 @@ class MarketMissionCard extends StatelessWidget {
       borderColor: AppColors.borderAccent,
       borderWidth: 1,
       child: InkWell(
-        onTap: () => context.push('/scout/missions'),//$marketId TODO
+        onTap: () => context.push('/scout/missions'),//$storeId TODO
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -52,7 +52,7 @@ class MarketMissionCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      marketName,
+                      storeName,
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w600,

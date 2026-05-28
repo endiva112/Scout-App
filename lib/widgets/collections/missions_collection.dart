@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scout_app/widgets/cards/market_mission_card.dart';
+import 'package:scout_app/widgets/cards/store_mission_card.dart';
 import 'package:scout_app/widgets/default_tip_text.dart';
 
 class MissionsCollection extends StatelessWidget {
@@ -8,17 +8,17 @@ class MissionsCollection extends StatelessWidget {
   List<Map<String, String>> get _missions => [
     {
       'imageUrl': 'assets/images/carrefour.png',
-      'marketName': 'Carrefour',
+      'storeName': 'Carrefour',
       'productCount': '4 productos',
       'points': '80 puntos',
-      'marketId': '1'
+      'storeId': '1'
     },
     {
       'imageUrl': 'assets/images/lidl.png',
-      'marketName': 'Lidl',
+      'storeName': 'Lidl',
       'productCount': '3 productos',
       'points': '60 puntos',
-      'marketId': '2'
+      'storeId': '2'
     },
   ];
 
@@ -26,12 +26,12 @@ class MissionsCollection extends StatelessWidget {
     ..._missions.map(
       (mission) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: MarketMissionCard(
+        child: StoreMissionCard(
           imageUrl: mission['imageUrl']!,
-          marketName: mission['marketName']!,
+          storeName: mission['storeName']!,
           productCount: mission['productCount']!,
           points: mission['points']!,
-          marketId: mission['marketId']!,
+          storeId: mission['storeId']!,
         ),
       ),
     ),
