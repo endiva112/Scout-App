@@ -46,7 +46,7 @@ class MissionsCollection extends StatelessWidget {
       shrinkWrap: true,
       primary: false,
       itemCount: _allItems.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 10),
+      separatorBuilder: (_, _) => const SizedBox(height: 10),
       itemBuilder: (_, index) => _allItems[index],
     );
   }
