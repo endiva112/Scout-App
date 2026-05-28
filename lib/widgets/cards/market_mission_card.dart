@@ -35,7 +35,7 @@ class MarketMissionCard extends StatelessWidget {
               padding: const EdgeInsetsDirectional.fromSTEB(15, 10, 20, 10),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
+                child: Image.asset(
                   imageUrl,
                   width: MediaQuery.sizeOf(context).width * 0.2,
                   fit: BoxFit.cover,

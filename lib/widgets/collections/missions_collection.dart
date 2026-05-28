@@ -7,15 +7,15 @@ class MissionsCollection extends StatelessWidget {
 
   List<Map<String, String>> get _missions => [
     {
-      'imageUrl': 'https://picsum.photos/seed/964/600',
+      'imageUrl': 'assets/images/carrefour.png',
       'marketName': 'Carrefour',
       'productCount': '4 productos',
       'points': '80 puntos',
       'marketId': '1'
     },
     {
-      'imageUrl': 'https://picsum.photos/seed/964/600',
-      'marketName': 'Mercadona',
+      'imageUrl': 'assets/images/lidl.png',
+      'marketName': 'Lidl',
       'productCount': '3 productos',
       'points': '60 puntos',
       'marketId': '2'

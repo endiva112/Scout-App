@@ -11,7 +11,7 @@ import 'package:scout_app/widgets/progress_bar.dart';
 class ScoutScreen extends StatelessWidget {
   const ScoutScreen({super.key});
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
