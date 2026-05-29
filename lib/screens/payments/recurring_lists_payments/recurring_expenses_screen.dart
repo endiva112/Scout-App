@@ -38,8 +38,8 @@ class _GrupoFecha {
 }
 
 // ── Widget principal ──────────────────────────────────────────────────────────
-class PagosRecurrentesPage extends StatelessWidget {
-  const PagosRecurrentesPage({super.key});
+class RecurringExpensesScreen extends StatelessWidget {
+  const RecurringExpensesScreen({super.key});
 
   static const _pendientes = [
     _GastoPendiente('Luz y agua'),

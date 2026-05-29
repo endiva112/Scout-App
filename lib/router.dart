@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:scout_app/screens/payments/collaborative_lists_payments/collaborative_balances_screen.dart';
+import 'package:scout_app/screens/payments/recurring_lists_payments/recurring_expenses_screen.dart';
 
 // Listas
 import 'screens/lists/shopping_lists_screen.dart';
@@ -94,6 +96,19 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const RecurringPlanningModeScreen(),
     ),
 
+
+    // Pagos
+      // Listas colaborativas
+    GoRoute(
+      path: '/payments/collaborative_lists/balances',
+      builder: (context, state) => const CollaborativeBalancesScreen(),
+    ),
+
+      // Listas recurrentes
+    GoRoute(
+      path: '/payments/recurring_lists/expenses',
+      builder: (context, state) => const RecurringExpensesScreen(),
+    ),
 
     // Scout
     GoRoute(

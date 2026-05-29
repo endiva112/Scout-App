@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scout_app/widgets/cards/billing_card.dart';
+import 'package:scout_app/widgets/cards/paid_list_card.dart';
 import 'package:scout_app/widgets/custom_divider.dart';
 import 'package:scout_app/widgets/default_tip_text.dart';
 
@@ -18,10 +20,31 @@ class PurchasedListsCollection extends StatelessWidget {
 
   List<Widget> get _items => [
     CustomDivider(separatorText: 'Mis listas'),
-    CustomDivider(separatorText: 'Alex'),
+
+    PaidListCard(
+      title: 'Barbacoa',
+      statusLabel: 'Comprado: 24 Ago',
+      amount: '+ 10 €'
+    ),
+
+    BillingCard(
+      title: 'Gastos de casa',
+      date: '30 de Junio',
+      statusLabel: 'Abonado: 2 Julio',
+      amount: '+ 10 €'
+    ),
+
     CustomDivider(separatorText: 'Historial (pagados)'),
 
-      DefaultTipText(tip: 'PARECE QUE NO QUEDAN LISTAS POR PAGAR'),
-    DefaultTipText(tip: 'INICIA SESIÓN PARA PODER CREAR LISTAS COLABORATIVAS Y REPARTIR LOS GASTOS FÁCILMENTE')
+    // Historial (pagada)
+    PaidListCard(
+      title: 'Barbacoa',
+      statusLabel: 'Comprado: 24 Ago',
+      amount: 'PAGADO',
+      isPaid: true,
+    ),
+
+    DefaultTipText(tip: 'PARECE QUE NO QUEDAN LISTAS POR PAGAR'),
+    DefaultTipText(tip: 'INICIA SESIÓN PARA PODER CREAR LISTAS COLABORATIVAS Y REPARTIR LOS GASTOS FÁCILMENTE'),
   ];
 }

@@ -1,144 +1,110 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/bordered_container.dart';
-
-enum PaidListType {
-  recurring,
-  collaborative,
-}
+import 'package:go_router/go_router.dart';
 
 class _PaidListCardStyle {
   final Color borderColor;
-  final IconData icon;
+  final Color iconColor;
+  final Color titleColor;
+  final Color textColor;
+  final Color amountColor;
+  final Color backgroundColor;
 
   const _PaidListCardStyle({
     required this.borderColor,
-    required this.icon,
+    required this.iconColor,
+    required this.titleColor,
+    required this.textColor,
+    required this.amountColor,
+    required this.backgroundColor,
   });
 }
 
-const _cardStyles = {
-  PaidListType.recurring: _PaidListCardStyle(
-    borderColor: AppColors.listTypeRecurring,
-    icon: Icons.restart_alt_rounded,
-  ),
-  PaidListType.collaborative: _PaidListCardStyle(
-    borderColor: AppColors.listTypeCollaborative,
-    icon: Icons.groups_2_rounded,
-  ),
-};
+const _activeStyle = _PaidListCardStyle(
+  borderColor: AppColors.listTypeCollaborative,
+  iconColor: AppColors.listTypeCollaborative,
+  titleColor: AppColors.textPrimary,
+  textColor: AppColors.textPrimary,
+  amountColor: AppColors.listTypeCollaborative,
+  backgroundColor: AppColors.bgPrimary,
+);
+
+const _paidStyle = _PaidListCardStyle(
+  borderColor: AppColors.bgTerciary,
+  iconColor: AppColors.textTerciary,
+  titleColor: AppColors.textTerciary,
+  textColor: AppColors.textTerciary,
+  amountColor: AppColors.textTerciary,
+  backgroundColor: AppColors.bgTerciary,
+);
 
 class PaidListCard extends StatelessWidget {
-  final PaidListType type;
   final String title;
-  final String date;
   final String statusLabel;
-  final String? amount;   // null si no aplica (ej: "POR ABONAR!")
-  final bool isPaid;      // true = estilo historial (grisado)
+  final String amount;
+  final bool isPaid;
 
   const PaidListCard({
     super.key,
-    required this.type,
     required this.title,
-    required this.date,
     required this.statusLabel,
-    this.amount,
+    required this.amount,
     this.isPaid = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final style = _cardStyles[type]!;
-
-    final Color activeColor = isPaid ? AppColors.textSecondary : style.borderColor;
-    final Color bgColor = isPaid
-        ? Theme.of(context).colorScheme.surfaceVariant
-        : Theme.of(context).colorScheme.surface;
+    final style = isPaid ? _paidStyle : _activeStyle;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BorderedContainer(
-        backgroundColor: bgColor,
-        borderColor: isPaid ? bgColor : style.borderColor,
+        backgroundColor: style.backgroundColor,
+        borderColor: style.borderColor,
         borderWidth: 2,
         child: Row(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Icon(style.icon, color: activeColor, size: 60),
+              child: Icon(Icons.groups_2_rounded, color: style.iconColor, size: 60),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(right: 20, top: 10, bottom: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildTitle(activeColor),
-                    const SizedBox(height: 5),
-                    _buildDateRow(context),
-                    const SizedBox(height: 5),
-                    _buildStatusRow(context, activeColor),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+                child: InkWell(
+                  onTap: () => context.push('/payments/collaborative_lists/balances'),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildTitle(style),
+                      const SizedBox(height: 5),
+                      _buildStatusRow(style),
+                    ]
+                  )
+                )
+              )
+            )
+          ]
+        )
+      )
     );
   }
 
-  Widget _buildTitle(Color color) {
-    return Text(
-      title,
-      maxLines: 3,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-        color: color,
-      ),
-    );
-  }
+  Widget _buildTitle(_PaidListCardStyle style) => Text(
+    title,
+    maxLines: 2,
+    overflow: TextOverflow.ellipsis,
+    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: style.titleColor, height: 1),
+  );
 
-  Widget _buildDateRow(BuildContext context) {
-    return Text(
-      date,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        fontSize: 14,
-        color: isPaid ? AppColors.textSecondary : AppColors.textPrimary,
-      ),
-    );
-  }
-
-  Widget _buildStatusRow(BuildContext context, Color accentColor) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Text(
-            statusLabel,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 14,
-              color: isPaid ? AppColors.textSecondary : AppColors.textPrimary,
-            ),
-          ),
-        ),
-        if (amount != null)
-          Text(
-            amount!,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: isPaid ? AppColors.textSecondary : accentColor,
-            ),
-          ),
-      ],
-    );
-  }
+  Widget _buildStatusRow(_PaidListCardStyle style) => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(statusLabel, style: TextStyle(fontSize: 14, color: style.textColor, height: 0)),
+      Text(amount, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: style.amountColor, height: 1.25)),
+    ],
+  );
 }
