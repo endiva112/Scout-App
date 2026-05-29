@@ -19,7 +19,6 @@ class PurchasedListsCollection extends StatelessWidget {
   }
 
   List<Widget> get _items => [
-    CustomDivider(separatorText: 'Mis listas'),
 
     PaidListCard(
       title: 'Barbacoa',

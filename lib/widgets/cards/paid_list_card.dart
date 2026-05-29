@@ -74,7 +74,6 @@ class PaidListCard extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 20, top: 10, bottom: 10),
                 child: InkWell(
                   onTap: () => context.push('/payments/collaborative_lists/balances'),
-                  borderRadius: BorderRadius.circular(12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,

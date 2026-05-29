@@ -36,9 +36,30 @@ class PurchasedListsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SimpleTitle(title: 'Listas por pagar'),
+          _buildSummary(-10),
           Expanded(child: PurchasedListsCollection())
         ]
       )
+    );
+  }
+
+  Widget _buildSummary(int balance) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Saldo estimado: ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: AppColors.textPrimary)),
+            Text('$balance €', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.negative))
+          ]
+        ),
+        Divider(
+          thickness: 2,
+          indent: 20,
+          endIndent: 20,
+          color: AppColors.bgTerciary,
+        )
+      ],
     );
   }
 }
