@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-//TODO import 'package:scout_app/widgets/custom_divider.dart';
-//TODO import 'package:scout_app/widgets/default_tip_text.dart';
-
+import 'package:scout_app/widgets/collections/purchased_lists_collection.dart';
 import 'package:scout_app/widgets/headers/main_header.dart';
-//TODO import 'package:scout_app/widgets/simple_title.dart';
+import 'package:scout_app/widgets/simple_title.dart';
 import 'package:scout_app/widgets/footers/bottom_navbar.dart';
 
 class PurchasedListsScreen extends StatelessWidget {
@@ -22,12 +20,24 @@ class PurchasedListsScreen extends StatelessWidget {
           // Componentes de esta página
           children: [
             MainHeader(),
-            
-            //TODO
-
+            Expanded(child: _buildBody(context)),
             BottomNavBar(activeIndex: 1)
           ]
         )
+      )
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return Container(
+      color: AppColors.bgSecondary,
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SimpleTitle(title: 'Listas por pagar'),
+          Expanded(child: PurchasedListsCollection())
+        ]
       )
     );
   }

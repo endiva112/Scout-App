@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
+import 'package:scout_app/widgets/bordered_container.dart';
 import 'package:go_router/go_router.dart';
 
 enum ListType {
@@ -8,7 +9,6 @@ enum ListType {
   recurring,
 }
 
-// Configuración visual por tipo
 class _ListCardStyle {
   final Color borderColor;
   final IconData icon;
@@ -52,18 +52,17 @@ class ListCard extends StatelessWidget {
     required this.title,
     required this.items,
     required this.extraInfo,
-    required this.listId
+    required this.listId,
   });
 
-  // Método para navegar a la ruta correcta dependiendo del tipo de tarjeta
   String get _customRoute {
     switch (type) {
       case ListType.simple:
-        return '/lists/simple_lists/shopping/';//$listId
+        return '/lists/simple_lists/shopping/';
       case ListType.collaborative:
-        return '/lists/collaborative_lists/shopping/';//$listId
+        return '/lists/collaborative_lists/shopping/';
       case ListType.recurring:
-        return '/lists/recurring_lists/planning/';//$listId
+        return '/lists/recurring_lists/planning/';
     }
   }
 
@@ -73,23 +72,16 @@ class ListCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(12),
-        
-        // Hacer interactuable las tajetas
+      child: BorderedContainer(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        borderColor: style.borderColor,
+        borderWidth: 2,
         child: InkWell(
-          onTap: () => context.go(_customRoute),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: style.borderColor, width: 2),
-            ),
-            child: _buildListInformation(context, style),
-          )
-        )
-      )
+          onTap: () => context.push(_customRoute),
+          borderRadius: BorderRadius.circular(12),
+          child: _buildListInformation(context, style),
+        ),
+      ),
     );
   }
 
@@ -110,12 +102,12 @@ class ListCard extends StatelessWidget {
                 _buildTitle(),
                 _buildInfoText('- $items items'),
                 _buildInfoText('- $extraInfo'),
-              ],
-            ),
-          ),
+              ]
+            )
+          )
         ),
         _buildVerticalOptionsButton()
-      ],
+      ]
     );
   }
 
@@ -187,5 +179,4 @@ class ListCard extends StatelessWidget {
       ],
     );
   }
-
 }

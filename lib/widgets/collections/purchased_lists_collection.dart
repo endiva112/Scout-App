@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+import 'package:scout_app/widgets/custom_divider.dart';
+import 'package:scout_app/widgets/default_tip_text.dart';
+
+class PurchasedListsCollection extends StatelessWidget {
+  const PurchasedListsCollection({super.key});
+
+  // TODO: reemplazar por llamada a Firestore
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      padding: const EdgeInsets.only(bottom: 150),
+      itemCount: _items.length,
+      separatorBuilder: (_, _) => const SizedBox(height: 10),
+      itemBuilder: (_, index) => _items[index],
+    );
+  }
+
+  List<Widget> get _items => [
+    CustomDivider(separatorText: 'Mis listas'),
+    CustomDivider(separatorText: 'Alex'),
+    CustomDivider(separatorText: 'Historial (pagados)'),
+
+      DefaultTipText(tip: 'PARECE QUE NO QUEDAN LISTAS POR PAGAR'),
+    DefaultTipText(tip: 'INICIA SESIÓN PARA PODER CREAR LISTAS COLABORATIVAS Y REPARTIR LOS GASTOS FÁCILMENTE')
+  ];
+}

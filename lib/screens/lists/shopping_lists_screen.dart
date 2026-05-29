@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/custom_divider.dart';
-import 'package:scout_app/widgets/default_tip_text.dart';
+import 'package:scout_app/widgets/collections/shopping_lists_collection.dart';
 import 'package:scout_app/widgets/buttons/floating_create_button.dart';
-import 'package:scout_app/widgets/cards/list_card.dart';
 
 import 'package:scout_app/widgets/headers/main_header.dart';
 import 'package:scout_app/widgets/simple_title.dart';
@@ -56,42 +54,8 @@ class ShoppingListsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SimpleTitle(title: 'Listas activas'),
-        Expanded(child: _buildShoppingListsCollection())
+        Expanded(child: ShoppingListsCollection())
       ]
-    );
-  }
-
-  // Listado DINÁMICO de listas. COMPONENTE MÁS IMPORTANTE DE ESTA VISTA
-  Widget _buildShoppingListsCollection() {
-    final widgets = [
-      CustomDivider(separatorText: 'Mis listas'),
-
-      ListCard(type: ListType.simple, title: 'Gastos de la casa', items: 6, extraInfo: '3 tiendas', listId: 'zmZYM6O1aWkWdL3pnai8'),
-
-      ListCard(type: ListType.collaborative, title: 'Barbacoa', items: 2, extraInfo: 'Lidl', listId: 'zmZYM6O1aWkWdL3pnai8'),
-
-      ListCard(type: ListType.recurring, title: 'Pago del piso de Huelva', items: 6, extraInfo: '10 días para el cobro', listId: 'zmZYM6O1aWkWdL3pnai8'),
-
-      ListCard(type: ListType.recurring, title: 'Pago del piso de Sevilla', items: 6, extraInfo: 'DESACTIVADA', listId: 'zmZYM6O1aWkWdL3pnai8'),
-
-      ListCard(type: ListType.simple, title: 'Gastos de casa de esos que tienen el nombre exageradamente largo y que rompen la UI', items: 6, extraInfo: '3 tiendas', listId: 'zmZYM6O1aWkWdL3pnai8'),
-
-      CustomDivider(separatorText:'Mis listas Mis listas Mis listas Mis listas'),
-
-      DefaultTipText(tip: 'CREA LISTAS DE LA COMPRA, LISTAS COLABORATIVAS O GASTOS RECURRENTES'),
-    ];
-
-    return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 150),
-      itemCount: widgets.length,
-
-      itemBuilder: (context, index) {
-        return widgets[index];
-      },
-
-      separatorBuilder: (context, index) {
-        return const SizedBox(height: 10);
-      },
     );
   }
 }
