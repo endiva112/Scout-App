@@ -10,26 +10,23 @@ import 'package:scout_app/widgets/footers/bottom_navbar.dart';
 class PurchasedListsScreen extends StatelessWidget {
   const PurchasedListsScreen({super.key});
 
-    @override
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        backgroundColor: AppColors.bgPrimary,
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Scaffold(
+      backgroundColor: AppColors.bgPrimary,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
 
-            // Componentes de esta página
-            children: [
-              MainHeader(),
-              
-              //TODO
+          // Componentes de esta página
+          children: [
+            MainHeader(),
+            
+            //TODO
 
-              BottomNavBar(activeIndex: 1)
-            ]
-          )
+            BottomNavBar(activeIndex: 1)
+          ]
         )
       )
     );

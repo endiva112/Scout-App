@@ -13,22 +13,19 @@ class ScoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        backgroundColor: AppColors.bgPrimary,
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Scaffold(
+      backgroundColor: AppColors.bgPrimary,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
 
-            // Componentes de esta página
-            children: [
-              MainHeader(),
-              Expanded(child: _buildBody(context)),
-              BottomNavBar(activeIndex: 3)
-            ]
-          )
+          // Componentes de esta página
+          children: [
+            MainHeader(),
+            Expanded(child: _buildBody(context)),
+            BottomNavBar(activeIndex: 3)
+          ]
         )
       )
     );

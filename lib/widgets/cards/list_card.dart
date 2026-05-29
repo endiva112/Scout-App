@@ -140,6 +140,9 @@ class ListCard extends StatelessWidget {
       icon: Icon(Icons.more_vert, color: AppColors.textPrimary, size: 32),
       onSelected: (value) {
         switch (value) {
+          case 'share':
+            // acción compartir TODO
+            break;
           case 'edit':
             // acción editar TODO
             break;
@@ -149,6 +152,17 @@ class ListCard extends StatelessWidget {
         }
       },
       itemBuilder: (context) => [
+
+        const PopupMenuItem(
+          value: 'share',
+          child: ListTile(
+            dense: true,
+            title: Text('Compartir lista'),
+            trailing: Icon(Icons.share_rounded),
+            contentPadding: EdgeInsets.symmetric(horizontal: 5),
+          )
+        ),
+
         const PopupMenuItem(
           value: 'edit',
           child: ListTile(
@@ -156,8 +170,9 @@ class ListCard extends StatelessWidget {
             title: Text('Editar lista'),
             trailing: Icon(Icons.edit_outlined),
             contentPadding: EdgeInsets.symmetric(horizontal: 5),
-          ),
+          )
         ),
+
         const PopupMenuItem(
           height: 40,
           value: 'delete',
@@ -166,8 +181,9 @@ class ListCard extends StatelessWidget {
             title: Text('Eliminar lista', style: TextStyle(color: AppColors.negative)),
             trailing: Icon(Icons.delete_outline, color: AppColors.negative),
             contentPadding: EdgeInsets.symmetric(horizontal: 5),
-          ),
-        ),
+          )
+        )
+
       ],
     );
   }
