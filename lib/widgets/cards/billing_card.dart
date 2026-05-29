@@ -79,7 +79,7 @@ class BillingCard extends StatelessWidget {
       ),
       Text(
         amount,
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.negative, height: 1),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.positive, height: 1),
       ),
     ],
   );

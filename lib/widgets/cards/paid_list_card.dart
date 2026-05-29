@@ -26,7 +26,7 @@ const _activeStyle = _PaidListCardStyle(
   iconColor: AppColors.listTypeCollaborative,
   titleColor: AppColors.textPrimary,
   textColor: AppColors.textPrimary,
-  amountColor: AppColors.listTypeCollaborative,
+  amountColor: AppColors.negative,
   backgroundColor: AppColors.bgPrimary,
 );
 
@@ -96,14 +96,14 @@ class PaidListCard extends StatelessWidget {
     title,
     maxLines: 2,
     overflow: TextOverflow.ellipsis,
-    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: style.titleColor, height: 1),
+    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: style.titleColor, height: 1),
   );
 
   Widget _buildStatusRow(_PaidListCardStyle style) => Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(statusLabel, style: TextStyle(fontSize: 14, color: style.textColor, height: 0)),
-      Text(amount, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: style.amountColor, height: 1.25)),
+      Text(amount, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: style.amountColor, height: 1.25)),
     ],
   );
 }

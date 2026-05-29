@@ -26,8 +26,8 @@ class _Primitives {
   static const cyan500        = Color(0xFF0588FE);
 
   // Resultados
-  static const green          = Color(0xFF60D394);
-  static const red            = Color(0xFFEE6055);
+  static const green          = Color(0xFF60d394);
+  static const red            = Color(0xFFee6055);
 
   // Bordes
   static const golden         = Color(0x4DEE8B60);

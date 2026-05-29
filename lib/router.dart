@@ -29,7 +29,7 @@ import 'package:scout_app/screens/scout/scout_missions_screen.dart';
 import 'package:scout_app/screens/scout/scout_options_screen.dart';
 
 // Perfil
-import 'screens/profile/unregistered_profile_screen.dart';
+import 'screens/profile/profile_screen.dart';
 
 
 
@@ -65,7 +65,7 @@ final GoRouter router = GoRouter(
     // Perfil
     GoRoute(
       path: '/profile',
-      builder: (context, state) => const UnregisteredProfileScreen(),
+      builder: (context, state) => const ProfileScreen(),
     ),
 
 
