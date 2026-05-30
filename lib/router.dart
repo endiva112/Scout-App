@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:scout_app/screens/lists/list_details_screen.dart';
+import 'package:scout_app/screens/payments/collaborative_lists_payments/collaborative_expenses_screen.dart';
 
 // Listas
 import 'screens/lists/shopping_lists_screen.dart';
@@ -40,7 +42,7 @@ import 'screens/profile/profile_screen.dart';
 import 'oldscreens/sandbox_screen.dart';
 import 'oldscreens/auth_test.dart';
 import 'oldscreens/lists_screen.dart';
-import 'oldscreens/list_detail_screen.dart';
+import 'oldscreens/old_list_detail_screen.dart';
 
 
 final GoRouter router = GoRouter(
@@ -98,6 +100,18 @@ final GoRouter router = GoRouter(
       path: '/lists/recurring_lists/planning',
       builder: (context, state) => const RecurringPlanningModeScreen(),
     ),
+    GoRoute(
+      path: '/lists/collaborative_lists/expenses',
+      builder: (context, state) => const CollaborativeExpensesScreen(),
+    ),
+    GoRoute(
+      path: '/lists/collaborative_lists/notes',
+      builder: (context, state) => const NoteScreen(),
+    ),
+    GoRoute(
+      path: '/lists/collaborative_lists/list_details',
+      builder: (context, state) => const ListDetailsScreen(),
+    ),
 
 
     // Pagos
@@ -106,6 +120,7 @@ final GoRouter router = GoRouter(
       path: '/payments/collaborative_lists/balances',
       builder: (context, state) => const CollaborativeBalancesScreen(),
     ),
+
 
       // Listas recurrentes
     GoRoute(
@@ -152,7 +167,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/list/:listId',
-      builder: (context, state) => ListDetailScreen(
+      builder: (context, state) => OldListDetailScreen(
         listId: state.pathParameters['listId']!,
       ),
     ),

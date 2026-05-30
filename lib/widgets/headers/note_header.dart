@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:go_router/go_router.dart';
 import 'package:scout_app/widgets/custom_bottom_sheet.dart';
+import 'package:scout_app/widgets/return_arrow.dart';
 
 class NoteHeader extends StatefulWidget {
   const NoteHeader({super.key});
@@ -83,13 +83,7 @@ class _NoteHeaderState extends State<NoteHeader> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () => context.pop(),
-                child: const Icon(Icons.arrow_back, color: AppColors.textPrimary, size: 40),
-              ),
-            ),
+            ReturnArrow(),
             _buildIconSelector(),
           ],
         ),

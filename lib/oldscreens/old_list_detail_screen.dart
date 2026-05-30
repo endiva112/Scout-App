@@ -3,15 +3,15 @@ import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ListDetailScreen extends StatefulWidget {
+class OldListDetailScreen extends StatefulWidget {
   final String listId;
-  const ListDetailScreen({super.key, required this.listId});
+  const OldListDetailScreen({super.key, required this.listId});
 
   @override
-  State<ListDetailScreen> createState() => _ListDetailScreenState();
+  State<OldListDetailScreen> createState() => _OldListDetailScreenState();
 }
 
-class _ListDetailScreenState extends State<ListDetailScreen> {
+class _OldListDetailScreenState extends State<OldListDetailScreen> {
   late final DocumentReference _docRef;
   final _textoController = TextEditingController();
   final _colaboradorController = TextEditingController();

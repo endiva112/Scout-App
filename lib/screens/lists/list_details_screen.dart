@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class ListDetails extends StatefulWidget {
-  const ListDetails({super.key});
+class ListDetailsScreen extends StatefulWidget {
+  const ListDetailsScreen({super.key});
 
   static const String routeName = 'agregar-colaborador';
   static const String routePath = '/agregarColaborador';
 
   @override
-  State<ListDetails> createState() => _ListDetailsState();
+  State<ListDetailsScreen> createState() => _ListDetailsScreenState();
 }
 
-class _ListDetailsState extends State<ListDetails> {
+class _ListDetailsScreenState extends State<ListDetailsScreen> {
   final _titleController = TextEditingController(text: 'Compras de la semana');
 
   @override

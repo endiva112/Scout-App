@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 
-class HeaderEmpty extends StatelessWidget {
-  const HeaderEmpty({super.key,});
+class EmptyHeader extends StatelessWidget {
+  const EmptyHeader({super.key,});
 
   @override
   Widget build(BuildContext context) {
