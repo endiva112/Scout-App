@@ -83,6 +83,10 @@ final GoRouter router = GoRouter(
       path: '/lists/simple_lists/planning',
       builder: (context, state) => const SimplePlanningModeScreen(),
     ),
+    GoRoute(
+      path: '/lists/simple_lists/notes',
+      builder: (context, state) => const NoteScreen(isListNote: true),
+    ),
 
 
     // Listas colaborativas
