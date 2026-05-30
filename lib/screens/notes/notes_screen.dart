@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/collections/notes_collection.dart';
-import 'package:scout_app/widgets/default_tip_text.dart';
 import 'package:scout_app/widgets/buttons/floating_create_button.dart';
 
 import 'package:scout_app/widgets/headers/main_header.dart';
@@ -11,7 +10,7 @@ import 'package:scout_app/widgets/footers/bottom_navbar.dart';
 class NotesScreen extends StatelessWidget {
   const NotesScreen({super.key});
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -25,10 +24,7 @@ class NotesScreen extends StatelessWidget {
             // Componentes de esta página
             children: [
               MainHeader(),
-              
-              //TODO
               Expanded(child: _buildBody(context)),
-
               BottomNavBar(activeIndex: 2)
             ]
           )
