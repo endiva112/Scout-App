@@ -58,7 +58,7 @@ class ListCard extends StatelessWidget {
   String get _customRoute {
     switch (type) {
       case ListType.simple:
-        return '/lists/simple_lists/shopping/';
+        return '/lists/simple_lists/shopping/';//$listId
       case ListType.collaborative:
         return '/lists/collaborative_lists/shopping/';
       case ListType.recurring:
@@ -73,19 +73,19 @@ class ListCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BorderedContainer(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: AppColors.bgPrimary,
         borderColor: style.borderColor,
         borderWidth: 2,
         child: InkWell(
           onTap: () => context.push(_customRoute),
           borderRadius: BorderRadius.circular(12),
-          child: _buildListInformation(context, style),
+          child: _buildCardContent(context, style),
         ),
       ),
     );
   }
 
-  Widget _buildListInformation(BuildContext context, _ListCardStyle style) {
+  Widget _buildCardContent(BuildContext context, _ListCardStyle style) {
     return Row(
       children: [
         Padding(

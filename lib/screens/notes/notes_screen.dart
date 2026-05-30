@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
+import 'package:scout_app/widgets/collections/notes_collection.dart';
 import 'package:scout_app/widgets/default_tip_text.dart';
 import 'package:scout_app/widgets/buttons/floating_create_button.dart';
 
@@ -59,22 +60,8 @@ class NotesScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SimpleTitle(title: 'Mis notas'),
-        Expanded(child: _buildNotesCollection())
+        Expanded(child: NotesCollection())
       ]
     );
   }
-
-  // Listado DINÁMICO de notas. COMPONENTE MÁS IMPORTANTE DE ESTA VISTA
-  Widget _buildNotesCollection() {
-    return ListView(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 300),
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      children: [
-        const SizedBox(height: 10),
-        DefaultTipText(tip: 'CREA LISTAS DE DESEADOS Y ORGANIZA FÁCILMENTE COMPARACIONES DE PRECIOS')
-      ],
-    );
-  }
-
 }

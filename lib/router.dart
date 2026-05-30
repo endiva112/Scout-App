@@ -1,32 +1,35 @@
 import 'package:go_router/go_router.dart';
-import 'package:scout_app/screens/payments/collaborative_lists_payments/collaborative_balances_screen.dart';
-import 'package:scout_app/screens/payments/recurring_lists_payments/recurring_expenses_screen.dart';
 
 // Listas
 import 'screens/lists/shopping_lists_screen.dart';
 
 // Simples
-import 'package:scout_app/screens/lists/simple_lists/simple_planning_mode_screen.dart';
-import 'package:scout_app/screens/lists/simple_lists/simple_shopping_mode_screen.dart';
+import 'screens/lists/simple_lists/simple_planning_mode_screen.dart';
+import 'screens/lists/simple_lists/simple_shopping_mode_screen.dart';
 
 // Colaborativas
-import 'package:scout_app/screens/lists/collaborative_lists/collaborative_planning_mode_screen.dart';
-import 'package:scout_app/screens/lists/collaborative_lists/collaborative_shopping_mode_screen.dart';
+import 'screens/lists/collaborative_lists/collaborative_planning_mode_screen.dart';
+import 'screens/lists/collaborative_lists/collaborative_shopping_mode_screen.dart';
 
 // Recurrentes
-import 'package:scout_app/screens/lists/recurring_lists/recurring_planning_mode_screen.dart';
+import 'screens/lists/recurring_lists/recurring_planning_mode_screen.dart';
 
 // Pagos
 import 'screens/payments/purchased_lists_screen.dart';
+
 import 'screens/payments/collaborative_lists_payments/collaborators/info_collaborative_purchase_screen.dart';
+import 'screens/payments/collaborative_lists_payments/collaborative_balances_screen.dart';
+
+import 'screens/payments/recurring_lists_payments/recurring_expenses_screen.dart';
 
 // Notas
 import 'screens/notes/notes_screen.dart';
+import 'screens/notes/note_screen.dart';
 
 // Scout
 import 'screens/scout/scout_screen.dart';
-import 'package:scout_app/screens/scout/scout_missions_screen.dart';
-import 'package:scout_app/screens/scout/scout_options_screen.dart';
+import 'screens/scout/scout_missions_screen.dart';
+import 'screens/scout/scout_options_screen.dart';
 
 // Perfil
 import 'screens/profile/profile_screen.dart';
@@ -108,6 +111,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/payments/recurring_lists/expenses',
       builder: (context, state) => const RecurringExpensesScreen(),
+    ),
+
+    //Notas
+    GoRoute(
+      path: '/note',
+      builder: (context, state) => const NoteScreen(),
     ),
 
     // Scout
