@@ -106,7 +106,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/lists/collaborative_lists/notes',
-      builder: (context, state) => const NoteScreen(),
+      builder: (context, state) => const NoteScreen(isListNote: true),
     ),
     GoRoute(
       path: '/lists/collaborative_lists/list_details',

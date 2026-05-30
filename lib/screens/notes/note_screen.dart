@@ -4,7 +4,9 @@ import 'package:scout_app/widgets/headers/note_header.dart';
 
 
 class NoteScreen extends StatelessWidget {
-  const NoteScreen({super.key});
+  final bool isListNote;
+
+  const NoteScreen({super.key, this.isListNote = false});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class NoteScreen extends StatelessWidget {
 
             // Componentes de esta página
             children: [
-              NoteHeader(),
+              NoteHeader(isListNote: isListNote),
               Expanded(child: _buildBody(context)),
 
             ]

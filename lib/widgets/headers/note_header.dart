@@ -4,7 +4,9 @@ import 'package:scout_app/widgets/custom_bottom_sheet.dart';
 import 'package:scout_app/widgets/return_arrow.dart';
 
 class NoteHeader extends StatefulWidget {
-  const NoteHeader({super.key});
+  final bool isListNote;
+  
+  const NoteHeader({super.key, this.isListNote = false});
 
   @override
   State<NoteHeader> createState() => _NoteHeaderState();
@@ -84,7 +86,7 @@ class _NoteHeaderState extends State<NoteHeader> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ReturnArrow(),
-            _buildIconSelector(),
+            if (!widget.isListNote) _buildIconSelector(), // Si es una nota de lista quito el icono
           ],
         ),
       ),
