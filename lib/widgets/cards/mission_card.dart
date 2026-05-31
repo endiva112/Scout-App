@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/bordered_container.dart';
-import 'package:scout_app/widgets/custom_button.dart';
+import 'package:scout_app/widgets/buttons/custom_button.dart';
 import 'package:scout_app/widgets/tool_tip.dart';
 
 class MissionCard extends StatefulWidget {

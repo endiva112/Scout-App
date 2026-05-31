@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scout_app/widgets/bordered_container.dart';
-import 'package:scout_app/widgets/custom_button.dart';
+import 'package:scout_app/widgets/buttons/custom_button.dart';
 import 'package:scout_app/widgets/profile/custom_profile_setting.dart';
 import 'package:scout_app/widgets/profile/custom_setting.dart';
+import 'package:scout_app/widgets/profile/delete_profile_sheet.dart';
 import 'package:scout_app/widgets/profile/version_text.dart';
 
 class RegisteredProfileContent extends StatelessWidget {
@@ -45,7 +46,7 @@ class RegisteredProfileContent extends StatelessWidget {
               backgroundColor: AppColors.bgPrimary, 
               borderColor: AppColors.bgPrimary, 
               elevation: 0,
-              onPressed: () => {}
+              onPressed: () => DeleteProfileSheet.show(context)
             ),
             SizedBox(height: 30),
             VersionText()
