@@ -28,13 +28,19 @@ class AuthRepository {
       idToken: googleAuth.idToken,
     );
 
-    // Si hay usuario anónimo, vincula la cuenta de Google a él
     if (_auth.currentUser?.isAnonymous ?? false) {
-      final result = await _auth.currentUser!.linkWithCredential(credential);
-      return result.user;
+      try {
+        final result = await _auth.currentUser!.linkWithCredential(credential);
+        return result.user;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'credential-already-in-use') {
+          final result = await _auth.signInWithCredential(credential);
+          return result.user;
+        }
+        rethrow;
+      }
     }
 
-    // Si no, login normal con Google
     final result = await _auth.signInWithCredential(credential);
     return result.user;
   }

@@ -4,12 +4,14 @@ import 'package:scout_app/widgets/buttons/custom_button.dart';
 import 'package:scout_app/widgets/custom_bottom_sheet.dart';
 
 class DeleteProfileSheet extends StatelessWidget {
-  const DeleteProfileSheet({super.key});
+  final VoidCallback onConfirm;
 
-  static void show(BuildContext context) {
+  const DeleteProfileSheet({super.key, required this.onConfirm});
+
+  static void show(BuildContext context, {required VoidCallback onConfirm}) {
     CustomBottomSheet.show(
       context,
-      content: const DeleteProfileSheet(),
+      content: DeleteProfileSheet(onConfirm: onConfirm),
     );
   }
 
@@ -23,7 +25,11 @@ class DeleteProfileSheet extends StatelessWidget {
           child: Text(
             'Tu perfil Scout se eliminará de manera irrecuperable y perderás todos tus datos.\n¿Seguro que deseas eliminarlo?',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: AppColors.bgPrimary),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              color: AppColors.bgPrimary,
+            ),
           ),
         ),
         const SizedBox(height: 10),
@@ -34,7 +40,10 @@ class DeleteProfileSheet extends StatelessWidget {
           backgroundColor: AppColors.bgPrimary,
           textColor: AppColors.actionPrimary,
           borderColor: AppColors.bgPrimary,
-          onPressed: () => Navigator.pop(context), // TODO: lógica de borrado
+          onPressed: () {
+            Navigator.pop(context);
+            onConfirm();
+          },
         ),
         const SizedBox(height: 10),
         CustomButton(
