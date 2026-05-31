@@ -1,27 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scout_app/repositories/note_repository.dart';
+import 'package:scout_app/models/note.dart';
 import 'package:scout_app/widgets/cards/note_card.dart';
 import 'package:scout_app/widgets/default_tip_text.dart';
-import 'package:scout_app/constants/note_icons.dart';
 
-class NotesCollection extends StatelessWidget {
+class NotesCollection extends StatefulWidget {
   const NotesCollection({super.key});
 
-  // TODO: reemplazar por llamada a Firestore
+  @override
+  State<NotesCollection> createState() => _NotesCollectionState();
+}
+
+class _NotesCollectionState extends State<NotesCollection> {
+  final _repository = NoteRepository();
+  final _userId = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.only(bottom: 150),
-      itemCount: _items.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 10),
-      itemBuilder: (_, index) => _items[index],
+    return StreamBuilder<List<Note>>(
+      stream: _repository.getNotes(_userId),
+      builder: (context, snapshot) {
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return const DefaultTipText(
+            tip: 'PARECE QUE ALGO SALIO MAL [ERROR EN LA CONEXION AL SERVIDOR DE DATOS]',
+          );
+        }
+
+        final notes = snapshot.data ?? [];
+
+        if (notes.isEmpty) {
+          return const DefaultTipText(
+            tip: 'CREA LISTAS DE DESEADOS Y ORGANIZA FÁCILMENTE COMPARACIONES DE PRECIOS',
+          );
+        }
+
+        return ListView.separated(
+          padding: const EdgeInsets.only(bottom: 150),
+          itemCount: notes.length,
+          separatorBuilder: (_, _) => const SizedBox(height: 10),
+          itemBuilder: (_, index) {
+            final note = notes[index];
+            return NoteCard(
+              noteId: note.id,
+              title: note.title.isEmpty ? 'Sin título' : note.title,
+              date: _formatDate(note.updatedAt),
+              icon: note.icon,
+            );
+          }
+        );
+      }
     );
   }
 
-  List<Widget> get _items => [
-
-    NoteCard(title: 'Regalo para Alex', date: '9 Mayo 2026', icon: NoteIcon.birthday, noteId: 'aabbccddeeff'),
-    NoteCard(title: 'Regalo para Alex', date: '9 Mayo 2026', icon: NoteIcon.birthday, noteId: 'aabbccddeeff'),
-
-    DefaultTipText(tip: 'CREA LISTAS DE DESEADOS Y ORGANIZA FÁCILMENTE COMPARACIONES DE PRECIOS'),
-  ];
+  String _formatDate(DateTime date) {
+    const months = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return '${date.day} ${months[date.month - 1]} ${date.year}';
+  }
 }
