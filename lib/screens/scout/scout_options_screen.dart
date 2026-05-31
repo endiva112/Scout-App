@@ -23,10 +23,10 @@ class ScoutOptionsScreen extends StatelessWidget {
               ReturnHeader(),
               Expanded(child: _buildBody()),
               BottomEmpty()
-            ],
-          ),
-        ),
-      ),
+            ]
+          )
+        )
+      )
     );
   }
 
@@ -41,9 +41,9 @@ class ScoutOptionsScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.all(20),
-          child: _buildMainContent(),
-        ),
-      ),
+          child: _buildMainContent()
+        )
+      )
     );
   }
 
@@ -61,16 +61,13 @@ class ScoutOptionsScreen extends StatelessWidget {
                 color: AppColors.textPrimary,
                 fontSize: 22,
                 fontWeight: FontWeight.w400,
-              ),
+              )
             ),
-            ToolTip(
-              message: '¡Ayuda a la comunidad!, marca aquellas tiendas sobre las cuáles quieras recibir misiones',
-            ),
-          ],
+            ToolTip(message: '¡Ayuda a la comunidad!, marca aquellas tiendas sobre las cuáles quieras recibir misiones'),
+          ]
         ),
         const SizedBox(height: 16),
 
-        // 👇 Expanded hace que este bloque ocupe todo el espacio restante
         Expanded(
           child: Container(
             decoration: BoxDecoration(
@@ -83,7 +80,6 @@ class ScoutOptionsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 24),
 
-        // Ubicación — tamaño natural, no crece
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),

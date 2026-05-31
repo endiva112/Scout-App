@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 
 import 'package:scout_app/widgets/footers/bottom_navbar.dart';
+import 'package:scout_app/widgets/profile/anonympus_profile_content.dart';
+import 'package:scout_app/widgets/profile/registered_profile_content.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -17,8 +19,11 @@ class ProfileScreen extends StatelessWidget {
 
           // Componentes de esta página
           children: [
-            Text('Perfil', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: AppColors.textPrimary)),
-            Expanded(child: _buildBody()),
+            Padding(
+              padding: const EdgeInsetsGeometry.only(top: 20),
+              child: Text('Perfil', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: AppColors.textPrimary)),
+            ),
+            Expanded(child: _buildBody(true)),  //TODO reemplazar por lógica real
             BottomNavBar(activeIndex: -1)
           ]
         )
@@ -26,14 +31,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
-    bool condicion = true;
-    if (condicion) {
-      return Container();
-      //return WidgetCustom();
+  Widget _buildBody(bool isAnonymous) {
+    if (isAnonymous) {
+      return AnonympusProfileContent();
     } else {
-      return Row();
-      //return WidgetCustom2();
+      return RegisteredProfileContent();
     }
   }
 }
