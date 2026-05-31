@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/custom_bottom_sheet.dart';
 import 'package:scout_app/widgets/return_arrow.dart';
+import 'package:scout_app/constants/note_icons.dart';
 
 class NoteHeader extends StatefulWidget {
   final bool isListNote;
@@ -14,22 +15,7 @@ class NoteHeader extends StatefulWidget {
 
 class _NoteHeaderState extends State<NoteHeader> {
 
-  // Icono seleccionado actualmente
-  IconData _selectedIcon = Icons.cake_rounded;
-
-  // Iconos disponibles para seleccionar
-  static const List<IconData> _availableIcons = [
-    Icons.cake_rounded,
-    Icons.shopping_cart_outlined,
-    Icons.home_outlined,
-    Icons.star_outline_rounded,
-    Icons.favorite_outline_rounded,
-    Icons.bolt_rounded,
-    Icons.beach_access_outlined,
-    Icons.sports_soccer_rounded,
-    Icons.music_note_outlined,
-    Icons.pets_rounded,
-  ];
+  NoteIcon _selectedIcon = defaultNoteIcon;
 
   void _openIconSelector() {
     CustomBottomSheet.show(
@@ -47,11 +33,11 @@ class _NoteHeaderState extends State<NoteHeader> {
             Wrap(
               spacing: 12,
               runSpacing: 12,
-              children: _availableIcons.map((icon) {
-                final bool isSelected = icon == _selectedIcon;
+              children: noteIconData.entries.map((entry) {
+                final bool isSelected = entry.key == _selectedIcon;
                 return GestureDetector(
                   onTap: () {
-                    setState(() => _selectedIcon = icon);
+                    setState(() => _selectedIcon = entry.key);
                     Navigator.pop(context);
                   },
                   child: Container(
@@ -64,7 +50,7 @@ class _NoteHeaderState extends State<NoteHeader> {
                         width: 2,
                       ),
                     ),
-                    child: Icon(icon, color: isSelected ? AppColors.textPrimary : AppColors.bgPrimary, size: 32),
+                    child: Icon(entry.value, color: isSelected ? AppColors.textPrimary : AppColors.bgPrimary, size: 32),
                   ),
                 );
               }).toList(),
@@ -96,7 +82,7 @@ class _NoteHeaderState extends State<NoteHeader> {
   Widget _buildIconSelector() {
     return IconButton(
       onPressed: _openIconSelector,
-      icon: Icon(_selectedIcon, color: AppColors.textPrimary, size: 32),
+      icon: Icon(noteIconData[_selectedIcon], color: AppColors.textPrimary, size: 32),
       style: IconButton.styleFrom(
         backgroundColor: AppColors.bgSecondary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

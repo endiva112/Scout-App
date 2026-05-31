@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/widgets/cards/note_card.dart';
 import 'package:scout_app/widgets/default_tip_text.dart';
+import 'package:scout_app/constants/note_icons.dart';
 
 class NotesCollection extends StatelessWidget {
   const NotesCollection({super.key});
