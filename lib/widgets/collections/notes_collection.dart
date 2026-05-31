@@ -51,6 +51,7 @@ class _NotesCollectionState extends State<NotesCollection> {
               title: note.title.isEmpty ? 'Sin título' : note.title,
               date: _formatDate(note.updatedAt),
               icon: note.icon,
+              onDelete: () => _repository.deleteNote(note.id)
             );
           }
         );
