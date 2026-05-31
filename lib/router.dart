@@ -100,7 +100,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/lists/simple_lists/notes',
-      builder: (context, state) => const NoteScreen(isListNote: true),
+      builder: (context, state) => NoteScreen(
+        noteId: state.pathParameters['noteId']!,
+        isListNote: true,
+      ),
     ),
 
 
@@ -124,8 +127,11 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const CollaborativeExpensesScreen(),
     ),
     GoRoute(
-      path: '/lists/collaborative_lists/notes',
-      builder: (context, state) => const NoteScreen(isListNote: true),
+      path: '/lists/collaborative_lists/notes/:noteId',
+      builder: (context, state) => NoteScreen(
+        noteId: state.pathParameters['noteId']!,
+        isListNote: true,
+      ),
     ),
     GoRoute(
       path: '/lists/collaborative_lists/list_details',
@@ -149,8 +155,10 @@ final GoRouter router = GoRouter(
 
     //Notas
     GoRoute(
-      path: '/note',
-      builder: (context, state) => const NoteScreen(),
+      path: '/note/:noteId',
+      builder: (context, state) => NoteScreen(
+        noteId: state.pathParameters['noteId']!,
+      ),
     ),
 
     // Scout

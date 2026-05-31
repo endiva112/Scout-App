@@ -17,6 +17,13 @@ class NoteRepository {
             .toList());
   }
 
+  // Obtener los datos de 1 unica nota
+  Future<Note?> getNote(String noteId) async {
+    final doc = await _db.collection('notes').doc(noteId).get();
+    if (!doc.exists) return null;
+    return Note.fromMap(doc.id, doc.data()!);
+  }
+
   // Crear nota nueva
   Future<String> createNote(String userId) async {
     final doc = await _db.collection('notes').add({

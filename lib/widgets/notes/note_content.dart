@@ -4,8 +4,19 @@ import 'package:scout_app/widgets/notes/note_body.dart';
 
 class NoteContent extends StatelessWidget {
   final bool isListNote;
+  final TextEditingController titleController;
+  final TextEditingController contentController;
+  final DateTime updatedAt;
+  final VoidCallback onChanged;
 
-  const NoteContent({super.key, this.isListNote = false});
+  const NoteContent({
+    super.key,
+    this.isListNote = false,
+    required this.titleController,
+    required this.contentController,
+    required this.updatedAt,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +34,12 @@ class NoteContent extends StatelessWidget {
             ],
             _buildLastModifiedText(),
             const SizedBox(height: 10),
-            const Expanded(child: NoteBody()),
+            Expanded(
+              child: NoteBody(
+                controller: contentController,
+                onChanged: onChanged,
+              ),
+            ),
           ],
         ),
       ),
@@ -32,6 +48,8 @@ class NoteContent extends StatelessWidget {
 
   Widget _buildTitle() {
     return TextFormField(
+      controller: titleController,
+      onChanged: (_) => onChanged(),
       autofocus: false,
       maxLines: 3,
       minLines: 1,
@@ -67,14 +85,23 @@ class NoteContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        '25 Abril 2025',
+        _formatDate(updatedAt),
         style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
           fontStyle: FontStyle.italic,
+          color: AppColors.textSecondary,
         ),
         textAlign: TextAlign.start,
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    const months = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 }

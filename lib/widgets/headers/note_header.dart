@@ -4,60 +4,57 @@ import 'package:scout_app/widgets/custom_bottom_sheet.dart';
 import 'package:scout_app/widgets/return_arrow.dart';
 import 'package:scout_app/constants/note_icons.dart';
 
-class NoteHeader extends StatefulWidget {
+class NoteHeader extends StatelessWidget {
   final bool isListNote;
-  
-  const NoteHeader({super.key, this.isListNote = false});
+  final NoteIcon selectedIcon;
+  final ValueChanged<NoteIcon> onIconChanged;
 
-  @override
-  State<NoteHeader> createState() => _NoteHeaderState();
-}
+  const NoteHeader({
+    super.key,
+    this.isListNote = false,
+    required this.selectedIcon,
+    required this.onIconChanged,
+  });
 
-class _NoteHeaderState extends State<NoteHeader> {
-
-  NoteIcon _selectedIcon = defaultNoteIcon;
-
-  void _openIconSelector() {
+  void _openIconSelector(BuildContext context) {
     CustomBottomSheet.show(
       context,
-      content: StatefulBuilder(
-        builder: (context, setModalState) => Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Selecciona un icono',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: noteIconData.entries.map((entry) {
-                final bool isSelected = entry.key == _selectedIcon;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() => _selectedIcon = entry.key);
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: isSelected ? AppColors.bgPrimary: Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: isSelected ? AppColors.bgPrimary : AppColors.bgPrimary,
-                        width: 2,
-                      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Selecciona un icono',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: noteIconData.entries.map((entry) {
+              final bool isSelected = entry.key == selectedIcon;
+              return GestureDetector(
+                onTap: () {
+                  onIconChanged(entry.key);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppColors.bgSecondary : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: isSelected ? AppColors.actionPrimary : AppColors.borderAccent,
+                      width: 2,
                     ),
-                    child: Icon(entry.value, color: isSelected ? AppColors.textPrimary : AppColors.bgPrimary, size: 32),
                   ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
-      ),
+                  child: Icon(entry.value, color: AppColors.textPrimary, size: 32),
+                )
+              );
+            }).toList()
+          )
+        ]
+      )
     );
   }
 
@@ -72,21 +69,21 @@ class _NoteHeaderState extends State<NoteHeader> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ReturnArrow(),
-            if (!widget.isListNote) _buildIconSelector(), // Si es una nota de lista quito el icono
-          ],
-        ),
-      ),
+            if (!isListNote) _buildIconSelector(context),
+          ]
+        )
+      )
     );
   }
 
-  Widget _buildIconSelector() {
+  Widget _buildIconSelector(BuildContext context) {
     return IconButton(
-      onPressed: _openIconSelector,
-      icon: Icon(noteIconData[_selectedIcon], color: AppColors.textPrimary, size: 32),
+      onPressed: () => _openIconSelector(context),
+      icon: Icon(noteIconData[selectedIcon], color: AppColors.textPrimary, size: 32),
       style: IconButton.styleFrom(
         backgroundColor: AppColors.bgSecondary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
+      )
     );
   }
 }

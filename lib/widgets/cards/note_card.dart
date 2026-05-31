@@ -27,7 +27,7 @@ class NoteCard extends StatelessWidget {
         borderColor: AppColors.borderAccent,
         borderWidth: 2,
         child: InkWell(
-          onTap: () => context.push('/note'),//$noteId
+          onTap: () => context.push('/note/$noteId'),
           borderRadius: BorderRadius.circular(12),
           child: _buildCardContent(context),
         ),
