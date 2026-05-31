@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/custom_bottom_sheet.dart';
-import 'package:scout_app/widgets/return_arrow.dart';
+import 'package:scout_app/widgets/common/custom_bottom_sheet.dart';
+import 'package:scout_app/widgets/common/return_arrow.dart';
 import 'package:scout_app/constants/note_icons.dart';
 
 class NoteHeader extends StatelessWidget {

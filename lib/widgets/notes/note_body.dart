@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/bordered_container.dart';
+import 'package:scout_app/widgets/common/bordered_container.dart';
 
 class NoteBody extends StatefulWidget {
   final TextEditingController controller;

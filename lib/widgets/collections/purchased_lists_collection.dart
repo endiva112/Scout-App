@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/widgets/cards/billing_card.dart';
 import 'package:scout_app/widgets/cards/paid_list_card.dart';
-import 'package:scout_app/widgets/custom_divider.dart';
-import 'package:scout_app/widgets/default_tip_text.dart';
+import 'package:scout_app/widgets/common/custom_divider.dart';
+import 'package:scout_app/widgets/common/default_tip_text.dart';
 
 class PurchasedListsCollection extends StatelessWidget {
   const PurchasedListsCollection({super.key});

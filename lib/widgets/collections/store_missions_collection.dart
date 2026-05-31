@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/widgets/cards/store_mission_card.dart';
-import 'package:scout_app/widgets/default_tip_text.dart';
+import 'package:scout_app/widgets/common/default_tip_text.dart';
 
 class StoreMissionsCollection extends StatelessWidget {
   const StoreMissionsCollection({super.key});

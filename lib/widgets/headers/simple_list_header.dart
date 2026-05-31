@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/header_icon.dart';
-import 'package:scout_app/widgets/return_arrow.dart';
+import 'package:scout_app/widgets/common/header_icon.dart';
+import 'package:scout_app/widgets/common/return_arrow.dart';
 
 
 class SimpleListHeader extends StatelessWidget {

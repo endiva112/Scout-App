@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/widgets/cards/list_card.dart';
-import 'package:scout_app/widgets/custom_divider.dart';
-import 'package:scout_app/widgets/default_tip_text.dart';
+import 'package:scout_app/widgets/common/custom_divider.dart';
+import 'package:scout_app/widgets/common/default_tip_text.dart';
 
 class ShoppingListsCollection extends StatelessWidget {
   const ShoppingListsCollection({super.key});

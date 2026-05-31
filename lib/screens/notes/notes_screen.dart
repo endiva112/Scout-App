@@ -6,7 +6,7 @@ import 'package:scout_app/repositories/note_repository.dart';
 import 'package:scout_app/widgets/collections/notes_collection.dart';
 import 'package:scout_app/widgets/buttons/floating_create_button.dart';
 import 'package:scout_app/widgets/headers/main_header.dart';
-import 'package:scout_app/widgets/simple_title.dart';
+import 'package:scout_app/widgets/common/simple_title.dart';
 import 'package:scout_app/widgets/footers/bottom_navbar.dart';
 
 class NotesScreen extends StatefulWidget {

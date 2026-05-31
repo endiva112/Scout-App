@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scout_app/repositories/note_repository.dart';
 import 'package:scout_app/models/note.dart';
 import 'package:scout_app/widgets/cards/note_card.dart';
-import 'package:scout_app/widgets/default_tip_text.dart';
+import 'package:scout_app/widgets/common/default_tip_text.dart';
 
 class NotesCollection extends StatefulWidget {
   const NotesCollection({super.key});

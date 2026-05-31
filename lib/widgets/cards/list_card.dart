@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/bordered_container.dart';
+import 'package:scout_app/widgets/common/bordered_container.dart';
 import 'package:go_router/go_router.dart';
 
 enum ListType {
