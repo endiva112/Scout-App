@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsetsGeometry.only(top: 20),
               child: Text('Perfil', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: AppColors.textPrimary)),
             ),
-            Expanded(child: _buildBody(true)),  //TODO reemplazar por lógica real
+            Expanded(child: _buildBody(false)),  //TODO reemplazar por lógica real
             BottomNavBar(activeIndex: -1)
           ]
         )

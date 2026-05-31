@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/bordered_container.dart';
+import 'package:scout_app/widgets/custom_button.dart';
 import 'package:scout_app/widgets/tool_tip.dart';
 
 class MissionCard extends StatefulWidget {
@@ -150,75 +151,48 @@ class _MissionCardState extends State<MissionCard> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: _editando
-            ? [
-                _buildButton(
-                  width: buttonWidth,
-                  label: 'Cancelar',
-                  onPressed: _onCancelar,
-                  backgroundColor: AppColors.bgPrimary,
-                  textColor: AppColors.actionPrimary,
-                  borderColor: AppColors.actionPrimary,
-                ),
-
-                _buildButton(
-                  width: buttonWidth,
-                  label: 'Corregido',
-                  onPressed: _onConfirmar,
-                  backgroundColor: AppColors.contrastSecondary,
-                  textColor: AppColors.actionSecondary,
-                  borderColor: AppColors.contrastSecondary,
-                ),
-              ]
-            : [
-                _buildButton(
-                  width: buttonWidth,
-                  label: 'Corregir precio',
-                  onPressed: _onCorregir,
-                  backgroundColor: AppColors.actionPrimary,
-                  textColor: AppColors.bgPrimary,
-                  borderColor: AppColors.actionPrimary,
-                ),
-
-                _buildButton(
-                  width: buttonWidth,
-                  label: 'Precio correcto',
-                  onPressed: _onConfirmar,
-                  backgroundColor: AppColors.contrastSecondary,
-                  textColor: AppColors.actionSecondary,
-                  borderColor: AppColors.contrastSecondary,
-                ),
-              ],
-      ),
-    );
-  }
-
-  Widget _buildButton({
-    required double width,
-    required String label,
-    required VoidCallback onPressed,
-    required Color backgroundColor,
-    required Color textColor,
-    required Color borderColor,
-  }) {
-    return SizedBox(
-      width: width,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          foregroundColor: textColor,
-          elevation: 2,
-          padding: const EdgeInsets.all(5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-            side: BorderSide(color: borderColor),
+      ? [
+          SizedBox(
+            width: buttonWidth,
+            child: CustomButton(
+              label: 'Cancelar',
+              onPressed: _onCancelar,
+              backgroundColor: AppColors.bgPrimary,
+              textColor: AppColors.actionPrimary,
+              borderColor: AppColors.actionPrimary,
+            )
           ),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: textColor, height: 1),
-        ),
-      ),
+          SizedBox(
+            width: buttonWidth,
+            child: CustomButton(
+              label: 'Corregido',
+              onPressed: _onConfirmar,
+              backgroundColor: AppColors.contrastSecondary,
+              textColor: AppColors.actionSecondary,
+              borderColor: AppColors.contrastSecondary,
+            )
+          ),
+        ]
+      : [
+          SizedBox(
+            width: buttonWidth,
+            child: CustomButton(
+              label: 'Corregir precio',
+              onPressed: _onCorregir,
+            ),
+          ),
+          SizedBox(
+            width: buttonWidth,
+            child: CustomButton(
+              label: 'Precio correcto',
+              onPressed: _onConfirmar,
+              backgroundColor: AppColors.contrastSecondary,
+              textColor: AppColors.actionSecondary,
+              borderColor: AppColors.contrastSecondary,
+            )
+          )
+        ]
+      )
     );
   }
 }

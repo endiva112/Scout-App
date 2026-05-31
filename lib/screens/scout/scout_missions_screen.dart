@@ -14,8 +14,6 @@ class ScoutMissionsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-
-          // Componentes de esta página
           children: [
             ReturnHeader(),
             Expanded(child: _buildBody())

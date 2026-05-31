@@ -1,8 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:scout_app/screens/lists/list_details_screen.dart';
 import 'package:scout_app/screens/payments/collaborative_lists_payments/collaborative_expenses_screen.dart';
-import 'package:scout_app/screens/profile/set_language_screen.dart';
-import 'package:scout_app/screens/profile/set_theme_screen.dart';
+
 
 // Listas
 import 'screens/lists/shopping_lists_screen.dart';
@@ -37,7 +36,9 @@ import 'screens/scout/scout_options_screen.dart';
 
 // Perfil
 import 'screens/profile/profile_screen.dart';
-
+import 'package:scout_app/screens/profile/set_notifications_screen.dart';
+import 'package:scout_app/screens/profile/set_language_screen.dart';
+import 'package:scout_app/screens/profile/set_theme_screen.dart';
 
 
 //import 'oldscreens/home_screen.dart';
@@ -73,6 +74,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/profile/notifications',
+      builder: (context, state) => const SetNotificationsScreen(),
     ),
     GoRoute(
       path: '/profile/language',
