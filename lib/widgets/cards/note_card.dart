@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:scout_app/constants/note_icons.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/bordered_container.dart';
-import 'package:scout_app/widgets/tool_tip.dart';
 
 class NoteCard extends StatelessWidget {
   final String title;
