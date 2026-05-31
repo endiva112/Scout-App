@@ -41,7 +41,7 @@ class ShoppingListsScreen extends StatelessWidget {
           _buildBodyContent(),
 
           //Botón de creación de lista
-          FloatingCreateButton()
+          FloatingCreateButton(onTap: () {})
         ]
       )
     );

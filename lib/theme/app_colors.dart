@@ -8,6 +8,7 @@ class _Primitives {
   static const lightgrey      = Color(0xFFE0E3E7);
 
   // Acción principal
+  static const brightOrange   = Color(0xFFFF5900);
   static const orange500      = Color(0xFFEE8B60);
   static const darkOrange = Color(0xFFD67A31);
 
@@ -48,6 +49,7 @@ class AppColors {
   static const listTypeRecurring     = _Primitives.yellow500;
 
   // Acción principal
+  static const focusPrimary = _Primitives.brightOrange;
   static const actionPrimary = _Primitives.orange500;
   static const contrastPrimary = _Primitives.darkOrange;
 
