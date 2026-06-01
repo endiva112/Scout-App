@@ -49,6 +49,13 @@ class UserRepository {
     await _db.collection('users').doc(uid).update(data);
   }
 
+  // Actualizar tiendas seleccionadas
+  Future<void> updateSelectedStores(String uid, List<String> storeIds) async {
+    await _db.collection('users').doc(uid).update({
+      'scout.selectedStores': storeIds,
+    });
+  }
+
   // Actualizar ubicación
   Future<void> updateLocation(String uid, ScoutLocation location) async {
     await _db.collection('users').doc(uid).update({
@@ -58,8 +65,22 @@ class UserRepository {
 
   // Actualizar usuario anónimo a registrado
   Future<void> upgradeToRegistered(String uid) async {
-    await _db.collection('users').doc(uid).update({
+    final doc = await _db.collection('users').doc(uid).get();
+    
+    // Si ya existe el documento y tiene datos scout, no sobreescribas
+    if (doc.exists) {
+      await _db.collection('users').doc(uid).update({
+        'isAnonymous': false,
+      });
+      return;
+    }
+
+    // Solo si es la primera vez que vincula con Google
+    await _db.collection('users').doc(uid).set({
+      'createdAt': Timestamp.now(),
       'isAnonymous': false,
+      'alias': null,
+      'photoUrl': null,
       'scout': {
         'level': 1,
         'points': 0,

@@ -45,12 +45,14 @@ class ScoutProfile {
   final int points;
   final String rank;
   final ScoutLocation location;
+  final List<String> selectedStores;
 
   const ScoutProfile({
     required this.level,
     required this.points,
     required this.rank,
     required this.location,
+    this.selectedStores = const [],
   });
 
   factory ScoutProfile.fromMap(Map<String, dynamic> map) {
@@ -61,6 +63,7 @@ class ScoutProfile {
       location: map['location'] != null
           ? ScoutLocation.fromMap(map['location'] as Map<String, dynamic>)
           : const ScoutLocation(country: '', region: '', city: ''),
+      selectedStores: List<String>.from(map['selectedStores'] ?? []),
     );
   }
 
@@ -70,6 +73,7 @@ class ScoutProfile {
       'points': points,
       'rank': rank,
       'location': location.toMap(),
+      'selectedStores': selectedStores,
     };
   }
 
@@ -78,12 +82,14 @@ class ScoutProfile {
     int? points,
     String? rank,
     ScoutLocation? location,
+    List<String>? selectedStores,
   }) {
     return ScoutProfile(
       level: level ?? this.level,
       points: points ?? this.points,
       rank: rank ?? this.rank,
       location: location ?? this.location,
+      selectedStores: selectedStores ?? this.selectedStores,
     );
   }
 }

@@ -36,22 +36,28 @@ class _StoreMissionsCollectionState extends State<StoreMissionsCollection> {
     final user = await _userRepository.getUser(uid);
     if (!mounted) return;
     setState(() => _user = user);
-    if (user?.scout?.location != null) {
-      _listenMissions(user!.scout!.location);
+    if (user?.scout?.location != null &&
+        user!.scout!.location.city.isNotEmpty) {
+      _listenMissions(
+        user.scout!.location,
+        user.scout!.selectedStores,
+      );
     } else {
       setState(() => _loading = false);
     }
   }
 
-  void _listenMissions(ScoutLocation location) {
+  void _listenMissions(ScoutLocation location, List<String> selectedIds) {
     _missionRepository.getMissions(location).listen((missions) async {
-      // Agrupar por storeId
+      final filtered = selectedIds.isEmpty
+          ? missions
+          : missions.where((m) => selectedIds.contains(m.storeId)).toList();
+
       final grouped = <String, List<Mission>>{};
-      for (final mission in missions) {
+      for (final mission in filtered) {
         grouped.putIfAbsent(mission.storeId, () => []).add(mission);
       }
 
-      // Cargar datos de cada tienda
       final result = <Store, List<Mission>>{};
       for (final entry in grouped.entries) {
         final store = await _storeRepository.getStore(entry.key);
@@ -76,20 +82,16 @@ class _StoreMissionsCollectionState extends State<StoreMissionsCollection> {
     final hasLocation = _user?.scout?.location != null &&
         _user!.scout!.location.city.isNotEmpty;
 
-    // Tips según el estado del usuario
     final tips = <Widget>[];
     if (isAnonymous) {
-      // Si es anónimo, solo mostramos el tip de iniciar sesión
       tips.add(const DefaultTipText(
         tip: 'INICIA SESIÓN Y AYUDANOS A OTROS SCOUTS A MANTENER LOS PRECIOS AL DÍA',
       ));
     } else if (!hasLocation) {
-      // Si está registrado pero sin ubicación
       tips.add(const DefaultTipText(
         tip: 'ESTABLECE UNA LOCALIZACIÓN Y CONTRIBUYE A TU COMUNIDAD',
       ));
     } else if (_missionsByStore.isEmpty) {
-      // Registrado, con ubicación, pero sin misiones en su zona
       tips.add(const DefaultTipText(tip: 'SIN MISIONES PARA ESTA REGIÓN'));
     }
 
@@ -115,7 +117,7 @@ class _StoreMissionsCollectionState extends State<StoreMissionsCollection> {
       shrinkWrap: true,
       primary: false,
       itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 10),
+      separatorBuilder: (_, _) => const SizedBox(height: 10),
       itemBuilder: (_, index) => items[index],
     );
   }
