@@ -9,6 +9,7 @@ import 'package:scout_app/widgets/collections/store_missions_collection.dart';
 import 'package:scout_app/widgets/headers/main_header.dart';
 import 'package:scout_app/widgets/footers/bottom_navbar.dart';
 import 'package:scout_app/widgets/common/progress_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScoutScreen extends StatefulWidget {
   const ScoutScreen({super.key});
@@ -22,6 +23,7 @@ class _ScoutScreenState extends State<ScoutScreen> {
 
   AppUser? _user;
   bool _loading = true;
+  int _selectedStoresCount = 0;
 
   @override
   void initState() {
@@ -31,14 +33,24 @@ class _ScoutScreenState extends State<ScoutScreen> {
 
   Future<void> _load() async {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
+    
+    final prefs = await SharedPreferences.getInstance();
+    final selectedStores = prefs.getStringList('selected_stores') ?? [];
+    
     if (firebaseUser.isAnonymous) {
-      setState(() => _loading = false);
+      if (!mounted) return;
+      setState(() {
+        _selectedStoresCount = selectedStores.length;
+        _loading = false;
+      });
       return;
     }
+    
     final user = await _userRepository.getUser(firebaseUser.uid);
     if (!mounted) return;
     setState(() {
       _user = user;
+      _selectedStoresCount = selectedStores.length;
       _loading = false;
     });
   }
@@ -212,21 +224,27 @@ class _ScoutScreenState extends State<ScoutScreen> {
               height: 1,
             ),
           ),
-          _buildText('3', 48, FontWeight.w800, AppColors.actionSecondary),
+          _buildText('$_selectedStoresCount', 48, FontWeight.w800, AppColors.actionSecondary),
           ElevatedButton(
-            onPressed: () => context.push('/scout/options'),
+            onPressed: FirebaseAuth.instance.currentUser!.isAnonymous
+                ? null
+                : () async {
+                    await context.push('/scout/options');
+                    await _load(); // recarga al volver
+                  },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.actionSecondary,
               foregroundColor: AppColors.bgPrimary,
+              disabledBackgroundColor: AppColors.bgTerciary,
               elevation: 0,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               minimumSize: const Size(0, 40),
             ),
             child: _buildText('Configuración', 16, FontWeight.w600, AppColors.bgPrimary),
-          ),
-        ],
-      ),
+          )
+        ]
+      )
     );
   }
 

@@ -9,4 +9,11 @@ class StoreRepository {
     if (!doc.exists) return null;
     return Store.fromMap(doc.id, doc.data()!);
   }
+
+  Future<List<Store>> getAllStores() async {
+  final snapshot = await _db.collection('stores').get();
+  return snapshot.docs
+      .map((doc) => Store.fromMap(doc.id, doc.data()))
+      .toList();
+  }
 }
