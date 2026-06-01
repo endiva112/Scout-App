@@ -55,11 +55,20 @@ class _StoreMissionsCollectionState extends State<StoreMissionsCollection> {
           ? missions
           : missions.where((m) => selectedIds.contains(m.storeId)).toList();
 
-      final grouped = <String, List<Mission>>{};
+      // Filtrar las que el usuario ya respondió
+      final pending = <Mission>[];
       for (final mission in filtered) {
+        final responded = await _missionRepository.hasResponded(mission.id);
+        if (!responded) pending.add(mission);
+      }
+
+      // Agrupar por storeId
+      final grouped = <String, List<Mission>>{};
+      for (final mission in pending) {
         grouped.putIfAbsent(mission.storeId, () => []).add(mission);
       }
 
+      // Cargar datos de cada tienda
       final result = <Store, List<Mission>>{};
       for (final entry in grouped.entries) {
         final store = await _storeRepository.getStore(entry.key);

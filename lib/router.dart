@@ -172,8 +172,10 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const ScoutOptionsScreen(),
     ),
     GoRoute(
-      path: '/scout/missions',
-      builder: (context, state) => const ScoutMissionsScreen(),
+      path: '/scout/missions/:storeId',
+      builder: (context, state) => ScoutMissionsScreen(
+        storeId: state.pathParameters['storeId']!,
+      ),
     ),
 
 

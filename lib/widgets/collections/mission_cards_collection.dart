@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/models/mission.dart';
 import 'package:scout_app/widgets/cards/mission_card.dart';
 
-class MissionsCollection extends StatelessWidget {
+class MissionCardsCollection extends StatelessWidget {
   final List<Mission> missions;
   final void Function(String missionId) onMissionCompleted;
 
-  const MissionsCollection({
+  const MissionCardsCollection({
     super.key,
     required this.missions,
     required this.onMissionCompleted,
@@ -17,7 +17,7 @@ class MissionsCollection extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.only(bottom: 150),
       itemCount: missions.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 20),
+      separatorBuilder: (_, __) => const SizedBox(height: 20),
       itemBuilder: (_, index) {
         final mission = missions[index];
         return MissionCard(

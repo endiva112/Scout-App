@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:scout_app/repositories/mission_repository.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/common/bordered_container.dart';
 import 'package:scout_app/widgets/buttons/custom_button.dart';
 import 'package:scout_app/widgets/common/tool_tip.dart';
 
 class MissionCard extends StatefulWidget {
+  final String missionId;
   final String productName;
-  final String price;
+  final double suggestedPrice;
   final String unit;
+  final void Function(String missionId) onCompleted;
 
   const MissionCard({
     super.key,
+    required this.missionId,
     required this.productName,
-    required this.price,
+    required this.suggestedPrice,
     required this.unit,
+    required this.onCompleted,
   });
 
   @override
@@ -21,13 +26,17 @@ class MissionCard extends StatefulWidget {
 }
 
 class _MissionCardState extends State<MissionCard> {
+  final _repository = MissionRepository();
   late final TextEditingController _controller;
   bool _editando = false;
+  bool _sending = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.price);
+    _controller = TextEditingController(
+      text: widget.suggestedPrice.toStringAsFixed(2),
+    );
   }
 
   @override
@@ -40,14 +49,17 @@ class _MissionCardState extends State<MissionCard> {
 
   void _onCancelar() {
     setState(() {
-      _controller.text = widget.price; // revertir al valor original
+      _controller.text = widget.suggestedPrice.toStringAsFixed(2);
       _editando = false;
     });
   }
 
-  void _onConfirmar() {
-    // TODO: enviar _controller.text al repositorio
-    setState(() => _editando = false);
+  Future<void> _onConfirmar() async {
+    final price = double.tryParse(_controller.text.replaceAll(',', '.'));
+    if (price == null) return;
+    setState(() => _sending = true);
+    await _repository.respond(widget.missionId, price);
+    widget.onCompleted(widget.missionId);
   }
 
   @override
@@ -73,12 +85,11 @@ class _MissionCardState extends State<MissionCard> {
         widget.productName,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: AppColors.textPrimary,
         ),
-        textAlign: TextAlign.left,
       ),
     );
   }
@@ -90,8 +101,6 @@ class _MissionCardState extends State<MissionCard> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SizedBox(),
-
-          // Campo precio + unidad
           Container(
             width: MediaQuery.of(context).size.width * 0.5,
             decoration: BoxDecoration(
@@ -111,7 +120,7 @@ class _MissionCardState extends State<MissionCard> {
                     readOnly: !_editando,
                     textAlign: TextAlign.end,
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                       color: AppColors.textTerciary,
@@ -126,7 +135,7 @@ class _MissionCardState extends State<MissionCard> {
                 Expanded(
                   child: Text(
                     '€/${widget.unit}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                       color: AppColors.textTerciary,
@@ -136,7 +145,6 @@ class _MissionCardState extends State<MissionCard> {
               ],
             ),
           ),
-
           ToolTip(message: 'Introduce el precio que ves en la etiqueta del producto'),
         ],
       ),
@@ -146,53 +154,60 @@ class _MissionCardState extends State<MissionCard> {
   Widget _buildButtons(BuildContext context) {
     final double buttonWidth = MediaQuery.of(context).size.width * 0.40;
 
+    if (_sending) {
+      return const Padding(
+        padding: EdgeInsets.all(10),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: _editando
-      ? [
-          SizedBox(
-            width: buttonWidth,
-            child: CustomButton(
-              label: 'Cancelar',
-              onPressed: _onCancelar,
-              backgroundColor: AppColors.bgPrimary,
-              textColor: AppColors.actionPrimary,
-              borderColor: AppColors.actionPrimary,
-            )
-          ),
-          SizedBox(
-            width: buttonWidth,
-            child: CustomButton(
-              label: 'Corregido',
-              onPressed: _onConfirmar,
-              backgroundColor: AppColors.contrastSecondary,
-              textColor: AppColors.actionSecondary,
-              borderColor: AppColors.contrastSecondary,
-            )
-          ),
-        ]
-      : [
-          SizedBox(
-            width: buttonWidth,
-            child: CustomButton(
-              label: 'Corregir precio',
-              onPressed: _onCorregir,
-            ),
-          ),
-          SizedBox(
-            width: buttonWidth,
-            child: CustomButton(
-              label: 'Precio correcto',
-              onPressed: _onConfirmar,
-              backgroundColor: AppColors.contrastSecondary,
-              textColor: AppColors.actionSecondary,
-              borderColor: AppColors.contrastSecondary,
-            )
-          )
-        ]
-      )
+            ? [
+                SizedBox(
+                  width: buttonWidth,
+                  child: CustomButton(
+                    label: 'Cancelar',
+                    onPressed: _onCancelar,
+                    backgroundColor: AppColors.bgPrimary,
+                    textColor: AppColors.actionPrimary,
+                    borderColor: AppColors.actionPrimary,
+                  ),
+                ),
+                SizedBox(
+                  width: buttonWidth,
+                  child: CustomButton(
+                    label: 'Corregido',
+                    onPressed: _onConfirmar,
+                    backgroundColor: AppColors.contrastSecondary,
+                    textColor: AppColors.actionSecondary,
+                    borderColor: AppColors.contrastSecondary,
+                  ),
+                ),
+              ]
+            : [
+                SizedBox(
+                  width: buttonWidth,
+                  child: CustomButton(
+                    label: 'Corregir precio',
+                    onPressed: _onCorregir,
+                  ),
+                ),
+                SizedBox(
+                  width: buttonWidth,
+                  child: CustomButton(
+                    label: 'Precio correcto',
+                    onPressed: _onConfirmar,
+                    backgroundColor: AppColors.contrastSecondary,
+                    textColor: AppColors.actionSecondary,
+                    borderColor: AppColors.contrastSecondary,
+                  ),
+                ),
+              ],
+      ),
     );
   }
 }

@@ -26,7 +26,7 @@ class StoreMissionCard extends StatelessWidget {
       borderColor: AppColors.borderAccent,
       borderWidth: 1,
       child: InkWell(
-        onTap: () => context.push('/scout/missions'),//$storeId TODO
+        onTap: () => context.push('/scout/missions/$storeId'),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

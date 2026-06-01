@@ -99,16 +99,16 @@ class NoteCard extends StatelessWidget {
       icon: const Icon(Icons.more_vert, color: AppColors.textPrimary, size: 32),
       onSelected: (value) {
         switch (value) {
-          case 'share':
-            // TODO: compartir
-            break;
+          /*case 'share':
+            // compartir
+            break;*/
           case 'delete':
             onDelete();
             break;
         }
       },
       itemBuilder: (context) => [
-
+        /*
         const PopupMenuItem(
           value: 'share',
           child: ListTile(
@@ -117,7 +117,7 @@ class NoteCard extends StatelessWidget {
             trailing: Icon(Icons.share_rounded),
             contentPadding: EdgeInsets.symmetric(horizontal: 5),
           ),
-        ),
+        ),*/
 
         const PopupMenuItem(
           value: 'delete',
