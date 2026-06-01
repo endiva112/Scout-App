@@ -10,7 +10,9 @@ import 'package:scout_app/widgets/cards/store_mission_card.dart';
 import 'package:scout_app/widgets/common/default_tip_text.dart';
 
 class StoreMissionsCollection extends StatefulWidget {
-  const StoreMissionsCollection({super.key});
+  final VoidCallback? onRefresh;
+  
+  const StoreMissionsCollection({super.key, this.onRefresh});
 
   @override
   State<StoreMissionsCollection> createState() => _StoreMissionsCollectionState();

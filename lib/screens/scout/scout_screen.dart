@@ -9,7 +9,6 @@ import 'package:scout_app/widgets/collections/store_missions_collection.dart';
 import 'package:scout_app/widgets/headers/main_header.dart';
 import 'package:scout_app/widgets/footers/bottom_navbar.dart';
 import 'package:scout_app/widgets/common/progress_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ScoutScreen extends StatefulWidget {
   const ScoutScreen({super.key});
@@ -24,6 +23,7 @@ class _ScoutScreenState extends State<ScoutScreen> {
   AppUser? _user;
   bool _loading = true;
   int _selectedStoresCount = 0;
+  Key _missionsKey = UniqueKey();
 
   @override
   void initState() {
@@ -33,10 +33,7 @@ class _ScoutScreenState extends State<ScoutScreen> {
 
   Future<void> _load() async {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
-    
-    final prefs = await SharedPreferences.getInstance();
-    final selectedStores = prefs.getStringList('selected_stores') ?? [];
-    
+
     if (firebaseUser.isAnonymous) {
       if (!mounted) return;
       setState(() {
@@ -45,12 +42,12 @@ class _ScoutScreenState extends State<ScoutScreen> {
       });
       return;
     }
-    
+
     final user = await _userRepository.getUser(firebaseUser.uid);
     if (!mounted) return;
     setState(() {
       _user = user;
-      _selectedStoresCount = selectedStores.length;
+      _selectedStoresCount = user?.scout?.selectedStores.length ?? 0;
       _loading = false;
     });
   }
@@ -230,7 +227,8 @@ class _ScoutScreenState extends State<ScoutScreen> {
                 ? null
                 : () async {
                     await context.push('/scout/options');
-                    await _load(); // recarga al volver
+                    setState(() => _missionsKey = UniqueKey());
+                    await _load();
                   },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.actionSecondary,
@@ -242,9 +240,9 @@ class _ScoutScreenState extends State<ScoutScreen> {
               minimumSize: const Size(0, 40),
             ),
             child: _buildText('Configuración', 16, FontWeight.w600, AppColors.bgPrimary),
-          )
-        ]
-      )
+          ),
+        ],
+      ),
     );
   }
 
@@ -256,7 +254,7 @@ class _ScoutScreenState extends State<ScoutScreen> {
         const Divider(),
         _buildText('Misiones diarias', 14, FontWeight.w400, AppColors.textPrimary),
         const Divider(),
-        StoreMissionsCollection(),
+        StoreMissionsCollection(key: _missionsKey),
       ],
     );
   }
