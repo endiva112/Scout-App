@@ -53,7 +53,7 @@ class _MainHeaderState extends State<MainHeader> {
         : (_alias ?? 'Scout_${firebaseUser.uid.substring(0, 6).toUpperCase()}');
 
     final photoUrl = _isAnonymous || _photoUrl == null
-        ? 'https://picsum.photos/seed/758/600'
+        ? 'assets/icons/scout.png'
         : _photoUrl!;
 
     return Container(
@@ -79,12 +79,9 @@ class _MainHeaderState extends State<MainHeader> {
               onTap: () => context.go('/profile'),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
-                child: Image.network(
-                  photoUrl,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
+                child: _isAnonymous || _photoUrl == null
+                  ? Image.asset('assets/icons/scout.png', width: 50, height: 50, fit: BoxFit.cover,)
+                  : Image.network(_photoUrl!, width: 50, height: 50, fit: BoxFit.cover),
               ),
             ),
           ),

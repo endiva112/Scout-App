@@ -78,8 +78,8 @@ class RegisteredProfileContent extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(shape: BoxShape.circle),
       child: user.photoUrl != null
-          ? Image.network(user.photoUrl!, fit: BoxFit.cover)
-          : Image.network('https://picsum.photos/seed/390/600', fit: BoxFit.cover),
+          ? Image.network(user.photoUrl!, fit: BoxFit.contain)
+          : Image.asset('assets/icons/scout.png', fit: BoxFit.cover),
     );
   }
 

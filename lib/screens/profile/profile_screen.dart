@@ -60,13 +60,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() => _loading = false);
         return;
       }
-      // Crea el documento en Firestore para el usuario registrado
-      final exists = await _userRepository.userExists(firebaseUser.uid);
-      if (!exists) {
-        await _userRepository.createUser(firebaseUser.uid, isAnonymous: false);
-      } else {
-        await _userRepository.upgradeToRegistered(firebaseUser.uid);
+      await _userRepository.upgradeToRegistered(firebaseUser.uid);
+
+      // Buscar la foto en los proveedores vinculados
+      final photoUrl = firebaseUser.providerData
+          .firstWhere(
+            (p) => p.providerId == 'google.com',
+            orElse: () => firebaseUser.providerData.first,
+          )
+          .photoURL;
+
+      if (photoUrl != null) {
+        await _userRepository.updateProfile(
+          firebaseUser.uid,
+          photoUrl: photoUrl,
+        );
       }
+
       await _loadUser();
     } catch (e) {
       if (mounted) {
