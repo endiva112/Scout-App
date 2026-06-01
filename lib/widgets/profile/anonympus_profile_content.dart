@@ -47,9 +47,9 @@ class AnonympusProfileContent extends StatelessWidget {
       height: MediaQuery.sizeOf(context).width * 0.2,
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(shape: BoxShape.circle),
-      child: Image.network(
-        'https://picsum.photos/seed/390/600',
-        fit: BoxFit.cover,
+      child: Image.asset(
+        'assets/icons/scout.png',
+        fit: BoxFit.contain,
       ),
     );
   }

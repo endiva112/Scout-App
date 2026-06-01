@@ -52,10 +52,6 @@ class _MainHeaderState extends State<MainHeader> {
         ? 'Scout_${firebaseUser.uid.substring(0, 6).toUpperCase()}'
         : (_alias ?? 'Scout_${firebaseUser.uid.substring(0, 6).toUpperCase()}');
 
-    final photoUrl = _isAnonymous || _photoUrl == null
-        ? 'assets/icons/scout.png'
-        : _photoUrl!;
-
     return Container(
       constraints: const BoxConstraints(minHeight: 70),
       color: AppColors.bgPrimary,
@@ -80,8 +76,8 @@ class _MainHeaderState extends State<MainHeader> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
                 child: _isAnonymous || _photoUrl == null
-                  ? Image.asset('assets/icons/scout.png', width: 50, height: 50, fit: BoxFit.cover,)
-                  : Image.network(_photoUrl!, width: 50, height: 50, fit: BoxFit.cover),
+                    ? Image.asset('assets/icons/scout.png', width: 50, height: 50, fit: BoxFit.cover)
+                    : Image.network(_photoUrl!, width: 50, height: 50, fit: BoxFit.cover),
               ),
             ),
           ),
@@ -89,17 +85,17 @@ class _MainHeaderState extends State<MainHeader> {
       ),
     );
   }
-}
 
-Widget _buildGreetingMessage() {
-  final hour = DateTime.now().hour;
-  String message;
-  if (hour < 12) {
-    message = 'Buenos días!';
-  } else if (hour < 20) {
-    message = 'Buenas tardes!';
-  } else {
-    message = 'Buenas noches!';
+  Widget _buildGreetingMessage() {
+    final hour = DateTime.now().hour;
+    String message;
+    if (hour < 12) {
+      message = 'Buenos días!';
+    } else if (hour < 20) {
+      message = 'Buenas tardes!';
+    } else {
+      message = 'Buenas noches!';
+    }
+    return Text(message, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400));
   }
-  return Text(message, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400));
 }
