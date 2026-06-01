@@ -9,7 +9,7 @@ class ThemesCollection extends StatefulWidget {
 }
 
 class _ThemesCollectionState extends State<ThemesCollection> {
-  final List<String> _themes = ['Modo oscuro desactivado', 'Modo oscuro activado'];
+  final List<String> _themes = ['Modo oscuro desactivado'];//, 'Modo oscuro activado' TODO
   int _selectedIndex = 0;
 
   @override

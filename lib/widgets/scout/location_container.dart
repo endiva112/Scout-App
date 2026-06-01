@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scout_app/models/app_user.dart';
+import 'package:scout_app/repositories/user_repository.dart';
 import 'package:scout_app/theme/app_colors.dart';
 
 class LocationContainer extends StatefulWidget {
@@ -9,9 +12,16 @@ class LocationContainer extends StatefulWidget {
 }
 
 class _LocationContainerState extends State<LocationContainer> {
-  final _paisController   = TextEditingController(text: 'País');
-  final _regionController = TextEditingController(text: 'Región');
-  final _ciudadController = TextEditingController(text: 'Ciudad');
+  final _userRepository = UserRepository();
+  final _paisController   = TextEditingController();
+  final _regionController = TextEditingController();
+  final _ciudadController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocation();
+  }
 
   @override
   void dispose() {
@@ -21,12 +31,34 @@ class _LocationContainerState extends State<LocationContainer> {
     super.dispose();
   }
 
+  Future<void> _loadLocation() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final user = await _userRepository.getUser(uid);
+    if (!mounted) return;
+    final location = user?.scout?.location;
+    if (location == null) return;
+    _paisController.text = location.country;
+    _regionController.text = location.region;
+    _ciudadController.text = location.city;
+  }
+
+  Future<void> _onSave() async {
+    FocusScope.of(context).unfocus();
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final location = ScoutLocation(
+      country: _paisController.text.trim(),
+      region: _regionController.text.trim(),
+      city: _ciudadController.text.trim(),
+    );
+    await _userRepository.updateLocation(uid, location);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildField(_paisController,   'País'),
+        _buildField(_paisController, 'País'),
         const SizedBox(height: 10),
         _buildField(_regionController, 'Región'),
         const SizedBox(height: 10),
@@ -53,10 +85,10 @@ class _LocationContainerState extends State<LocationContainer> {
   Widget _buildField(TextEditingController controller, String hint) {
     return TextField(
       controller: controller,
-      style: TextStyle(color: AppColors.textPrimary, fontSize: 16),
+      style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: AppColors.textTerciary),
+        hintStyle: const TextStyle(color: AppColors.textTerciary),
         filled: true,
         fillColor: AppColors.bgPrimary,
         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -66,10 +98,5 @@ class _LocationContainerState extends State<LocationContainer> {
         ),
       ),
     );
-  }
-
-  void _onSave() {
-    // TODO: persistir ubicación
-    FocusScope.of(context).unfocus();
   }
 }
