@@ -78,17 +78,18 @@ class _StoreMissionsCollectionState extends State<StoreMissionsCollection> {
 
     // Tips según el estado del usuario
     final tips = <Widget>[];
-    if (!hasLocation) {
-      tips.add(const DefaultTipText(
-        tip: 'ESTABLECE UNA LOCALIZACIÓN Y CONTRIBUYE A TU COMUNIDAD',
-      ));
-    }
     if (isAnonymous) {
+      // Si es anónimo, solo mostramos el tip de iniciar sesión
       tips.add(const DefaultTipText(
         tip: 'INICIA SESIÓN Y AYUDANOS A OTROS SCOUTS A MANTENER LOS PRECIOS AL DÍA',
       ));
-    }
-    if (hasLocation && _missionsByStore.isEmpty) {
+    } else if (!hasLocation) {
+      // Si está registrado pero sin ubicación
+      tips.add(const DefaultTipText(
+        tip: 'ESTABLECE UNA LOCALIZACIÓN Y CONTRIBUYE A TU COMUNIDAD',
+      ));
+    } else if (_missionsByStore.isEmpty) {
+      // Registrado, con ubicación, pero sin misiones en su zona
       tips.add(const DefaultTipText(tip: 'SIN MISIONES PARA ESTA REGIÓN'));
     }
 

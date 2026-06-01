@@ -40,7 +40,7 @@ class _ScoutScreenState extends State<ScoutScreen> {
     if (firebaseUser.isAnonymous) {
       if (!mounted) return;
       setState(() {
-        _selectedStoresCount = selectedStores.length;
+        _selectedStoresCount = 0;
         _loading = false;
       });
       return;
