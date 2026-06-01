@@ -63,9 +63,7 @@ class _StoreMissionsCollectionState extends State<StoreMissionsCollection> {
         _missionsByStore = result;
         _loading = false;
       });
-    },
-    onError: (error) => print('ERROR: $error'),
-    );
+    });
   }
 
   @override

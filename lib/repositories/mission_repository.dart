@@ -8,7 +8,7 @@ class MissionRepository {
   Stream<List<Mission>> getMissions(ScoutLocation location) {
     return _db
         .collection('missions')
-        //.where('isActive', isEqualTo: true)
+        .where('isActive', isEqualTo: true)
         .where('location.country', isEqualTo: location.country)
         .where('location.region', isEqualTo: location.region)
         .where('location.city', isEqualTo: location.city)
