@@ -7,13 +7,9 @@ class Mission {
   final String productName;
   final double suggestedPrice;
   final String unit;
-  final String status;
+  final bool isActive;
   final DateTime createdAt;
   final ScoutLocation location;
-  final String? completedBy;
-  final double? resolvedPrice;
-  final DateTime? resolvedAt;
-  final List<String> auditLog;
 
   const Mission({
     required this.id,
@@ -21,13 +17,9 @@ class Mission {
     required this.productName,
     required this.suggestedPrice,
     required this.unit,
-    required this.status,
+    required this.isActive,
     required this.createdAt,
     required this.location,
-    this.completedBy,
-    this.resolvedPrice,
-    this.resolvedAt,
-    this.auditLog = const [],
   });
 
   factory Mission.fromMap(String id, Map<String, dynamic> map) {
@@ -37,15 +29,9 @@ class Mission {
       productName: map['productName'] as String,
       suggestedPrice: (map['suggestedPrice'] as num).toDouble(),
       unit: map['unit'] as String,
-      status: map['status'] as String,
+      isActive: map['isActive'] as bool? ?? true,
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       location: ScoutLocation.fromMap(map['location'] as Map<String, dynamic>),
-      completedBy: map['completedBy'] as String?,
-      resolvedPrice: (map['resolvedPrice'] as num?)?.toDouble(),
-      resolvedAt: map['resolvedAt'] != null
-          ? (map['resolvedAt'] as Timestamp).toDate()
-          : null,
-      auditLog: List<String>.from(map['auditLog'] as List? ?? []),
     );
   }
 
@@ -55,13 +41,9 @@ class Mission {
       'productName': productName,
       'suggestedPrice': suggestedPrice,
       'unit': unit,
-      'status': status,
+      'isActive': isActive,
       'createdAt': Timestamp.fromDate(createdAt),
       'location': location.toMap(),
-      'completedBy': completedBy,
-      'resolvedPrice': resolvedPrice,
-      'resolvedAt': resolvedAt != null ? Timestamp.fromDate(resolvedAt!) : null,
-      'auditLog': auditLog,
     };
   }
 }

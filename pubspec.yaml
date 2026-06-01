@@ -71,6 +71,11 @@ flutter:
 
     - assets/images/google.png
 
+    - assets/images/ranks/iron.png
+    - assets/images/ranks/bronze.png
+    - assets/images/ranks/silver.png
+    - assets/images/ranks/gold.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
