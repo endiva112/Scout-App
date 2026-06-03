@@ -106,7 +106,7 @@ class ListCard extends StatelessWidget {
             )
           )
         ),
-        _buildVerticalOptionsButton()
+        _buildVerticalOptionsButton(context)
       ]
     );
   }
@@ -127,7 +127,7 @@ class ListCard extends StatelessWidget {
     );
   }
 
-  Widget _buildVerticalOptionsButton() {
+  Widget _buildVerticalOptionsButton(BuildContext context) {
     return PopupMenuButton<String>(
       icon: Icon(Icons.more_vert, color: AppColors.textPrimary, size: 32),
       onSelected: (value) {
@@ -136,7 +136,7 @@ class ListCard extends StatelessWidget {
             // acción compartir TODO
             break;
           case 'edit':
-            // acción editar TODO
+            context.push('/lists/simple_lists/planning');
             break;
           case 'delete':
             // acción eliminar TODO

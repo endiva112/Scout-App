@@ -8,6 +8,7 @@ class Note {
   final NoteIcon icon;
   final String content;
   final DateTime updatedAt;
+  final DateTime createdAt;
 
   const Note({
     required this.id,
@@ -16,6 +17,7 @@ class Note {
     required this.icon,
     required this.content,
     required this.updatedAt,
+    required this.createdAt,
   });
 
   factory Note.fromMap(String id, Map<String, dynamic> map) {
@@ -29,6 +31,7 @@ class Note {
       ),
       content: map['content'] as String? ?? '',
       updatedAt: (map['updatedAt'] as Timestamp).toDate(),
+      createdAt: (map['createdAt'] as Timestamp).toDate(),
     );
   }
 
@@ -36,9 +39,10 @@ class Note {
     return {
       'userId': userId,
       'title': title,
-      'icon': icon.name,  // guarda "personal", "work", etc.
+      'icon': icon.name,
       'content': content,
       'updatedAt': Timestamp.fromDate(updatedAt),
+      'createdAt': Timestamp.fromDate(createdAt),
     };
   }
 
@@ -55,6 +59,7 @@ class Note {
       icon: icon ?? this.icon,
       content: content ?? this.content,
       updatedAt: updatedAt ?? this.updatedAt,
+      createdAt: createdAt,
     );
   }
 }

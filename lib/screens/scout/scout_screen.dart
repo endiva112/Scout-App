@@ -189,7 +189,16 @@ class _ScoutScreenState extends State<ScoutScreen> {
           : Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildText('Tu rango de Scout', 16, FontWeight.w400, AppColors.bgPrimary),
+                Text(
+                  'Tu rango de Scout',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.bgPrimary,
+                    height: 1,
+                  ),
+                ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.asset(
@@ -239,7 +248,7 @@ class _ScoutScreenState extends State<ScoutScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               minimumSize: const Size(0, 40),
             ),
-            child: _buildText('Configuración', 16, FontWeight.w600, AppColors.bgPrimary),
+            child: _buildText('Configuración', 14, FontWeight.w600, AppColors.bgPrimary),
           ),
         ],
       ),

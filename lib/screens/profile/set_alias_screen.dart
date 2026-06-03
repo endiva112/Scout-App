@@ -73,7 +73,7 @@ class _SetAliasScreenState extends State<SetAliasScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Row(
         children: [
-          ReturnArrow(),
+          ReturnArrow(customRoute: '/profile'),
           const SizedBox(width: 12),
           const Text(
             'Cambiar alias',

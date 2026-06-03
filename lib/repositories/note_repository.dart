@@ -32,6 +32,7 @@ class NoteRepository {
       'icon': defaultNoteIcon.name,
       'content': '',
       'updatedAt': Timestamp.now(),
+      'createdAt': Timestamp.now(),
     });
     return doc.id;
   }

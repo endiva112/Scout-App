@@ -8,14 +8,12 @@ class NoteHeader extends StatelessWidget {
   final bool isListNote;
   final NoteIcon selectedIcon;
   final ValueChanged<NoteIcon> onIconChanged;
-  final VoidCallback onBack;
 
   const NoteHeader({
     super.key,
     this.isListNote = false,
     required this.selectedIcon,
     required this.onIconChanged,
-    required this.onBack,
   });
 
   void _openIconSelector(BuildContext context) {
@@ -70,7 +68,7 @@ class NoteHeader extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ReturnArrow(onTap: onBack),
+            ReturnArrow(customRoute: '/notes'),
             if (!isListNote) _buildIconSelector(context),
           ]
         )

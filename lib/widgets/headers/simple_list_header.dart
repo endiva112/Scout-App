@@ -22,7 +22,7 @@ class SimpleListHeader extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ReturnArrow(),
+            ReturnArrow(customRoute: '/'),
             HeaderIcon(icon: Icons.edit_note_rounded, route: '/lists/simple_lists/notes')
           ]
         )

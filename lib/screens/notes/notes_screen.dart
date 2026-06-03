@@ -22,7 +22,7 @@ class _NotesScreenState extends State<NotesScreen> {
   Future<void> _createNote() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
     final noteId = await _repository.createNote(userId);
-    if (mounted) context.push('/note/$noteId');
+    if (mounted) context.go('/note/$noteId');
   }
 
   @override

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:go_router/go_router.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/models/note.dart';
 import 'package:scout_app/repositories/note_repository.dart';
@@ -28,7 +26,6 @@ class _NoteScreenState extends State<NoteScreen> {
   final _contentController = TextEditingController();
 
   Note? _note;
-  Timer? _debounce;
   bool _initialized = false;
 
   @override
@@ -39,7 +36,6 @@ class _NoteScreenState extends State<NoteScreen> {
 
   @override
   void dispose() {
-    _debounce?.cancel();
     _titleController.dispose();
     _contentController.dispose();
     super.dispose();
@@ -58,14 +54,11 @@ class _NoteScreenState extends State<NoteScreen> {
 
   void _onChanged() {
     if (!_initialized || _note == null) return;
-    _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      final updated = _note!.copyWith(
-        title: _titleController.text,
-        content: _contentController.text,
-      );
-      _repository.updateNote(updated);
-    });
+    final updated = _note!.copyWith(
+      title: _titleController.text,
+      content: _contentController.text,
+    );
+    _repository.updateNote(updated);
   }
 
   void _onIconChanged(NoteIcon icon) {
@@ -73,18 +66,6 @@ class _NoteScreenState extends State<NoteScreen> {
     final updated = _note!.copyWith(icon: icon);
     setState(() => _note = updated);
     _repository.updateNote(updated);
-  }
-
-  Future<void> _onExit() async {
-    _debounce?.cancel();
-    if (_note != null) {
-      final isEmpty = _titleController.text.trim().isEmpty &&
-          _contentController.text.trim().isEmpty;
-      if (isEmpty) {
-        await _repository.deleteNote(_note!.id);
-      }
-    }
-    if (mounted) context.pop();
   }
 
   @override
@@ -95,38 +76,30 @@ class _NoteScreenState extends State<NoteScreen> {
       );
     }
 
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, _) async {
-        if (didPop) return;
-        await _onExit();
-      },
-      child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          backgroundColor: AppColors.bgPrimary,
-          body: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NoteHeader(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: AppColors.bgPrimary,
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              NoteHeader(
+                isListNote: widget.isListNote,
+                selectedIcon: _note!.icon,
+                onIconChanged: _onIconChanged,
+              ),
+              Expanded(
+                child: NoteContent(
                   isListNote: widget.isListNote,
-                  selectedIcon: _note!.icon,
-                  onIconChanged: _onIconChanged,
-                  onBack: _onExit,
+                  titleController: _titleController,
+                  contentController: _contentController,
+                  updatedAt: _note!.updatedAt,
+                  onChanged: _onChanged,
                 ),
-                Expanded(
-                  child: NoteContent(
-                    isListNote: widget.isListNote,
-                    titleController: _titleController,
-                    contentController: _contentController,
-                    updatedAt: _note!.updatedAt,
-                    onChanged: _onChanged,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
+import 'package:scout_app/widgets/footers/shopping_footer.dart';
 import 'package:scout_app/widgets/headers/simple_list_header.dart';
 
 class SimpleShoppingModeScreen extends StatelessWidget {
@@ -20,7 +21,7 @@ class SimpleShoppingModeScreen extends StatelessWidget {
             children: [
               SimpleListHeader(),
               Expanded(child: _buildBody(context)),
-
+              ShoppingFooter(customRoute: '/lists/simple_lists/planning')//$listId
             ]
           )
         )

@@ -29,7 +29,7 @@ class NoteCard extends StatelessWidget {
         borderColor: AppColors.borderAccent,
         borderWidth: 2,
         child: InkWell(
-          onTap: () => context.push('/note/$noteId'),
+          onTap: () => context.go('/note/$noteId'),
           borderRadius: BorderRadius.circular(12),
           child: _buildCardContent(context),
         ),
@@ -99,16 +99,16 @@ class NoteCard extends StatelessWidget {
       icon: const Icon(Icons.more_vert, color: AppColors.textPrimary, size: 32),
       onSelected: (value) {
         switch (value) {
-          /*case 'share':
+          case 'share':
             // compartir
-            break;*/
+            break;
           case 'delete':
             onDelete();
             break;
         }
       },
       itemBuilder: (context) => [
-        /*
+
         const PopupMenuItem(
           value: 'share',
           child: ListTile(
@@ -117,7 +117,7 @@ class NoteCard extends StatelessWidget {
             trailing: Icon(Icons.share_rounded),
             contentPadding: EdgeInsets.symmetric(horizontal: 5),
           ),
-        ),*/
+        ),
 
         const PopupMenuItem(
           value: 'delete',

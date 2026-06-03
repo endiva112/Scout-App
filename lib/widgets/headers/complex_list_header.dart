@@ -22,7 +22,7 @@ class ComplexListHeader extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ReturnArrow(),
+            ReturnArrow(customRoute: '/'),
             Row(
               children: [
                 HeaderIcon(icon: Icons.attach_money_rounded, route: '/lists/collaborative_lists/expenses'),
