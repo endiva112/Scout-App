@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/repositories/note_repository.dart';
 import 'package:scout_app/widgets/collections/notes_collection.dart';
 import 'package:scout_app/widgets/buttons/floating_create_button.dart';
 import 'package:scout_app/widgets/headers/main_header.dart';
@@ -17,12 +15,10 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  final _repository = NoteRepository();
 
-  Future<void> _createNote() async {
-    final userId = FirebaseAuth.instance.currentUser!.uid;
-    final noteId = await _repository.createNote(userId);
-    if (mounted) context.go('/note/$noteId');
+  //Navego a la pantalla de la nota, será allí donde se cree
+  void _createNote() {
+    context.go('/note');
   }
 
   @override

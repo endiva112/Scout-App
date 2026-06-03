@@ -20,6 +20,18 @@ class Note {
     required this.createdAt,
   });
 
+  /// Reglas de negocio
+  bool get isEmpty =>
+      title.trim().isEmpty &&
+      content.trim().isEmpty;
+
+  bool get isNotEmpty => !isEmpty;
+
+  String get displayTitle =>
+      title.trim().isEmpty
+          ? 'Sin título'
+          : title.trim();
+
   factory Note.fromMap(String id, Map<String, dynamic> map) {
     return Note(
       id: id,
@@ -47,13 +59,14 @@ class Note {
   }
 
   Note copyWith({
+    String? id,
     String? title,
     NoteIcon? icon,
     String? content,
     DateTime? updatedAt,
   }) {
     return Note(
-      id: id,
+      id: id ?? this.id,
       userId: userId,
       title: title ?? this.title,
       icon: icon ?? this.icon,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/notes/note_body.dart';
 
-class NoteContent extends StatelessWidget {
+class NoteContent extends StatelessWidget {//TODO refactorizar
   final bool isListNote;
   final TextEditingController titleController;
   final TextEditingController contentController;

@@ -17,7 +17,7 @@ class MissionCardsCollection extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.only(bottom: 150),
       itemCount: missions.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 20),
+      separatorBuilder: (_, _) => const SizedBox(height: 20),
       itemBuilder: (_, index) {
         final mission = missions[index];
         return MissionCard(

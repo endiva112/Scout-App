@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:scout_app/constants/note_icons.dart';
 import 'package:scout_app/models/note.dart';
 
+// Su funcion es decir -> id vacio? creo un documento, id valido? lo actualizo
 class NoteRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -24,27 +24,40 @@ class NoteRepository {
     return Note.fromMap(doc.id, doc.data()!);
   }
 
-  // Crear nota nueva
-  Future<String> createNote(String userId) async {
-    final doc = await _db.collection('notes').add({
-      'userId': userId,
-      'title': '',
-      'icon': defaultNoteIcon.name,
-      'content': '',
-      'updatedAt': Timestamp.now(),
-      'createdAt': Timestamp.now(),
-    });
-    return doc.id;
-  }
+  // Guarda los datos de una nota, creando una nueva o editando una existente
+  Future<Note> saveNote(Note note) async {
 
-  // Actualizar nota
-  Future<void> updateNote(Note note) async {
+    final now = DateTime.now();
+
+    // Crear
+    if (note.id.isEmpty) {
+
+      final doc = await _db.collection('notes').add({
+        'userId': note.userId,
+        'title': note.title,
+        'icon': note.icon.name,
+        'content': note.content,
+        'createdAt': Timestamp.fromDate(note.createdAt),
+        'updatedAt': Timestamp.fromDate(now),
+      });
+
+      return note.copyWith(
+        id: doc.id,
+        updatedAt: now,
+      );
+    }
+
+    // Actualizar
     await _db.collection('notes').doc(note.id).update({
       'title': note.title,
       'icon': note.icon.name,
       'content': note.content,
-      'updatedAt': Timestamp.now(),
+      'updatedAt': Timestamp.fromDate(now),
     });
+
+    return note.copyWith(
+      updatedAt: now,
+    );
   }
 
   // Borrar nota

@@ -12,6 +12,7 @@ enum NoteIcon {
   music,
   personal,
   birthday,
+  note
 }
 
 const Map<NoteIcon, IconData> noteIconData = {
@@ -26,6 +27,7 @@ const Map<NoteIcon, IconData> noteIconData = {
   NoteIcon.music:    Icons.music_note_rounded,
   NoteIcon.personal: Icons.person_rounded,
   NoteIcon.birthday: Icons.cake_rounded,
+  NoteIcon.note:     Icons.insert_drive_file_rounded
 };
 
 // Icono por defecto para notas nuevas

@@ -57,7 +57,7 @@ class _NotesCollectionState extends State<NotesCollection> {
         return ListView.separated(
           padding: const EdgeInsets.only(bottom: 150),
           itemCount: notes.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 10),
+          separatorBuilder: (_, _) => const SizedBox(height: 10),
           itemBuilder: (_, index) {
             final note = notes[index];
             return NoteCard(

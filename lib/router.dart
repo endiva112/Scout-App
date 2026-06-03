@@ -102,14 +102,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/lists/simple_lists/planning',
       builder: (context, state) => const SimplePlanningModeScreen(),
-    ),
-    GoRoute(
-      path: '/lists/simple_lists/notes',
-      builder: (context, state) => NoteScreen(
-        noteId: state.pathParameters['noteId']!,
-        isListNote: true,
-      ),
-    ),
+    ),//annotation
 
 
     // Listas colaborativas
@@ -132,13 +125,6 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const CollaborativeExpensesScreen(),
     ),
     GoRoute(
-      path: '/lists/collaborative_lists/notes/:noteId',
-      builder: (context, state) => NoteScreen(
-        noteId: state.pathParameters['noteId']!,
-        isListNote: true,
-      ),
-    ),
-    GoRoute(
       path: '/lists/collaborative_lists/list_details',
       builder: (context, state) => const ListDetailsScreen(),
     ),
@@ -159,6 +145,10 @@ final GoRouter router = GoRouter(
     ),
 
     //Notas
+    GoRoute(
+      path: '/note',
+      builder: (context, state) => NoteScreen(),
+    ),
     GoRoute(
       path: '/note/:noteId',
       builder: (context, state) => NoteScreen(
