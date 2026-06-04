@@ -31,4 +31,4 @@ const Map<NoteIcon, IconData> noteIconData = {
 };
 
 // Icono por defecto para notas nuevas
-const NoteIcon defaultNoteIcon = NoteIcon.personal;
+const NoteIcon defaultNoteIcon = NoteIcon.note;

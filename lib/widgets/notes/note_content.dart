@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/notes/note_body.dart';
 
-class NoteContent extends StatelessWidget {//TODO refactorizar
-  final bool isListNote;
+class NoteContent extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController contentController;
   final DateTime updatedAt;
@@ -11,7 +10,6 @@ class NoteContent extends StatelessWidget {//TODO refactorizar
 
   const NoteContent({
     super.key,
-    this.isListNote = false,
     required this.titleController,
     required this.contentController,
     required this.updatedAt,
@@ -28,10 +26,8 @@ class NoteContent extends StatelessWidget {//TODO refactorizar
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 10),
-            if (!isListNote) ...[
-              _buildTitle(),
-              const SizedBox(height: 10),
-            ],
+            _buildTitle(),
+            const SizedBox(height: 10),
             _buildLastModifiedText(),
             const SizedBox(height: 10),
             Expanded(

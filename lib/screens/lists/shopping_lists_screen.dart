@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/collections/shopping_lists_collection.dart';
 import 'package:scout_app/widgets/buttons/floating_create_button.dart';
+import 'package:scout_app/widgets/common/custom_bottom_sheet.dart';
 
 import 'package:scout_app/widgets/headers/main_header.dart';
 import 'package:scout_app/widgets/common/simple_title.dart';
@@ -41,7 +42,7 @@ class ShoppingListsScreen extends StatelessWidget {
           _buildBodyContent(),
 
           //Botón de creación de lista
-          FloatingCreateButton(onTap: () {})
+          FloatingCreateButton(onTap: () => _createNewList(context))
         ]
       )
     );
@@ -56,6 +57,25 @@ class ShoppingListsScreen extends StatelessWidget {
         SimpleTitle(title: 'Listas activas'),
         Expanded(child: ShoppingListsCollection())
       ]
+    );
+  }
+
+  void _createNewList(BuildContext context) {
+    CustomBottomSheet.show(
+      context,
+      content: Column(
+        children: [
+          GestureDetector(
+            child: Text('hola'),
+          ),
+          GestureDetector(
+            child: Text('hola'),
+          ),
+          GestureDetector(
+            child: Text('hola'),
+          ),
+        ]
+      )
     );
   }
 }

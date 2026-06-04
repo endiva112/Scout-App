@@ -25,13 +25,17 @@ class NoteRepository {
   }
 
   // Guarda los datos de una nota, creando una nueva o editando una existente
-  Future<Note> saveNote(Note note) async {
+  Future<Note?> saveNote(Note note) async {
+    // Nota vacía: ni crear ni mantener
+    if (note.isEmpty) {
+      if (note.id.isNotEmpty) await deleteNote(note.id);
+      return null;
+    }
 
     final now = DateTime.now();
 
     // Crear
     if (note.id.isEmpty) {
-
       final doc = await _db.collection('notes').add({
         'userId': note.userId,
         'title': note.title,
@@ -40,11 +44,7 @@ class NoteRepository {
         'createdAt': Timestamp.fromDate(note.createdAt),
         'updatedAt': Timestamp.fromDate(now),
       });
-
-      return note.copyWith(
-        id: doc.id,
-        updatedAt: now,
-      );
+      return note.copyWith(id: doc.id, updatedAt: now);
     }
 
     // Actualizar
@@ -54,10 +54,7 @@ class NoteRepository {
       'content': note.content,
       'updatedAt': Timestamp.fromDate(now),
     });
-
-    return note.copyWith(
-      updatedAt: now,
-    );
+    return note.copyWith(updatedAt: now);
   }
 
   // Borrar nota

@@ -5,14 +5,12 @@ import 'package:scout_app/widgets/common/return_arrow.dart';
 import 'package:scout_app/constants/note_icons.dart';
 
 class NoteHeader extends StatelessWidget {
-  final bool isListNote;
   final NoteIcon selectedIcon;
   final ValueChanged<NoteIcon> onIconChanged;
   final Future<void> Function()? onBeforeReturn;
 
   const NoteHeader({
     super.key,
-    this.isListNote = false,
     required this.selectedIcon,
     required this.onIconChanged,
     this.onBeforeReturn
@@ -71,7 +69,7 @@ class NoteHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ReturnArrow(customRoute: '/notes', onBeforeReturn: onBeforeReturn),
-            if (!isListNote) _buildIconSelector(context),
+            _buildIconSelector(context)
           ]
         )
       )

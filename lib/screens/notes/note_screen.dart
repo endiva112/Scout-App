@@ -70,7 +70,10 @@ class _NoteScreenState extends State<NoteScreen> {
   Future<void> _saveNote() async {
     if (_note == null) return;
 
-    _note = await _repository.saveNote(_note!);
+    final saved = await _repository.saveNote(_note!);
+
+    // Si fue eliminada por quedar vacía, reseteao el id
+    if (mounted) setState(() => _note = saved);
   }
 
   //Guardar los datos de la nota .cuerpo
