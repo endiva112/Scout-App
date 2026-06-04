@@ -20,14 +20,6 @@ class _NotesCollectionState extends State<NotesCollection> {
   @override
   void initState() {
     super.initState();
-    _cleanOnLoad();
-  }
-
-  Future<void> _cleanOnLoad() async {
-    final notes = await _repository.getNotes(_userId).first;
-    _cleanEmptyNotes(notes);
-    if (!mounted) return;
-    setState(() => _cleaning = false);
   }
 
   @override
@@ -71,16 +63,6 @@ class _NotesCollectionState extends State<NotesCollection> {
         );
       },
     );
-  }
-
-  void _cleanEmptyNotes(List<Note> notes) {
-    /*
-    final now = DateTime.now();
-    for (final note in notes) {
-      final isEmpty = note.title.trim().isEmpty && note.content.trim().isEmpty;
-      final isOld = now.difference(note.createdAt).inSeconds > 1;
-      if (isEmpty && isOld) _repository.deleteNote(note.id);
-    }*/
   }
 
   String _formatDate(DateTime date) {
