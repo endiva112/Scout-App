@@ -5,27 +5,14 @@ import 'package:scout_app/models/note.dart';
 import 'package:scout_app/widgets/cards/note_card.dart';
 import 'package:scout_app/widgets/common/default_tip_text.dart';
 
-class NotesCollection extends StatefulWidget {
-  const NotesCollection({super.key});
+class NotesCollection extends StatelessWidget {
+  NotesCollection({super.key});
 
-  @override
-  State<NotesCollection> createState() => _NotesCollectionState();
-}
-
-class _NotesCollectionState extends State<NotesCollection> {
   final _repository = NoteRepository();
   final _userId = FirebaseAuth.instance.currentUser!.uid;
-  bool _cleaning = true;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    if (_cleaning) return const Center(child: CircularProgressIndicator());
-
     return StreamBuilder<List<Note>>(
       stream: _repository.getNotes(_userId),
       builder: (context, snapshot) {
