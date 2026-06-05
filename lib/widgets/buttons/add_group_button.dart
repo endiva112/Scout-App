@@ -3,15 +3,17 @@ import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/common/bordered_container.dart';
 
 class AddGroupButton extends StatelessWidget {
+  final VoidCallback? onTap;
 
-  const AddGroupButton({super.key});
+  const AddGroupButton({
+    super.key,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        
-      },
+      onTap: onTap,
       child: BorderedContainer(
         borderColor: AppColors.bgTerciary,
         borderWidth: 2,
@@ -23,11 +25,19 @@ class AddGroupButton extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsetsGeometry.symmetric(vertical: 20),
-              child: Text('AGREGAR TIENDA', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500, color: AppColors.textTerciary, height: 1))
-            )
-          ]
-        )
-      )
+              child: Text(
+                'AGREGAR TIENDA',
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textTerciary,
+                  height: 1,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

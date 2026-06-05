@@ -25,11 +25,11 @@ class ComplexListHeader extends StatelessWidget {
             ReturnArrow(customRoute: '/'),
             Row(
               children: [
-                HeaderIcon(icon: Icons.attach_money_rounded, route: '/lists/collaborative_lists/expenses'),
+                HeaderIcon(icon: Icons.attach_money_rounded, route: '/lists/collaborative_list/expenses'),
                 SizedBox(width: 10),
-                HeaderIcon(icon: Icons.edit_note_rounded, route: '/lists/collaborative_lists/notes'),
+                HeaderIcon(icon: Icons.edit_note_rounded, route: '/lists/collaborative_list/notes'),
                 SizedBox(width: 10),
-                HeaderIcon(icon: Icons.group_rounded, route: '/lists/collaborative_lists/list_details')
+                HeaderIcon(icon: Icons.group_rounded, route: '/lists/collaborative_list/list_details')
               ]
             )
           ]

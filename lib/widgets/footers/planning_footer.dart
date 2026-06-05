@@ -5,11 +5,13 @@ import 'package:scout_app/widgets/lists/switch_view_button.dart';
 import 'package:go_router/go_router.dart';
 
 class PlanningFooter extends StatelessWidget {
+  final String listId;
   final String customRoute;
 
   const PlanningFooter({
     super.key,
-    required this.customRoute
+    required this.listId,
+    required this.customRoute,
   });
 
   @override
@@ -22,19 +24,18 @@ class PlanningFooter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildOptimizeShopping(),
-          SwitchViewButton(icon: Icons.shopping_cart_checkout_rounded, onTap: () => context.go(customRoute))
-        ]
-      )
+          SwitchViewButton(
+            icon: Icons.shopping_cart_checkout_rounded,
+            onTap: listId.isEmpty ? null : () => context.go('$customRoute/$listId'),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildOptimizeShopping() {
     return BorderedContainer(
-      child: Row(
-        children: [
-          //
-        ]
-      )
+      child: Row(children: []),//TODO agregar el boton de reagrupar las listas por precio mas barato
     );
   }
 }

@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/common/bordered_container.dart';
+import 'package:scout_app/models/shopping_list.dart';
 import 'package:go_router/go_router.dart';
-
-enum ListType {
-  simple,
-  collaborative,
-  recurring,
-}
 
 class _ListCardStyle {
   final Color borderColor;
@@ -58,11 +53,11 @@ class ListCard extends StatelessWidget {
   String get _customRoute {
     switch (type) {
       case ListType.simple:
-        return '/lists/simple_lists/shopping/';//$listId
+        return '/lists/simple_list/shopping/';//$listId
       case ListType.collaborative:
-        return '/lists/collaborative_lists/shopping/';
+        return '/lists/collaborative_list/shopping/';
       case ListType.recurring:
-        return '/lists/recurring_lists/planning/';
+        return '/lists/recurring_list/planning/';
     }
   }
 

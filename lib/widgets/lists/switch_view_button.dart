@@ -4,31 +4,37 @@ import 'package:scout_app/widgets/common/bordered_container.dart';
 
 class SwitchViewButton extends StatelessWidget {
   final IconData icon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const SwitchViewButton({
     super.key,
     required this.icon,
-    required this.onTap
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      cursor: SystemMouseCursors.click,
+      cursor: onTap != null
+          ? SystemMouseCursors.click
+          : SystemMouseCursors.basic,
       child: GestureDetector(
         onTap: onTap,
         child: BorderedContainer(
-          backgroundColor: AppColors.bgSecondary,
+          backgroundColor: onTap != null
+              ? AppColors.bgSecondary
+              : AppColors.bgTerciary,
           borderRadius: 5,
           padding: const EdgeInsets.all(5),
           child: Icon(
             icon,
-            color: AppColors.textPrimary,
+            color: onTap != null
+                ? AppColors.textPrimary
+                : AppColors.textSecondary,
             size: 40,
-          )
-        )
-      )
+          ),
+        ),
+      ),
     );
   }
 }

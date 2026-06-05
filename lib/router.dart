@@ -96,32 +96,40 @@ final GoRouter router = GoRouter(
 
     // Listas simples
     GoRoute(
-      path: '/lists/simple_lists/shopping',
-      builder: (context, state) => const SimpleShoppingModeScreen(),
+      path: '/lists/simple_list',
+      builder: (context, state) => const SimplePlanningModeScreen(),
     ),
     GoRoute(
-      path: '/lists/simple_lists/planning',
-      builder: (context, state) => const SimplePlanningModeScreen(),
+      path: '/lists/simple_list/:listId',
+      builder: (context, state) => SimplePlanningModeScreen(
+        listId: state.pathParameters['listId']!,
+      ),
+    ),
+    GoRoute(
+      path: '/lists/simple_list/shopping/:listId',
+      builder: (context, state) => SimpleShoppingModeScreen(
+        listId: state.pathParameters['listId']!,
+      ),
     ),//annotation
 
 
     // Listas colaborativas
     GoRoute(
-      path: '/lists/collaborative_lists/shopping',
-      builder: (context, state) => const CollaborativeShoppingModeScreen(),
+      path: '/lists/collaborative_list',
+      builder: (context, state) => const CollaborativePlanningModeScreen(),
     ),
     GoRoute(
-      path: '/lists/collaborative_lists/planning',
-      builder: (context, state) => const CollaborativePlanningModeScreen(),
+      path: '/lists/collaborative_list/shopping',
+      builder: (context, state) => const CollaborativeShoppingModeScreen(),
     ),
 
     // Listas recurrentes
     GoRoute(
-      path: '/lists/recurring_lists/planning',
+      path: '/lists/recurring_list/planning',
       builder: (context, state) => const RecurringPlanningModeScreen(),
     ),
     GoRoute(
-      path: '/lists/collaborative_lists/expenses',
+      path: '/lists/collaborative_list/expenses',
       builder: (context, state) => const CollaborativeExpensesScreen(),
     ),
     GoRoute(
@@ -133,7 +141,7 @@ final GoRouter router = GoRouter(
     // Pagos
       // Listas colaborativas
     GoRoute(
-      path: '/payments/collaborative_lists/balances',
+      path: '/payments/collaborative_list/balances',
       builder: (context, state) => const CollaborativeBalancesScreen(),
     ),
 

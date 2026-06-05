@@ -1,33 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scout_app/models/shopping_list.dart';
+import 'package:scout_app/repositories/shopping_list_repository.dart';
 import 'package:scout_app/widgets/cards/list_card.dart';
 import 'package:scout_app/widgets/common/custom_divider.dart';
 import 'package:scout_app/widgets/common/default_tip_text.dart';
 
 class ShoppingListsCollection extends StatelessWidget {
-  const ShoppingListsCollection({super.key});
+  ShoppingListsCollection({super.key});
 
-  // TODO: reemplazar por llamada a Firestore
+  final _repository = ShoppingListRepository();
+  final _userId = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.only(bottom: 150),
-      itemCount: _items.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 10),
-      itemBuilder: (_, index) => _items[index],
+    return StreamBuilder<List<ShoppingList>>(
+      stream: _repository.getActiveLists(_userId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return const DefaultTipText(
+            tip: 'PARECE QUE ALGO SALIÓ MAL [ERROR EN LA CONEXIÓN AL SERVIDOR DE DATOS]',
+          );
+        }
+
+        final lists = snapshot.data ?? [];
+
+        if (lists.isEmpty) {
+          return const DefaultTipText(
+            tip: 'CREA LISTAS DE LA COMPRA, LISTAS COLABORATIVAS O GASTOS RECURRENTES',
+          );
+        }
+
+        return ListView.separated(
+          padding: const EdgeInsets.only(bottom: 150),
+          itemCount: lists.length + 1, // +1 para el divider inicial
+          separatorBuilder: (_, _) => const SizedBox(height: 10),
+          itemBuilder: (_, index) {
+            if (index == 0) {
+              return const CustomDivider(separatorText: 'Mis listas');
+            }
+            final list = lists[index - 1];
+            return ListCard(
+              type: list.isCollaborative ? ListType.collaborative : ListType.simple,
+              title: list.displayTitle,
+              items: 0,      // TODO: calcular total de ítems
+              extraInfo: '', // TODO: calcular tiendas
+              listId: list.id,
+            );
+          },
+        );
+      },
     );
   }
-
-  List<Widget> get _items => [
-    CustomDivider(separatorText: 'Mis listas'),
-
-    ListCard(type: ListType.simple,       title: 'Gastos de la casa',             items: 6, extraInfo: '3 tiendas',            listId: 'zmZYM6O1aWkWdL3pnai8'),
-    ListCard(type: ListType.collaborative,title: 'Barbacoa',                       items: 2, extraInfo: 'Lidl',                 listId: 'zmZYM6O1aWkWdL3pnai8'),
-    ListCard(type: ListType.recurring,    title: 'Pago del piso de Huelva',        items: 6, extraInfo: '10 días para el cobro',listId: 'zmZYM6O1aWkWdL3pnai8'),
-    ListCard(type: ListType.recurring,    title: 'Pago del piso de Sevilla',       items: 6, extraInfo: 'DESACTIVADA',          listId: 'zmZYM6O1aWkWdL3pnai8'),
-    ListCard(type: ListType.simple,       title: 'Gastos de casa de esos que tienen el nombre exageradamente largo y que rompen la UI', items: 6, extraInfo: '3 tiendas', listId: 'zmZYM6O1aWkWdL3pnai8'),
-
-    CustomDivider(separatorText: 'Mis listas Mis listas Mis listas Mis listas'),
-
-    DefaultTipText(tip: 'CREA LISTAS DE LA COMPRA, LISTAS COLABORATIVAS O GASTOS RECURRENTES'),
-  ];
 }

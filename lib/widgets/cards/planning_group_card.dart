@@ -1,29 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:scout_app/models/division.dart';
+import 'package:scout_app/models/list_item.dart';
+import 'package:scout_app/repositories/shopping_list_repository.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/common/bordered_container.dart';
 
 class PlanningGroupCard extends StatefulWidget {
-  const PlanningGroupCard({super.key});
+  final Division division;
+  final String listId;
+
+  const PlanningGroupCard({
+    super.key,
+    required this.division,
+    required this.listId,
+  });
 
   @override
   State<PlanningGroupCard> createState() => _PlanningGroupCardState();
 }
 
-class _ItemData {
+// Capa de UI sobre un ListItem real de Firestore
+class _ItemRow {
+  final String itemId; // vacío si aún no se ha guardado
   final TextEditingController product;
   final TextEditingController unit;
   final FocusNode productFocus;
   final FocusNode unitFocus;
-  bool locked;
   bool hasFocus;
 
-  _ItemData()
+  _ItemRow({this.itemId = ''})
       : product = TextEditingController(),
         unit = TextEditingController(),
         productFocus = FocusNode(),
         unitFocus = FocusNode(),
-        locked = false,
+        hasFocus = false;
+
+  _ItemRow.fromItem(ListItem item)
+      : itemId = item.id,
+        product = TextEditingController(text: item.name),
+        unit = TextEditingController(text: item.unit ?? ''),
+        productFocus = FocusNode(),
+        unitFocus = FocusNode(),
         hasFocus = false;
 
   void dispose() {
@@ -35,87 +53,171 @@ class _ItemData {
 }
 
 class _PlanningGroupCardState extends State<PlanningGroupCard> {
-  final List<_ItemData> _items = [];
+  final _repository = ShoppingListRepository();
+  final List<_ItemRow> _rows = [];
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
-    _addItem(requestFocus: false);
+    _loadItems();
   }
 
-  void _addItem({bool requestFocus = true, int? afterIndex}) {
-    final item = _ItemData();
+  @override
+  void dispose() {
+    for (final row in _rows) {
+      row.dispose();
+    }
+    super.dispose();
+  }
 
-    item.productFocus.addListener(() {
-      setState(() =>
-          item.hasFocus =
-              item.productFocus.hasFocus || item.unitFocus.hasFocus);
+  Future<void> _loadItems() async {
+    final stream = _repository.getItems(widget.listId, widget.division.id);
+    stream.first.then((items) {
+      if (!mounted) return;
+      setState(() {
+        _rows.clear();
+        for (final item in items) {
+          _attachRow(_ItemRow.fromItem(item));
+        }
+        if (_rows.isEmpty) _attachRow(_ItemRow());
+        _initialized = true;
+      });
     });
-    item.unitFocus.addListener(() {
+  }
+
+  void _attachRow(_ItemRow row) {
+    row.productFocus.addListener(() {
       setState(() =>
-          item.hasFocus =
-              item.productFocus.hasFocus || item.unitFocus.hasFocus);
+          row.hasFocus = row.productFocus.hasFocus || row.unitFocus.hasFocus);
+    });
+    row.unitFocus.addListener(() {
+      setState(() =>
+          row.hasFocus = row.productFocus.hasFocus || row.unitFocus.hasFocus);
     });
 
-    item.productFocus.onKeyEvent = (node, event) {
+    row.productFocus.onKeyEvent = (node, event) {
       if (event is KeyDownEvent) {
         if (event.logicalKey == LogicalKeyboardKey.enter) {
-          _addItem(afterIndex: _items.indexOf(item));
+          _addRow(afterIndex: _rows.indexOf(row));
           return KeyEventResult.handled;
         }
         if (event.logicalKey == LogicalKeyboardKey.backspace &&
-            item.product.text.isEmpty) {
-          _removeItem(_items.indexOf(item));
+            row.product.text.isEmpty) {
+          _removeRow(_rows.indexOf(row));
           return KeyEventResult.handled;
         }
       }
       return KeyEventResult.ignored;
     };
 
+    // Guardar en Firestore al perder el foco
+    row.productFocus.addListener(() async {
+      if (!row.productFocus.hasFocus && !row.unitFocus.hasFocus) {
+        await _saveRow(row);
+      }
+    });
+    row.unitFocus.addListener(() async {
+      if (!row.productFocus.hasFocus && !row.unitFocus.hasFocus) {
+        await _saveRow(row);
+      }
+    });
+
+    _rows.add(row);
+  }
+
+  Future<void> _saveRow(_ItemRow row) async {
+    if (row.product.text.trim().isEmpty) return;
+
+    if (row.itemId.isEmpty) {
+      // Crear
+      final created = await _repository.createItem(
+        widget.listId,
+        widget.division.id,
+        ListItem(
+          id: '',
+          name: row.product.text.trim(),
+          unit: row.unit.text.trim().isEmpty ? null : row.unit.text.trim(),
+          itemStatus: ItemStatus.available,
+        ),
+      );
+      // Actualizamos el itemId en la fila para futuras ediciones
+      _rows[_rows.indexOf(row)] = _ItemRow.fromItem(created)
+        ..product.text = row.product.text
+        ..unit.text = row.unit.text;
+    } else {
+      // Actualizar
+      await _repository.updateItem(
+        widget.listId,
+        widget.division.id,
+        ListItem(
+          id: row.itemId,
+          name: row.product.text.trim(),
+          unit: row.unit.text.trim().isEmpty ? null : row.unit.text.trim(),
+          itemStatus: ItemStatus.available,
+        ),
+      );
+    }
+  }
+
+  void _addRow({bool requestFocus = true, int? afterIndex}) {
+    final row = _ItemRow();
+    _attachRow(row);
+
     setState(() {
       if (afterIndex != null) {
-        _items.insert(afterIndex + 1, item);
-      } else {
-        _items.add(item);
+        _rows.remove(row);
+        _rows.insert(afterIndex + 1, row);
       }
     });
 
     if (requestFocus) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        item.productFocus.requestFocus();
+        row.productFocus.requestFocus();
       });
     }
   }
 
-  void _removeItem(int index) {
-    if (_items.length <= 1) return;
+  Future<void> _removeRow(int index) async {
+    if (_rows.length <= 1) return;
 
-    final item = _items[index];
-    final previousItem = index > 0 ? _items[index - 1] : null;
+    final row = _rows[index];
+    final previousRow = index > 0 ? _rows[index - 1] : null;
 
-    setState(() => _items.removeAt(index));
-    item.dispose();
+    if (row.itemId.isNotEmpty) {
+      await _repository.deleteItem(
+        widget.listId,
+        widget.division.id,
+        row.itemId,
+      );
+    }
 
-    if (previousItem != null) {
+    setState(() => _rows.removeAt(index));
+    row.dispose();
+
+    if (previousRow != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        previousItem.productFocus.requestFocus();
-        previousItem.product.selection = TextSelection.fromPosition(
-          TextPosition(offset: previousItem.product.text.length),
+        previousRow.productFocus.requestFocus();
+        previousRow.product.selection = TextSelection.fromPosition(
+          TextPosition(offset: previousRow.product.text.length),
         );
       });
     }
   }
 
   @override
-  void dispose() {
-    for (final item in _items) {
-      item.dispose();
-    }
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    if (!_initialized) {
+      return const BorderedContainer(
+        borderColor: AppColors.borderAccent,
+        borderWidth: 1,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
     return BorderedContainer(
       borderColor: AppColors.borderAccent,
       borderWidth: 1,
@@ -125,19 +227,18 @@ class _PlanningGroupCardState extends State<PlanningGroupCard> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Sin tienda asignada',
-              style: TextStyle(
+              widget.division.name.isEmpty
+                  ? 'Sin tienda asignada'
+                  : widget.division.name,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 4),
-            ..._items.asMap().entries.map((entry) {
-              final index = entry.key;
-              final item = entry.value;
-              return _buildItemRow(item, index);
-            }),
+            ..._rows.asMap().entries.map((entry) =>
+                _buildItemRow(entry.value, entry.key)),
             _buildAddItemButton(),
           ],
         ),
@@ -145,26 +246,22 @@ class _PlanningGroupCardState extends State<PlanningGroupCard> {
     );
   }
 
-  Widget _buildItemRow(_ItemData item, int index) {
+  Widget _buildItemRow(_ItemRow row, int index) {
     return Padding(
       padding: const EdgeInsets.only(top: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(
-            Icons.lock_rounded,
-            color: AppColors.bgSecondary,
-            size: 16,
-          ),
+          const Icon(Icons.lock_rounded, color: AppColors.bgSecondary, size: 16),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
-              controller: item.product,
-              focusNode: item.productFocus,
+              controller: row.product,
+              focusNode: row.productFocus,
               maxLines: null,
               keyboardType: TextInputType.multiline,
               textInputAction: TextInputAction.newline,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
                 color: AppColors.textPrimary,
                 fontWeight: FontWeight.w400,
@@ -190,9 +287,9 @@ class _PlanningGroupCardState extends State<PlanningGroupCard> {
               borderRadius: BorderRadius.circular(8),
             ),
             child: TextField(
-              controller: item.unit,
-              focusNode: item.unitFocus,
-              style: TextStyle(
+              controller: row.unit,
+              focusNode: row.unitFocus,
+              style: const TextStyle(
                 fontSize: 12,
                 color: AppColors.textPrimary,
                 fontWeight: FontWeight.w400,
@@ -200,14 +297,14 @@ class _PlanningGroupCardState extends State<PlanningGroupCard> {
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 isDense: true,
-                contentPadding: EdgeInsets.all(5),
+                contentPadding: const EdgeInsets.all(5),
                 border: InputBorder.none,
                 hintText: 'Ud.',
                 hintStyle: TextStyle(
                   fontSize: 13,
                   color: AppColors.textTerciary,
                   fontWeight: FontWeight.w400,
-                )
+                ),
               ),
             ),
           ),
@@ -220,28 +317,27 @@ class _PlanningGroupCardState extends State<PlanningGroupCard> {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: GestureDetector(
-        onTap: _addItem,
+        onTap: _addRow,
         child: Container(
           color: AppColors.bgSecondary,
           child: Row(
-            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsetsGeometry.all(5),
+                padding: const EdgeInsets.all(5),
                 child: Text(
                   'AGREGAR PRODUCTO',
                   style: TextStyle(
                     fontSize: 13,
                     color: AppColors.textTerciary,
                     fontWeight: FontWeight.w400,
-                  )
-                )
-              )
-            ]
-          )
-        )
-      )
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
