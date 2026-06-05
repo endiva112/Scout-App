@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scout_app/widgets/buttons/add_group_button.dart';
 import 'package:scout_app/widgets/cards/planning_group_card.dart';
 import 'package:scout_app/widgets/common/last_modified_text.dart';
 import 'package:scout_app/widgets/common/title_text_field.dart';
@@ -38,7 +39,7 @@ class PlanningBody extends StatelessWidget {
       children: [
         PlanningGroupCard(),
         SizedBox(height: 10),
-        PlanningGroupCard()
+        AddGroupButton()
       ]
     );
   }
