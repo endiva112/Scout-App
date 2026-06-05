@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
+import 'package:scout_app/widgets/common/last_modified_text.dart';
+import 'package:scout_app/widgets/common/title_text_field.dart';
 import 'package:scout_app/widgets/notes/note_body.dart';
 
 class NoteContent extends StatelessWidget {
@@ -26,78 +28,19 @@ class NoteContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 10),
-            _buildTitle(),
+            TitleTextField(titleController: titleController, onChanged: onChanged),
             const SizedBox(height: 10),
-            _buildLastModifiedText(),
+            LastModifiedText(updatedAt: updatedAt),
             const SizedBox(height: 10),
             Expanded(
               child: NoteBody(
                 controller: contentController,
                 onChanged: onChanged,
-              ),
-            ),
-          ],
-        ),
-      ),
+              )
+            )
+          ]
+        )
+      )
     );
-  }
-
-  Widget _buildTitle() {
-    return TextFormField(
-      controller: titleController,
-      onChanged: (_) => onChanged(),
-      autofocus: false,
-      maxLines: 3,
-      minLines: 1,
-      cursorColor: AppColors.textPrimary,
-      style: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w400,
-        color: AppColors.textPrimary,
-      ),
-      decoration: InputDecoration(
-        hintText: 'Título',
-        hintStyle: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-          color: AppColors.textSecondary,
-        ),
-        filled: true,
-        fillColor: AppColors.bgPrimary,
-        isDense: true,
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.transparent),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.transparent),
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLastModifiedText() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Text(
-        _formatDate(updatedAt),
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.italic,
-          color: AppColors.textSecondary,
-        ),
-        textAlign: TextAlign.start,
-      ),
-    );
-  }
-
-  String _formatDate(DateTime date) {
-    const months = [
-      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 }
