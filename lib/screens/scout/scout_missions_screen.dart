@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:scout_app/models/mission.dart';
-import 'package:scout_app/models/store.dart';
-import 'package:scout_app/repositories/mission_repository.dart';
-import 'package:scout_app/repositories/store_repository.dart';
+import 'package:scout_app/models/scout/mission.dart';
+import 'package:scout_app/models/scout/store.dart';
+import 'package:scout_app/repositories/scout/mission_repository.dart';
+import 'package:scout_app/repositories/scout/store_repository.dart';
 import 'package:scout_app/repositories/user_repository.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/collections/mission_cards_collection.dart';
+import 'package:scout_app/widgets/collections/scout/mission_cards_collection.dart';
 import 'package:scout_app/widgets/headers/return_header.dart';
 
 class ScoutMissionsScreen extends StatefulWidget {

@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:scout_app/models/division.dart';
 import 'package:scout_app/repositories/shopping_list_repository.dart';
@@ -85,4 +86,4 @@ class _PlanningBodyState extends State<PlanningBody> {
       },
     );
   }
-}
+}*/

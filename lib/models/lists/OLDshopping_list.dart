@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum ListType { simple, collaborative, recurring }
 enum ListStatus { active, completed, settled }
@@ -14,7 +15,7 @@ class ShoppingList {
   final DateTime updatedAt;
   final DateTime createdAt;
   final DateTime? completedAt;
-  final bool isFavorite;
+  //final bool isFavorite;
   final String? templateSourceId;
   final String noteTitle;
   final String noteContent;
@@ -132,4 +133,4 @@ class ShoppingList {
       externalCount: externalCount ?? this.externalCount,
     );
   }
-}
+}*/

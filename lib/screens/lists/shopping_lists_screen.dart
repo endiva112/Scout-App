@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/collections/shopping_lists_collection.dart';
+import 'package:scout_app/widgets/collections/lists/shopping_lists_collection.dart';
 import 'package:scout_app/widgets/buttons/floating_create_button.dart';
 import 'package:scout_app/widgets/common/custom_bottom_sheet.dart';
+import 'package:scout_app/widgets/common/sheet_option.dart';
 import 'package:scout_app/widgets/headers/main_header.dart';
 import 'package:scout_app/widgets/common/simple_title.dart';
 import 'package:scout_app/widgets/footers/bottom_navbar.dart';
@@ -47,6 +48,7 @@ class ShoppingListsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SimpleTitle(title: 'Listas activas'),
+        // Invoco mi colección de listas con estado -- shopping --
         Expanded(child: ShoppingListsCollection()),
       ],
     );
@@ -56,21 +58,48 @@ class ShoppingListsScreen extends StatelessWidget {
     CustomBottomSheet.show(
       context,
       content: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          GestureDetector(
+          const Text(
+            'Nueva lista',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 24),
+          SheetOption(
+            icon:  Icons.list_rounded,
+            title:  'Lista simple',
+            subtitle:  'Solo para ti',
             onTap: () {
               Navigator.pop(context);
               context.push('/lists/simple_list');
             },
-            child: const Text('Lista simple'),
           ),
-          GestureDetector(
+          const SizedBox(height: 12),
+          SheetOption(
+            icon: Icons.group_rounded,
+            title: 'Lista colaborativa',
+            subtitle: 'Para compras en grupo y reparto de gastos',
             onTap: () {
               Navigator.pop(context);
               context.push('/lists/collaborative_list');
             },
-            child: const Text('Lista colaborativa'),
           ),
+          const SizedBox(height: 12),
+          SheetOption(
+            icon: Icons.group_rounded,
+            title: 'Lista recurrente',
+            subtitle: 'Para gastos recurrentes entre compañeros',
+            onTap: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Función no implementada')),
+              );
+            },
+          )
         ],
       ),
     );

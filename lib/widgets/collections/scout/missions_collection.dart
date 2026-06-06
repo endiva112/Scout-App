@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:scout_app/models/mission.dart';
+import 'package:scout_app/models/scout/mission.dart';
 import 'package:scout_app/widgets/cards/mission_card.dart';
 
-class MissionCardsCollection extends StatelessWidget {
+class MissionsCollection extends StatelessWidget {
   final List<Mission> missions;
   final void Function(String missionId) onMissionCompleted;
 
-  const MissionCardsCollection({
+  const MissionsCollection({
     super.key,
     required this.missions,
     required this.onMissionCompleted,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/collections/stores_collection.dart';
+import 'package:scout_app/widgets/collections/scout/stores_collection.dart';
 import 'package:scout_app/widgets/footers/bottom_empty.dart';
 import 'package:scout_app/widgets/headers/return_header.dart';
 import 'package:scout_app/widgets/scout/location_container.dart';

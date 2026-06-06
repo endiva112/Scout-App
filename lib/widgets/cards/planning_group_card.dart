@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scout_app/models/division.dart';
@@ -371,4 +372,4 @@ class _PlanningGroupCardState extends State<PlanningGroupCard> {
       ),
     );
   }
-}
+}*/

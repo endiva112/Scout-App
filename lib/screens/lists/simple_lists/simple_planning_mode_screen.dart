@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -55,10 +56,20 @@ class _SimplePlanningModeScreenState extends State<SimplePlanningModeScreen> {
   }
 
   Future<void> _saveList() async {
-    if (_list == null) return;
-    final saved = await _repository.updateListTitle(_list!);
-    if (mounted) setState(() => _list = saved);
-  }
+  if (_list == null) return;
+
+  print('💾 SAVE LIST');
+
+  final updated = await _repository.saveList(
+    _list!.copyWith(title: _titleController.text),
+  );
+
+  if (!mounted) return;
+
+  setState(() {
+    _list = updated ?? _list;
+  });
+}
 
   void _onTitleChanged() {
     if (!_initialized || _list == null) return;
@@ -67,58 +78,47 @@ class _SimplePlanningModeScreenState extends State<SimplePlanningModeScreen> {
   }
 
   Future<void> _loadList() async {
-    print('🔵 _loadList START, listId: ${widget.listId}');
-    // Lista nueva: crear en Firestore inmediatamente
+    print('🟡 LOAD LIST START');
+
     if (widget.listId == null) {
-      print('🔵 Creando lista nueva...');
-      final now = DateTime.now();
-      final created = await _repository.createList(ShoppingList(
-        id: '',
-        userId: FirebaseAuth.instance.currentUser!.uid,
-        type: ListType.simple,
-        status: ListStatus.active,
-        title: '',
-        updatedAt: now,
-        createdAt: now,
-        isFavorite: false,
-        noteTitle: '',
-        noteContent: '',
-        noteUpdatedAt: now,
-      ));
-      print('🟢 Lista creada con id: ${created.id}');
+      print('🆕 NEW LIST DRAFT');
 
-      // Crear división por defecto
-      await _repository.createDivision(
-        created.id,
-        Division(
-          id: '',
-          name: 'Productos sin tienda',
-          isDefault: true,
-          sortOrder: 0,
-        ),
-      );
-      print('🟢 División por defecto creada');
-
-      if (!mounted) return;
       setState(() {
-        _list = created;
+        _list = ShoppingList(
+          id: '',
+          userId: FirebaseAuth.instance.currentUser!.uid,
+          ownerId: FirebaseAuth.instance.currentUser!.uid,
+          members: [FirebaseAuth.instance.currentUser!.uid],
+          type: ListType.simple,
+          status: ListStatus.active,
+          title: '',
+          updatedAt: DateTime.now(),
+          createdAt: DateTime.now(),
+          isFavorite: false,
+          noteTitle: '',
+          noteContent: '',
+          noteUpdatedAt: DateTime.now(),
+        );
+
         _initialized = true;
       });
-      print('🟢 _initialized = true');
+
       return;
     }
 
-    // Lista existente
-    print('🔵 Cargando lista existente: ${widget.listId}');
+    print('📥 LOADING EXISTING LIST');
+
     final list = await _repository.getList(widget.listId!);
-    print('🟢 Lista cargada: ${list?.id}');
-    if (list == null || !mounted) return;
+
+    if (!mounted || list == null) return;
+
     setState(() {
       _list = list;
       _titleController.text = list.title;
       _initialized = true;
     });
-    print('🟢 _initialized = true (existente)');
+
+    print('🟢 LIST LOADED');
   }
 
   @override
@@ -170,4 +170,4 @@ class _SimplePlanningModeScreenState extends State<SimplePlanningModeScreen> {
       ),
     );
   }
-}
+}*/

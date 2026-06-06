@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
+import 'package:scout_app/screens/lists/collaborative_lists/collaborative_list_screen.dart';
 import 'package:scout_app/screens/lists/list_details_screen.dart';
+
 import 'package:scout_app/screens/payments/collaborative_lists_payments/collaborative_expenses_screen.dart';
 import 'package:scout_app/screens/profile/set_alias_screen.dart';
 
@@ -8,8 +10,7 @@ import 'package:scout_app/screens/profile/set_alias_screen.dart';
 import 'screens/lists/shopping_lists_screen.dart';
 
 // Simples
-import 'screens/lists/simple_lists/simple_planning_mode_screen.dart';
-import 'screens/lists/simple_lists/simple_shopping_mode_screen.dart';
+import 'package:scout_app/screens/lists/simple_lists/simple_list_screen.dart';
 
 // Colaborativas
 import 'screens/lists/collaborative_lists/collaborative_planning_mode_screen.dart';
@@ -97,44 +98,28 @@ final GoRouter router = GoRouter(
     // Listas simples
     GoRoute(
       path: '/lists/simple_list',
-      builder: (context, state) => const SimplePlanningModeScreen(),
+      builder: (context, state) => const SimpleListScreen(),
     ),
     GoRoute(
       path: '/lists/simple_list/:listId',
-      builder: (context, state) => SimplePlanningModeScreen(
+      builder: (context, state) => SimpleListScreen(
         listId: state.pathParameters['listId']!,
+        mode: state.uri.queryParameters['mode'] ?? 'planning',
       ),
     ),
-    GoRoute(
-      path: '/lists/simple_list/shopping/:listId',
-      builder: (context, state) => SimpleShoppingModeScreen(
-        listId: state.pathParameters['listId']!,
-      ),
-    ),//annotation
-
 
     // Listas colaborativas
     GoRoute(
       path: '/lists/collaborative_list',
-      builder: (context, state) => const CollaborativePlanningModeScreen(),
+      builder: (context, state) => const CollaborativeListScreen(),
     ),
     GoRoute(
-      path: '/lists/collaborative_list/shopping',
-      builder: (context, state) => const CollaborativeShoppingModeScreen(),
-    ),
-
-    // Listas recurrentes
-    GoRoute(
-      path: '/lists/recurring_list/planning',
-      builder: (context, state) => const RecurringPlanningModeScreen(),
-    ),
-    GoRoute(
-      path: '/lists/collaborative_list/expenses',
-      builder: (context, state) => const CollaborativeExpensesScreen(),
-    ),
-    GoRoute(
-      path: '/lists/collaborative_lists/list_details',
-      builder: (context, state) => const ListDetailsScreen(),
+      path: '/lists/collaborative_list/:listId',
+      builder: (context, state) {
+        final listId = state.pathParameters['listId']!;
+        final mode = state.uri.queryParameters['mode'] ?? 'planning';
+        return CollaborativeListScreen(listId: listId, mode: mode);
+      },
     ),
 
 

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:scout_app/models/store.dart';
+import 'package:scout_app/models/scout/store.dart';
 
 class StoreRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

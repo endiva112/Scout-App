@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:scout_app/models/shopping_list.dart';
-import 'package:scout_app/repositories/shopping_list_repository.dart';
+import 'package:scout_app/models/lists/shopping_list.dart';
+import 'package:scout_app/repositories/lists/shopping_list_repository.dart';
 import 'package:scout_app/widgets/cards/list_card.dart';
 import 'package:scout_app/widgets/common/custom_divider.dart';
 import 'package:scout_app/widgets/common/default_tip_text.dart';
@@ -16,7 +16,7 @@ class ShoppingListsCollection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<ShoppingList>>(
-      stream: _repository.getActiveLists(_userId),
+      stream: _repository.getShoppingLists(_userId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -45,8 +45,8 @@ class ShoppingListsCollection extends StatelessWidget {
             }
             final list = lists[index - 1];
             return ListCard(
-              type: list.isCollaborative ? ListType.collaborative : ListType.simple,
-              title: list.displayTitle,
+              type: list.type,
+              title: list.title,
               items: 0,
               extraInfo: '',
               listId: list.id,

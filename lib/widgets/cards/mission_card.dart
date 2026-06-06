@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scout_app/repositories/mission_repository.dart';
+import 'package:scout_app/repositories/scout/mission_repository.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/common/bordered_container.dart';
 import 'package:scout_app/widgets/buttons/custom_button.dart';

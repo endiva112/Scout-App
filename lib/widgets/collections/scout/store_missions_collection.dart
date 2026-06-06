@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scout_app/models/app_user.dart';
-import 'package:scout_app/models/mission.dart';
-import 'package:scout_app/models/store.dart';
-import 'package:scout_app/repositories/mission_repository.dart';
-import 'package:scout_app/repositories/store_repository.dart';
+import 'package:scout_app/models/scout/mission.dart';
+import 'package:scout_app/models/scout/store.dart';
+import 'package:scout_app/repositories/scout/mission_repository.dart';
+import 'package:scout_app/repositories/scout/store_repository.dart';
 import 'package:scout_app/repositories/user_repository.dart';
 import 'package:scout_app/widgets/cards/store_mission_card.dart';
 import 'package:scout_app/widgets/common/default_tip_text.dart';

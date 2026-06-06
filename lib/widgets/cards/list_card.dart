@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/common/bordered_container.dart';
-import 'package:scout_app/models/shopping_list.dart';
+import 'package:scout_app/models/lists/shopping_list.dart';
 import 'package:go_router/go_router.dart';
 
 class _ListCardStyle {

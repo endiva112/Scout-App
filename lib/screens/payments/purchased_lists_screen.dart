@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/collections/purchased_lists_collection.dart';
+import 'package:scout_app/widgets/collections/lists/purchased_lists_collection.dart';
 import 'package:scout_app/widgets/headers/main_header.dart';
 import 'package:scout_app/widgets/common/simple_title.dart';
 import 'package:scout_app/widgets/footers/bottom_navbar.dart';
@@ -37,7 +37,9 @@ class PurchasedListsScreen extends StatelessWidget {
         children: [
           SimpleTitle(title: 'Listas por pagar'),
           _buildSummary(-10),
-          Expanded(child: PurchasedListsCollection())
+          Expanded(
+            child: PurchasedListsCollection()
+          )
         ]
       )
     );

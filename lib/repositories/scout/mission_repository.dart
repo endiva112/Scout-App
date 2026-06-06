@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scout_app/models/app_user.dart';
-import 'package:scout_app/models/mission.dart';
+import 'package:scout_app/models/scout/mission.dart';
 
 class MissionRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

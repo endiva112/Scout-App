@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:scout_app/models/store.dart';
-import 'package:scout_app/repositories/store_repository.dart';
+import 'package:scout_app/models/scout/store.dart';
+import 'package:scout_app/repositories/scout/store_repository.dart';
 import 'package:scout_app/repositories/user_repository.dart';
 import 'package:scout_app/widgets/scout/store_checkbox_item.dart';
 
