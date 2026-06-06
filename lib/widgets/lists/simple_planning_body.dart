@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/buttons/add_group_button.dart';
+import 'package:scout_app/widgets/buttons/add_division_button.dart';
+import 'package:scout_app/widgets/collections/lists/divisions_collection.dart';
 import 'package:scout_app/widgets/common/title_text_field.dart';
 import 'package:scout_app/widgets/common/last_modified_text.dart';
 
@@ -34,8 +35,8 @@ class SimplePlanningBody extends StatelessWidget {
             const SizedBox(height: 10),
             LastModifiedText(updatedAt: updatedAt),
             const SizedBox(height: 10),
-            // TODO: divisiones e items
-            AddGroupButton(listId: listId)
+            DivisionsCollection(listId: listId),
+            AddDivisionButton(listId: listId)
           ],
         ),
       ),
