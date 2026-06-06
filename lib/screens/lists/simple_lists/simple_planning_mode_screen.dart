@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/models/shopping_list.dart';
+import 'package:scout_app/models/division.dart';
 import 'package:scout_app/repositories/shopping_list_repository.dart';
 import 'package:scout_app/widgets/footers/planning_footer.dart';
 import 'package:scout_app/widgets/headers/simple_list_header.dart';
@@ -44,9 +45,8 @@ class _SimplePlanningModeScreenState extends State<SimplePlanningModeScreen> {
   Future<void> _saveBeforeLeaving() async {
     _saveTimer?.cancel();
     if (_list == null) return;
-
     final updated = _list!.copyWith(title: _titleController.text);
-    await _repository.saveList(updated);
+    await _repository.updateListTitle(updated);
   }
 
   void _scheduleSave() {
@@ -56,7 +56,7 @@ class _SimplePlanningModeScreenState extends State<SimplePlanningModeScreen> {
 
   Future<void> _saveList() async {
     if (_list == null) return;
-    final saved = await _repository.saveList(_list!);
+    final saved = await _repository.updateListTitle(_list!);
     if (mounted) setState(() => _list = saved);
   }
 
@@ -67,36 +67,58 @@ class _SimplePlanningModeScreenState extends State<SimplePlanningModeScreen> {
   }
 
   Future<void> _loadList() async {
-    // Lista nueva
+    print('🔵 _loadList START, listId: ${widget.listId}');
+    // Lista nueva: crear en Firestore inmediatamente
     if (widget.listId == null) {
-      setState(() {
-        _list = ShoppingList(
+      print('🔵 Creando lista nueva...');
+      final now = DateTime.now();
+      final created = await _repository.createList(ShoppingList(
+        id: '',
+        userId: FirebaseAuth.instance.currentUser!.uid,
+        type: ListType.simple,
+        status: ListStatus.active,
+        title: '',
+        updatedAt: now,
+        createdAt: now,
+        isFavorite: false,
+        noteTitle: '',
+        noteContent: '',
+        noteUpdatedAt: now,
+      ));
+      print('🟢 Lista creada con id: ${created.id}');
+
+      // Crear división por defecto
+      await _repository.createDivision(
+        created.id,
+        Division(
           id: '',
-          userId: FirebaseAuth.instance.currentUser!.uid,
-          type: ListType.simple,
-          status: ListStatus.active,
-          title: '',
-          updatedAt: DateTime.now(),
-          createdAt: DateTime.now(),
-          isFavorite: false,
-          noteTitle: '',
-          noteContent: '',
-          noteUpdatedAt: DateTime.now(),
-        );
+          name: 'Productos sin tienda',
+          isDefault: true,
+          sortOrder: 0,
+        ),
+      );
+      print('🟢 División por defecto creada');
+
+      if (!mounted) return;
+      setState(() {
+        _list = created;
         _initialized = true;
       });
+      print('🟢 _initialized = true');
       return;
     }
 
     // Lista existente
+    print('🔵 Cargando lista existente: ${widget.listId}');
     final list = await _repository.getList(widget.listId!);
+    print('🟢 Lista cargada: ${list?.id}');
     if (list == null || !mounted) return;
-
     setState(() {
       _list = list;
       _titleController.text = list.title;
       _initialized = true;
     });
+    print('🟢 _initialized = true (existente)');
   }
 
   @override
@@ -125,8 +147,7 @@ class _SimplePlanningModeScreenState extends State<SimplePlanningModeScreen> {
                 Expanded(child: _buildBody()),
                 PlanningFooter(
                   listId: _list!.id,
-                  customRoute: '/lists/simple_list/shopping',
-                )
+                ),
               ],
             ),
           ),
@@ -141,10 +162,10 @@ class _SimplePlanningModeScreenState extends State<SimplePlanningModeScreen> {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: PlanningBody(
+          listId: _list!.id,
           updatedAt: _list!.updatedAt,
           titleController: _titleController,
           onChanged: _onTitleChanged,
-          listId: _list!.id,
         ),
       ),
     );

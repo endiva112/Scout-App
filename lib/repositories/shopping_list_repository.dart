@@ -50,26 +50,18 @@ class ShoppingListRepository {
     return ShoppingList.fromMap(doc.id, doc.data()!);
   }
 
-  Future<ShoppingList?> saveList(ShoppingList list) async {
-    // Lista vacía: ni crear ni mantener
-    if (list.title.trim().isEmpty) {
-      if (list.id.isNotEmpty) await deleteList(list.id);
-      return null;
-    }
-
+  Future<ShoppingList> createList(ShoppingList list) async {
     final now = DateTime.now();
+    final doc = await _db.collection('lists').add({
+      ...list.toMap(),
+      'createdAt': Timestamp.fromDate(now),
+      'updatedAt': Timestamp.fromDate(now),
+    });
+    return list.copyWith(id: doc.id, updatedAt: now);
+  }
 
-    // Crear
-    if (list.id.isEmpty) {
-      final doc = await _db.collection('lists').add({
-        ...list.toMap(),
-        'createdAt': Timestamp.fromDate(now),
-        'updatedAt': Timestamp.fromDate(now),
-      });
-      return list.copyWith(id: doc.id, updatedAt: now);
-    }
-
-    // Actualizar
+  Future<ShoppingList> updateListTitle(ShoppingList list) async {
+    final now = DateTime.now();
     await _db.collection('lists').doc(list.id).update({
       'title': list.title,
       'updatedAt': Timestamp.fromDate(now),
@@ -113,13 +105,27 @@ class ShoppingListRepository {
         .update(division.toMap());
   }
 
-  Future<void> deleteDivision(String listId, String divisionId) async {
-    await _db
+  Future<void> deleteDivisionWithItems(String listId, String divisionId) async {
+    // Borrar todos los ítems de la división
+    final items = await _db
         .collection('lists')
         .doc(listId)
         .collection('divisions')
         .doc(divisionId)
-        .delete();
+        .collection('items')
+        .get();
+
+    final batch = _db.batch();
+    for (final item in items.docs) {
+      batch.delete(item.reference);
+    }
+
+    // Borrar la división
+    batch.delete(
+      _db.collection('lists').doc(listId).collection('divisions').doc(divisionId),
+    );
+
+    await batch.commit();
   }
 
   // ─── Items ───────────────────────────────────────────────────────

@@ -113,13 +113,19 @@ class _PlanningGroupCardState extends State<PlanningGroupCard> {
 
     // Guardar en Firestore al perder el foco
     row.productFocus.addListener(() async {
-      if (!row.productFocus.hasFocus && !row.unitFocus.hasFocus) {
-        await _saveRow(row);
+      if (!row.productFocus.hasFocus) {
+        await Future.delayed(const Duration(milliseconds: 50));
+        if (!row.productFocus.hasFocus && !row.unitFocus.hasFocus) {
+          await _saveRow(row);
+        }
       }
     });
     row.unitFocus.addListener(() async {
-      if (!row.productFocus.hasFocus && !row.unitFocus.hasFocus) {
-        await _saveRow(row);
+      if (!row.unitFocus.hasFocus) {
+        await Future.delayed(const Duration(milliseconds: 50));
+        if (!row.productFocus.hasFocus && !row.unitFocus.hasFocus) {
+          await _saveRow(row);
+        }
       }
     });
 
@@ -205,6 +211,28 @@ class _PlanningGroupCardState extends State<PlanningGroupCard> {
     }
   }
 
+  void _showDivisionMenu(BuildContext context, Offset position) {
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(position.dx, position.dy, position.dx, position.dy),
+      items: [
+        PopupMenuItem(
+          value: 'delete',
+          child: ListTile(
+            dense: true,
+            title: const Text('Eliminar tienda', style: TextStyle(color: AppColors.negative)),
+            trailing: const Icon(Icons.delete_outline, color: AppColors.negative),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+          ),
+        ),
+      ],
+    ).then((value) {
+      if (value == 'delete') {
+        _repository.deleteDivisionWithItems(widget.listId, widget.division.id);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!_initialized) {
@@ -218,31 +246,34 @@ class _PlanningGroupCardState extends State<PlanningGroupCard> {
       );
     }
 
-    return BorderedContainer(
-      borderColor: AppColors.borderAccent,
-      borderWidth: 1,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              widget.division.name.isEmpty
-                  ? 'Sin tienda asignada'
-                  : widget.division.name,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: AppColors.textPrimary,
+    return GestureDetector(
+      onLongPressStart: (details) => _showDivisionMenu(context, details.globalPosition),
+      child: BorderedContainer(
+        borderColor: AppColors.borderAccent,
+        borderWidth: 1,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                widget.division.name.isEmpty
+                    ? 'Sin tienda asignada'
+                    : widget.division.name,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.textPrimary,
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            ..._rows.asMap().entries.map((entry) =>
-                _buildItemRow(entry.value, entry.key)),
-            _buildAddItemButton(),
-          ],
-        ),
-      ),
+              const SizedBox(height: 4),
+              ..._rows.asMap().entries.map((entry) =>
+                  _buildItemRow(entry.value, entry.key)),
+              _buildAddItemButton(),
+            ]
+          )
+        )
+      )
     );
   }
 

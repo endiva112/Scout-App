@@ -40,6 +40,8 @@ class ListCard extends StatelessWidget {
   final int items;
   final String extraInfo;
   final String listId;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   const ListCard({
     super.key,
@@ -48,6 +50,8 @@ class ListCard extends StatelessWidget {
     required this.items,
     required this.extraInfo,
     required this.listId,
+    required this.onEdit,
+    required this.onDelete,
   });
 
   String get _customRoute {
@@ -124,22 +128,18 @@ class ListCard extends StatelessWidget {
 
   Widget _buildVerticalOptionsButton(BuildContext context) {
     return PopupMenuButton<String>(
-      icon: Icon(Icons.more_vert, color: AppColors.textPrimary, size: 32),
+      icon: const Icon(Icons.more_vert, color: AppColors.textPrimary, size: 32),
       onSelected: (value) {
         switch (value) {
-          case 'share':
-            // acción compartir TODO
-            break;
           case 'edit':
-            context.push('/lists/simple_lists/planning');
+            onEdit();
             break;
           case 'delete':
-            // acción eliminar TODO
+            onDelete();
             break;
         }
       },
       itemBuilder: (context) => [
-
         const PopupMenuItem(
           value: 'share',
           child: ListTile(
@@ -149,7 +149,6 @@ class ListCard extends StatelessWidget {
             contentPadding: EdgeInsets.symmetric(horizontal: 5),
           )
         ),
-
         const PopupMenuItem(
           value: 'edit',
           child: ListTile(
@@ -159,7 +158,6 @@ class ListCard extends StatelessWidget {
             contentPadding: EdgeInsets.symmetric(horizontal: 5),
           )
         ),
-
         const PopupMenuItem(
           height: 40,
           value: 'delete',
@@ -170,8 +168,7 @@ class ListCard extends StatelessWidget {
             contentPadding: EdgeInsets.symmetric(horizontal: 5),
           )
         )
-
-      ],
+      ]
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:scout_app/repositories/shopping_list_repository.dart';
 import 'package:scout_app/widgets/cards/list_card.dart';
 import 'package:scout_app/widgets/common/custom_divider.dart';
 import 'package:scout_app/widgets/common/default_tip_text.dart';
+import 'package:go_router/go_router.dart';
 
 class ShoppingListsCollection extends StatelessWidget {
   ShoppingListsCollection({super.key});
@@ -46,9 +47,11 @@ class ShoppingListsCollection extends StatelessWidget {
             return ListCard(
               type: list.isCollaborative ? ListType.collaborative : ListType.simple,
               title: list.displayTitle,
-              items: 0,      // TODO: calcular total de ítems
-              extraInfo: '', // TODO: calcular tiendas
+              items: 0,
+              extraInfo: '',
               listId: list.id,
+              onEdit: () => context.push('/lists/simple_list/${list.id}'),
+              onDelete: () => _repository.deleteList(list.id),
             );
           },
         );

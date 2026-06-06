@@ -57,15 +57,6 @@ class _PlanningBodyState extends State<PlanningBody> {
   }
 
   Widget _buildDivisions() {
-    if (widget.listId.isEmpty) {
-      return ListView(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 100),
-        children: [
-          AddGroupButton(onTap: () {}),
-        ],
-      );
-    }
-
     return StreamBuilder<List<Division>>(
       stream: _repository.getDivisions(widget.listId),
       builder: (context, snapshot) {

@@ -6,12 +6,10 @@ import 'package:go_router/go_router.dart';
 
 class PlanningFooter extends StatelessWidget {
   final String listId;
-  final String customRoute;
 
   const PlanningFooter({
     super.key,
     required this.listId,
-    required this.customRoute,
   });
 
   @override
@@ -26,7 +24,7 @@ class PlanningFooter extends StatelessWidget {
           _buildOptimizeShopping(),
           SwitchViewButton(
             icon: Icons.shopping_cart_checkout_rounded,
-            onTap: listId.isEmpty ? null : () => context.go('$customRoute/$listId'),
+            onTap: listId.isEmpty ? null : () => context.go('/lists/simple_list/$listId/shopping'),
           ),
         ],
       ),
