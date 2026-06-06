@@ -5,7 +5,6 @@ import 'package:scout_app/repositories/lists/shopping_list_repository.dart';
 import 'package:scout_app/widgets/cards/paid_list_card.dart';
 import 'package:scout_app/widgets/common/custom_divider.dart';
 import 'package:scout_app/widgets/common/default_tip_text.dart';
-import 'package:go_router/go_router.dart';
 
 class PurchasedListsCollection extends StatelessWidget {
   PurchasedListsCollection({super.key});
@@ -67,7 +66,7 @@ class PurchasedListsCollection extends StatelessWidget {
           statusLabel: 'Comprado: ' ,
           amount: 'B',
           isPaid: false,
-          /* TODO 2
+          /* TODO 2 esto no debe tener editar y borrar es algo que solo deberia poder hacer el dueño
           onEdit: () => context.push('/lists/simple_list/${list.id}'),
           onDelete: () => _repository.deleteList(list.id),*/
         ));
