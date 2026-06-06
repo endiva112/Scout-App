@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:scout_app/widgets/footers/shopping_footer.dart';
 import 'package:scout_app/widgets/headers/simple_list_header.dart';
 
 class SimpleShoppingModeScreen extends StatefulWidget {
@@ -31,9 +30,9 @@ class _SimpleShoppingModeScreenState extends State<SimpleShoppingModeScreen> {
                 onBeforeReturn: () async {},
               ),
               Expanded(child: _buildBody()),
-              ShoppingFooter(
+              /*ShoppingFooter(
                 customRoute: '/lists/simple_list/${widget.listId}',
-              ),
+              ),*/
             ],
           ),
         ),

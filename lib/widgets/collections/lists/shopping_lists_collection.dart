@@ -47,10 +47,14 @@ class ShoppingListsCollection extends StatelessWidget {
             return ListCard(
               type: list.type,
               title: list.title,
-              items: 0,
-              extraInfo: '',
+              items: list.itemCount,
+              extraInfo: '${list.divisionCount} tiendas o supermercados',
               listId: list.id,
-              onEdit: () => context.push('/lists/simple_list/${list.id}'),
+              onEdit: () => context.push(
+                list.type == ListType.simple
+                    ? '/lists/simple_list/${list.id}'
+                    : '/lists/collaborative_list/${list.id}',
+              ),
               onDelete: () => _repository.deleteList(list.id),
             );
           },

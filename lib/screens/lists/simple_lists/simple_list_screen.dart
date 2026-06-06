@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/models/lists/shopping_list.dart';
 import 'package:scout_app/repositories/lists/shopping_list_repository.dart';
+import 'package:scout_app/widgets/footers/simple_list_footer.dart';
+import 'package:scout_app/widgets/headers/simple_list_header.dart';
+import 'package:scout_app/widgets/lists/simple_planning_body.dart';
 
 class SimpleListScreen extends StatefulWidget {
   final String? listId;
@@ -119,13 +122,15 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // TODO: header
+                SimpleListHeader(onBeforeReturn: _saveBeforeLeaving),
                 Expanded(
-                  child: widget.mode == 'shopping'
-                      ? const Center(child: Text('Shopping mode', style: TextStyle(color: AppColors.textPrimary)))
-                      : const Center(child: Text('Planning mode', style: TextStyle(color: AppColors.textPrimary))),
+                  child: SimplePlanningBody(
+                    titleController: _titleController,
+                    updatedAt: _list!.updatedAt,
+                    onChanged: _onTitleChanged,
+                  )
                 ),
-                // TODO: footer
+                SimpleListFooter(listId: _list!.id, mode: widget.mode)
               ],
             ),
           ),

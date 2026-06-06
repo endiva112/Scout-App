@@ -13,6 +13,10 @@ class ShoppingList {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  //Expansión
+  final int divisionCount;
+  final int itemCount;
+
   const ShoppingList({
     required this.id,
     required this.ownerId,
@@ -22,6 +26,10 @@ class ShoppingList {
     required this.status,
     required this.createdAt,
     required this.updatedAt,
+
+    //Expansión de funciones
+    this.divisionCount = 0,
+    this.itemCount = 0,
   });
 
   factory ShoppingList.fromMap(String id, Map<String, dynamic> map) {
@@ -40,6 +48,10 @@ class ShoppingList {
       ),
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       updatedAt: (map['updatedAt'] as Timestamp).toDate(),
+
+      //Expansión
+      divisionCount: map['divisionCount'] as int? ?? 0,
+      itemCount: map['itemCount'] as int? ?? 0,
     );
   }
 
@@ -63,6 +75,11 @@ class ShoppingList {
     List<String>? collaborators,
     ListStatus? status,
     DateTime? updatedAt,
+
+    //Expansión
+    int? divisionCount,
+    int? itemCount,
+
   }) {
     return ShoppingList(
       id: id ?? this.id,
@@ -73,6 +90,10 @@ class ShoppingList {
       status: status ?? this.status,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+
+      //Expansión
+      divisionCount: divisionCount ?? this.divisionCount,
+      itemCount: itemCount ?? this.itemCount,
     );
   }
 }

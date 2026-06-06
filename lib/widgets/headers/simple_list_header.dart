@@ -28,7 +28,7 @@ class SimpleListHeader extends StatelessWidget {
             ),
             HeaderIcon(
               icon: Icons.edit_note_rounded,
-              route: '/lists/simple_lists/notes',
+              route: '/lists/simple_list/annotations',
             ),
           ],
         ),

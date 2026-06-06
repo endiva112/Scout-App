@@ -178,4 +178,29 @@ class ShoppingListRepository {
         .doc(itemId)
         .delete();
   }
+
+  //Expansión
+  Future<void> incrementDivisionCount(String listId) async {
+    await _db.collection('lists').doc(listId).update({
+      'divisionCount': FieldValue.increment(1),
+    });
+  }
+
+  Future<void> decrementDivisionCount(String listId) async {
+    await _db.collection('lists').doc(listId).update({
+      'divisionCount': FieldValue.increment(-1),
+    });
+  }
+
+  Future<void> incrementItemCount(String listId) async {
+    await _db.collection('lists').doc(listId).update({
+      'itemCount': FieldValue.increment(1),
+    });
+  }
+
+  Future<void> decrementItemCount(String listId) async {
+    await _db.collection('lists').doc(listId).update({
+      'itemCount': FieldValue.increment(-1),
+    });
+  }
 }
