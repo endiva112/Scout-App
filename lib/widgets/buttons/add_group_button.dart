@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/common/bordered_container.dart';
+import 'package:scout_app/widgets/lists/add_division_sheet.dart';
 
 class AddGroupButton extends StatelessWidget {
-  final VoidCallback? onTap;
+  final String listId;
 
   const AddGroupButton({
     super.key,
-    this.onTap,
+    required this.listId,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: () async {
+        await AddDivisionSheet.show(context, listId: listId);
+      },
       child: BorderedContainer(
         borderColor: AppColors.bgTerciary,
         borderWidth: 2,

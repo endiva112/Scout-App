@@ -1,8 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:scout_app/screens/lists/collaborative_lists/collaborative_list_screen.dart';
-import 'package:scout_app/screens/lists/list_details_screen.dart';
-
-import 'package:scout_app/screens/payments/collaborative_lists_payments/collaborative_expenses_screen.dart';
 import 'package:scout_app/screens/profile/set_alias_screen.dart';
 
 
@@ -13,11 +9,10 @@ import 'screens/lists/shopping_lists_screen.dart';
 import 'package:scout_app/screens/lists/simple_lists/simple_list_screen.dart';
 
 // Colaborativas
-import 'screens/lists/collaborative_lists/collaborative_planning_mode_screen.dart';
-import 'screens/lists/collaborative_lists/collaborative_shopping_mode_screen.dart';
+import 'package:scout_app/screens/lists/collaborative_lists/collaborative_list_screen.dart';
 
 // Recurrentes
-import 'screens/lists/recurring_lists/recurring_planning_mode_screen.dart';
+// Recortada del PMV
 
 // Pagos
 import 'screens/payments/purchased_lists_screen.dart';

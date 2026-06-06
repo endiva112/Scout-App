@@ -125,6 +125,7 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
                 SimpleListHeader(onBeforeReturn: _saveBeforeLeaving),
                 Expanded(
                   child: SimplePlanningBody(
+                    listId: _list!.id,
                     titleController: _titleController,
                     updatedAt: _list!.updatedAt,
                     onChanged: _onTitleChanged,
