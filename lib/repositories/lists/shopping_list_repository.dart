@@ -84,7 +84,26 @@ class ShoppingListRepository {
     return list.copyWith(updatedAt: now);
   }
 
+  //Borrado en cascada, borra items y divisiones antes de borrar listas
   Future<void> deleteList(String listId) async {
+    final divisionsRef = _db
+        .collection('lists')
+        .doc(listId)
+        .collection('divisions');
+
+    final divisions = await divisionsRef.get();
+
+    for (final division in divisions.docs) {
+      final itemsRef = divisionsRef.doc(division.id).collection('items');
+      final items = await itemsRef.get();
+
+      for (final item in items.docs) {
+        await item.reference.delete();
+      }
+
+      await division.reference.delete();
+    }
+
     await _db.collection('lists').doc(listId).delete();
   }
 
@@ -120,7 +139,20 @@ class ShoppingListRepository {
     return division;
   }
 
+  //Borrado en cascada de las divisiones
   Future<void> deleteDivision(String listId, String divisionId) async {
+    final itemsRef = _db
+        .collection('lists')
+        .doc(listId)
+        .collection('divisions')
+        .doc(divisionId)
+        .collection('items');
+
+    final items = await itemsRef.get();
+    for (final item in items.docs) {
+      await item.reference.delete();
+    }
+
     await _db
         .collection('lists')
         .doc(listId)
