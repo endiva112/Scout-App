@@ -64,19 +64,22 @@ class ShoppingListRepository {
   }
   //#endregion
 
-
+  //Crea lista si el id esta vacio o las actualiza si existe un id
   Future<ShoppingList?> saveList(ShoppingList list) async {
     final now = DateTime.now();
 
     if (list.id.isEmpty) {
+      // Al crear, incluimos status y createdAt
       final doc = await _db.collection('lists').add({
         ...list.toMap(),
+        'status': list.status.name,
         'createdAt': Timestamp.fromDate(now),
         'updatedAt': Timestamp.fromDate(now),
       });
       return list.copyWith(id: doc.id, updatedAt: now);
     }
 
+    // Al actualizar, solo tocamos lo que toMap() devuelve (sin status)
     await _db.collection('lists').doc(list.id).update({
       ...list.toMap(),
       'updatedAt': Timestamp.fromDate(now),
