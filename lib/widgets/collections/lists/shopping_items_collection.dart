@@ -36,19 +36,19 @@ class ShoppingItemsCollection extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () async {
+        final newChecked = !item.checked;
+        
         await _repository.saveItem(
           listId,
           divisionId,
-          item.copyWith(checked: !item.checked),
+          item.copyWith(checked: newChecked),
         );
 
-        // Solo comprobamos si acabamos de tachar (no al destachar)
-        if (!item.checked) {
-          final allDone = await _repository.areAllItemsChecked(listId);
-          if (allDone) {
-            await _repository.saveStatus(listId, ListStatus.archived);
-          }
-        }
+        final allDone = await _repository.areAllItemsChecked(listId);
+        await _repository.saveStatus(
+          listId,
+          allDone ? ListStatus.archived : ListStatus.shopping,
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),

@@ -1,21 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/lists/switch_view_button.dart';
-import 'package:go_router/go_router.dart';
 
 class SimpleListFooter extends StatelessWidget {
+  final Future<void> Function()? onBeforeReturn;
   final String listId;
   final String mode;
 
   const SimpleListFooter({
     super.key,
+    this.onBeforeReturn,
     required this.listId,
     required this.mode,
   });
 
+  Future<void> _handleSwitch(
+    BuildContext context,
+    String route,
+  ) async {
+    await onBeforeReturn?.call();
+
+    if (context.mounted) {
+      context.go(route);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return mode == 'shopping' ? _buildShopping(context) : _buildPlanning(context);
+    return mode == 'shopping'
+        ? _buildShopping(context)
+        : _buildPlanning(context);
   }
 
   Widget _buildPlanning(BuildContext context) {
@@ -30,7 +45,10 @@ class SimpleListFooter extends StatelessWidget {
             icon: Icons.shopping_cart_checkout_rounded,
             onTap: listId.isEmpty
                 ? null
-                : () => context.go('/lists/simple_list/$listId?mode=shopping'),
+                : () => _handleSwitch(
+                      context,
+                      '/lists/simple_list/$listId?mode=shopping',
+                    ),
           ),
         ],
       ),
@@ -47,7 +65,12 @@ class SimpleListFooter extends StatelessWidget {
         children: [
           SwitchViewButton(
             icon: Icons.draw_rounded,
-            onTap: () => context.go('/lists/simple_list/$listId?mode=planning'),
+            onTap: listId.isEmpty
+                ? null
+                : () => _handleSwitch(
+                      context,
+                      '/lists/simple_list/$listId?mode=planning',
+                    ),
           ),
         ],
       ),

@@ -168,7 +168,7 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
                     )
                   )
                 ),
-                SimpleListFooter(listId: _list!.id, mode: widget.mode),
+                SimpleListFooter(onBeforeReturn: _saveBeforeLeaving, listId: _list!.id, mode: widget.mode),
               ],
             ),
           ),
