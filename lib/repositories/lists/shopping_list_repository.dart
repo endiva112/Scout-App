@@ -286,4 +286,71 @@ class ShoppingListRepository {
       'status': status.name,
     });
   }
+
+  //reusar una lista que estaba en el historial
+  Future<void> reuseList(String originalListId, String ownerId) async {
+  // 1. Lee la lista original
+    final original = await getList(originalListId);
+    if (original == null) return;
+
+    // 2. Crea la lista nueva
+    final newList = ShoppingList(
+      id: '',
+      ownerId: ownerId,
+      type: original.type,
+      status: ListStatus.shopping,
+      title: original.title,
+      collaborators: original.collaborators,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+    final saved = await saveList(newList);
+    if (saved == null) return;
+
+    // 3. Lee las divisiones originales y las copia
+    final divisions = await _db
+        .collection('lists')
+        .doc(originalListId)
+        .collection('divisions')
+        .get();
+
+    for (final divDoc in divisions.docs) {
+      final division = Division.fromMap(divDoc.id, divDoc.data());
+
+      final newDivision = await saveDivision(
+        saved.id,
+        Division(id: '', name: division.name),
+      );
+      await incrementDivisionCount(saved.id);
+
+      // 4. Lee los items de cada división y los copia
+      final items = await _db
+          .collection('lists')
+          .doc(originalListId)
+          .collection('divisions')
+          .doc(divDoc.id)
+          .collection('items')
+          .get();
+
+      for (final itemDoc in items.docs) {
+        final item = Item.fromMap(itemDoc.id, itemDoc.data());
+        await saveItem(
+          saved.id,
+          newDivision.id,
+          Item(
+            id: '',
+            name: item.name,
+            quantity: item.quantity,
+            checked: false, // siempre sin tachar en la nueva lista
+          ),
+        );
+        await incrementItemCount(saved.id);
+      }
+    }
+
+    // 5. Copia la anotación
+    if (original.annotation.isNotEmpty) {
+      await saveAnnotation(saved.id, original.annotation);
+    }
+  }
 }

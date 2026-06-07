@@ -36,7 +36,7 @@ class PurchasedListsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SimpleTitle(title: 'Listas por pagar'),
-          _buildSummary(-10),
+          _buildSummary(0),// TODO calcular el valor real
           Expanded(
             child: PurchasedListsCollection()
           )
@@ -52,7 +52,7 @@ class PurchasedListsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Saldo estimado: ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: AppColors.textPrimary)),
-            Text('$balance €', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.negative))
+            Text('$balance €', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.textPrimary))
           ]
         ),
         Divider(

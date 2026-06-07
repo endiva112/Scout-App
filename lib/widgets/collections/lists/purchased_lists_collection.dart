@@ -87,9 +87,8 @@ class PurchasedListsCollection extends StatelessWidget {
           statusLabel: 'Último pago: ' ,
           amount: 'B',
           isPaid: true,
-          /*TODO que este tipo de etiquetas puedan ser borradas o permitan navegar a los datos de una lista ya cerrada al ser pulsada, asi que nada de onEdit
-          onEdit: () => context.push('/lists/simple_list/${list.id}'),
-          onDelete: () => _repository.deleteList(list.id),*/
+          onReuse: () => _repository.reuseList(list.id, _userId),
+          onDelete: () => _repository.deleteList(list.id),
         ));
       }
     }
