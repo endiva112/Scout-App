@@ -46,7 +46,8 @@ class ShoppingListsCollection extends StatelessWidget {
             final list = lists[index - 1];
             return ListCard(
               type: list.type,
-              title: list.title,
+              //Si está vacío que ponga sin título
+              title: list.title.trim().isEmpty ? 'Sin título' : list.title,
               items: list.itemCount,
               extraInfo: '${list.divisionCount} tiendas o supermercados',
               listId: list.id,
