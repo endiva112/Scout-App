@@ -11,6 +11,7 @@ import 'package:scout_app/widgets/footers/simple_list_footer.dart';
 import 'package:scout_app/widgets/headers/simple_list_header.dart';
 import 'package:scout_app/widgets/lists/editing_session_provider.dart';
 import 'package:scout_app/widgets/lists/simple_planning_body.dart';
+import 'package:scout_app/widgets/lists/simple_shopping_body.dart';
 
 class SimpleListScreen extends StatefulWidget {
   final String? listId;
@@ -151,13 +152,21 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
                   // .value porque el provider ya está instanciado como campo del State
                   child: ChangeNotifierProvider.value(
                     value: _editingSession,
-                    child: SimplePlanningBody(
-                      listId: _list!.id,
-                      titleController: _titleController,
-                      updatedAt: _list!.updatedAt,
-                      onChanged: _onTitleChanged,
-                    ),
-                  ),
+                    child: widget.mode == 'shopping'
+                    ? SimpleShoppingBody(
+                        listId: _list!.id,
+                        updatedAt: _list!.updatedAt,
+                      )
+                    : ChangeNotifierProvider.value(
+                        value: _editingSession,
+                        child: SimplePlanningBody(
+                          listId: _list!.id,
+                          titleController: _titleController,
+                          updatedAt: _list!.updatedAt,
+                          onChanged: _onTitleChanged,
+                      )
+                    )
+                  )
                 ),
                 SimpleListFooter(listId: _list!.id, mode: widget.mode),
               ],

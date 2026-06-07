@@ -57,7 +57,7 @@ class ListCard extends StatelessWidget {
   String get _customRoute {
     switch (type) {
       case ListType.simple:
-        return '/lists/simple_list/shopping/';//$listId
+        return '/lists/simple_list/$listId?mode=shopping';
       case ListType.collaborative:
         return '/lists/collaborative_list/shopping/';
       case ListType.recurring:

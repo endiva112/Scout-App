@@ -16,8 +16,6 @@ import 'package:scout_app/screens/lists/collaborative_lists/collaborative_list_s
 
 // Pagos
 import 'screens/payments/purchased_lists_screen.dart';
-
-import 'screens/payments/collaborative_lists_payments/collaborators/info_collaborative_purchase_screen.dart';
 import 'screens/payments/collaborative_lists_payments/collaborative_balances_screen.dart';
 
 import 'screens/payments/recurring_lists_payments/recurring_expenses_screen.dart';
