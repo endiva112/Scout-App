@@ -64,7 +64,6 @@ class ShoppingList {
       'type': type.name,
       'title': title,
       'collaborators': collaborators,
-      'status': status.name,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
     };

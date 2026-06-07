@@ -216,6 +216,36 @@ class ShoppingListRepository {
         .delete();
   }
 
+  // Comprobar si todos los items de una lista han sido tachados
+  Future<bool> areAllItemsChecked(String listId) async {
+    final divisions = await _db
+        .collection('lists')
+        .doc(listId)
+        .collection('divisions')
+        .get();
+
+    if (divisions.docs.isEmpty) return false;
+
+    for (final division in divisions.docs) {
+      final items = await _db
+          .collection('lists')
+          .doc(listId)
+          .collection('divisions')
+          .doc(division.id)
+          .collection('items')
+          .get();
+
+      if (items.docs.isEmpty) return false;
+
+      final allChecked = items.docs.every(
+        (doc) => doc.data()['checked'] == true,
+      );
+      if (!allChecked) return false;
+    }
+
+    return true;
+  }
+
   //Expansión
   Future<void> incrementDivisionCount(String listId) async {
     await _db.collection('lists').doc(listId).update({
@@ -244,6 +274,13 @@ class ShoppingListRepository {
   Future<void> saveAnnotation(String listId, String annotation) async {
     await _db.collection('lists').doc(listId).update({
       'annotation': annotation,
+    });
+  }
+
+  //metodo para alternar el estado de una lista
+  Future<void> saveStatus(String listId, ListStatus status) async {
+    await _db.collection('lists').doc(listId).update({
+      'status': status.name,
     });
   }
 }

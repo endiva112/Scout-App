@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/models/lists/item.dart';
+import 'package:scout_app/models/lists/shopping_list.dart';
 import 'package:scout_app/repositories/lists/shopping_list_repository.dart';
 import 'package:scout_app/theme/app_colors.dart';
 
@@ -34,11 +35,21 @@ class ShoppingItemsCollection extends StatelessWidget {
   Widget _buildItemRow(Item item) {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
-      onTap: () => _repository.saveItem(
-        listId,
-        divisionId,
-        item.copyWith(checked: !item.checked),
-      ),
+      onTap: () async {
+        await _repository.saveItem(
+          listId,
+          divisionId,
+          item.copyWith(checked: !item.checked),
+        );
+
+        // Solo comprobamos si acabamos de tachar (no al destachar)
+        if (!item.checked) {
+          final allDone = await _repository.areAllItemsChecked(listId);
+          if (allDone) {
+            await _repository.saveStatus(listId, ListStatus.archived);
+          }
+        }
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: Row(
