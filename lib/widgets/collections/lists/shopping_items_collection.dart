@@ -47,7 +47,7 @@ class ShoppingItemsCollection extends StatelessWidget {
               width: 6,
               height: 6,
               decoration: BoxDecoration(
-                color: item.checked ? AppColors.textSecondary : AppColors.textPrimary,
+                color: item.checked ? AppColors.bgTerciary : AppColors.textPrimary,
                 shape: BoxShape.circle,
               ),
             ),
@@ -57,9 +57,13 @@ class ShoppingItemsCollection extends StatelessWidget {
                 item.name,
                 style: TextStyle(
                   fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: item.checked ? AppColors.textSecondary : AppColors.textPrimary,
-                  decoration: item.checked ? TextDecoration.lineThrough : TextDecoration.none,
+                  fontWeight: item.checked ? FontWeight.w300 : FontWeight.w500,
+                  color: item.checked ? AppColors.textTerciary : AppColors.textPrimary,
+                  decoration: item.checked
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                  decorationColor: AppColors.textTerciary,
+                  decorationThickness: 2,
                 ),
               ),
             ),
@@ -68,9 +72,13 @@ class ShoppingItemsCollection extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
-                fontWeight: FontWeight.w500,
-                color: item.checked ? AppColors.textSecondary : AppColors.textPrimary,
-                decoration: item.checked ? TextDecoration.lineThrough : TextDecoration.none,
+                fontWeight: item.checked ? FontWeight.w300 : FontWeight.w500,
+                color: item.checked ? AppColors.textTerciary : AppColors.textPrimary,
+                decoration: item.checked
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none,
+                decorationColor: AppColors.textTerciary,
+                decorationThickness: 2,
               ),
             ),
           ],

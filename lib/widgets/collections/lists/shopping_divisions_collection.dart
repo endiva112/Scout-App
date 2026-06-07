@@ -35,7 +35,7 @@ class ShoppingDivisionsCollection extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: divisions.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 10),
+          separatorBuilder: (_, _) => const SizedBox(height: 10),
           itemBuilder: (_, index) {
             final division = divisions[index];
             return ShoppingDivisionCard(
