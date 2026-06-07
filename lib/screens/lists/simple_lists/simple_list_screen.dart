@@ -30,6 +30,9 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
   final _repository = ShoppingListRepository();
   final _titleController = TextEditingController();
 
+  // El provider vive aquí, no en el build, para poder accederlo desde _saveBeforeLeaving
+  final _editingSession = EditingSessionProvider();
+
   ShoppingList? _list;
   bool _initialized = false;
   Timer? _saveTimer;
@@ -44,14 +47,19 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
   void dispose() {
     _saveTimer?.cancel();
     _titleController.dispose();
+    _editingSession.dispose();
     super.dispose();
   }
 
   Future<void> _saveBeforeLeaving() async {
     _saveTimer?.cancel();
     if (_list == null) return;
-    final updated = _list!.copyWith(title: _titleController.text);
-    await _repository.saveList(updated);
+
+    // 1. Fuerza el guardado inmediato de todos los items pendientes
+    await _editingSession.saveNow();
+
+    // 2. Guarda el título de la lista
+    await _repository.saveList(_list!.copyWith(title: _titleController.text));
   }
 
   void _scheduleSave() {
@@ -59,7 +67,6 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
     _saveTimer = Timer(const Duration(seconds: 2), _saveList);
   }
 
-  //Guardar una lista
   Future<void> _saveList() async {
     if (_list == null) return;
     final saved = await _repository.saveList(
@@ -75,27 +82,19 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
     _scheduleSave();
   }
 
-  //Controla que tipo de lista cargar o crea una nueva si el id esta vacio.
   Future<void> _loadList() async {
-    // Lista existente: cargamos de Firestore
     if (widget.listId != null) {
-
       final list = await _repository.getList(widget.listId!);
-
-      if (!mounted) {return;}
-
-      if (list == null) {return;}
-
+      if (!mounted) return;
+      if (list == null) return;
       setState(() {
         _list = list;
         _titleController.text = list.title;
         _initialized = true;
       });
-
       return;
     }
 
-    // Lista nueva: creamos en Firestore, creamos división por defecto y redirigimos
     final newList = ShoppingList(
       id: '',
       ownerId: FirebaseAuth.instance.currentUser!.uid,
@@ -108,10 +107,8 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
     );
 
     final saved = await _repository.saveList(newList);
-
-    if (!mounted) {return;}
-
-    if (saved == null) {return;}
+    if (!mounted) return;
+    if (saved == null) return;
 
     await _repository.saveDivision(
       saved.id,
@@ -119,7 +116,7 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
     );
 
     await _repository.incrementDivisionCount(saved.id);
-    if (!mounted) {return;}
+    if (!mounted) return;
 
     GoRouter.of(context).go('/lists/simple_list/${saved.id}');
   }
@@ -133,9 +130,12 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
     }
 
     return PopScope(
+      // canPop false para interceptar el botón físico de atrás del sistema
+      canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
         await _saveBeforeLeaving();
+        if (context.mounted) context.go('/');
       },
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -148,17 +148,18 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
               children: [
                 SimpleListHeader(onBeforeReturn: _saveBeforeLeaving),
                 Expanded(
-                  child: ChangeNotifierProvider(
-                    create: (_) => EditingSessionProvider(),
+                  // .value porque el provider ya está instanciado como campo del State
+                  child: ChangeNotifierProvider.value(
+                    value: _editingSession,
                     child: SimplePlanningBody(
                       listId: _list!.id,
                       titleController: _titleController,
                       updatedAt: _list!.updatedAt,
                       onChanged: _onTitleChanged,
-                    )
-                  )
+                    ),
+                  ),
                 ),
-                SimpleListFooter(listId: _list!.id, mode: widget.mode)
+                SimpleListFooter(listId: _list!.id, mode: widget.mode),
               ],
             ),
           ),

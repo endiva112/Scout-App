@@ -38,12 +38,6 @@ import 'package:scout_app/screens/profile/set_language_screen.dart';
 import 'package:scout_app/screens/profile/set_theme_screen.dart';
 
 
-//import 'oldscreens/home_screen.dart';
-import 'oldscreens/sandbox_screen.dart';
-import 'oldscreens/auth_test.dart';
-import 'oldscreens/lists_screen.dart';
-import 'oldscreens/old_list_detail_screen.dart';
-
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -153,34 +147,6 @@ final GoRouter router = GoRouter(
       path: '/scout/missions/:storeId',
       builder: (context, state) => ScoutMissionsScreen(
         storeId: state.pathParameters['storeId']!,
-      ),
-    ),
-
-
-
-    //TODO BORRAR
-    GoRoute(
-      path: '/test',
-            //builder: (context, state) => const HomeScreen(),
-      builder: (context, state) => const InfoCollaborativePurchaseScreen(),
-    ),
-    GoRoute(
-      path: '/sandbox',
-      builder: (context, state) => const SandboxScreen(),
-    ),
-    GoRoute(
-      path: '/authTest',
-      builder: (context, state) => const AuthSandboxScreen(),
-    ),
-
-    GoRoute(
-      path: '/lists',
-      builder: (context, state) => const ListsScreen(),
-    ),
-    GoRoute(
-      path: '/list/:listId',
-      builder: (context, state) => OldListDetailScreen(
-        listId: state.pathParameters['listId']!,
       ),
     ),
   ],

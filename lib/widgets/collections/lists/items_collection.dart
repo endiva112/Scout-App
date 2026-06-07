@@ -27,14 +27,18 @@ class _ItemsCollectionState extends State<ItemsCollection> {
   final _repository = ShoppingListRepository();
 
   StreamSubscription<List<Item>>? _subscription;
+  bool _disposed = false;
   bool _wasEditing = false;
   int _tempId = 0;
   late final String _sessionKey;
 
+  // Guardamos referencia al provider en didChangeDependencies,
+  // así nunca tocamos context fuera del ciclo de vida seguro.
+  EditingSessionProvider? _editingSession;
+
   // ── Fuente de verdad única ──────────────────────────────────────────────────
   final List<ItemRow> _rows = [];
 
-  // Controllers y focus nodes indexados por row.id
   final Map<String, TextEditingController> _nameControllers = {};
   final Map<String, TextEditingController> _qtyControllers = {};
   final Map<String, FocusNode> _nameFocus = {};
@@ -52,10 +56,11 @@ class _ItemsCollectionState extends State<ItemsCollection> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final provider = context.watch<EditingSessionProvider>();
-    provider.registerSaveCallback(_sessionKey, _saveAll);
+    // Capturamos el provider aquí — único lugar seguro para leer context.
+    _editingSession = context.watch<EditingSessionProvider>();
+    _editingSession!.registerSaveCallback(_sessionKey, _saveAll);
 
-    final isEditing = provider.isEditing;
+    final isEditing = _editingSession!.isEditing;
     if (isEditing && !_wasEditing) {
       _subscription?.cancel();
       _subscription = null;
@@ -67,12 +72,15 @@ class _ItemsCollectionState extends State<ItemsCollection> {
 
   @override
   void dispose() {
-    context.read<EditingSessionProvider>().unregisterSaveCallback(_sessionKey);
+    _disposed = true; // Lo primero, antes de cancelar nada
+    // Usamos la referencia guardada — nunca context.read en dispose.
+    _editingSession?.unregisterSaveCallback(_sessionKey);
     _subscription?.cancel();
-    for (final c in _nameControllers.values) {c.dispose();}
-    for (final c in _qtyControllers.values) {c.dispose();}
-    for (final f in _nameFocus.values) {f.dispose();}
-    for (final f in _qtyFocus.values) {f.dispose();}
+    _subscription = null;
+    for (final c in _nameControllers.values) { c.dispose(); }
+    for (final c in _qtyControllers.values) { c.dispose(); }
+    for (final f in _nameFocus.values) { f.dispose(); }
+    for (final f in _qtyFocus.values) { f.dispose(); }
     super.dispose();
   }
 
@@ -85,12 +93,13 @@ class _ItemsCollectionState extends State<ItemsCollection> {
   }
 
   void _onFirestoreItems(List<Item> items) {
-    if (!mounted) return;
+    // Doble check: mounted Y subscription activa.
+    // Cubre el caso de eventos en vuelo tras cancelar el stream.
+    if (_disposed) return;
 
     final incomingIds = items.map((i) => i.id).toSet();
 
-    // Creamos controllers y focus nodes FUERA del setState,
-    // mientras el context está garantizadamente válido.
+    // Controllers y focus nodes FUERA del setState.
     for (final item in items) {
       final alreadyKnown = _rows.any((r) => r.id == item.id);
       if (!alreadyKnown) {
@@ -102,16 +111,13 @@ class _ItemsCollectionState extends State<ItemsCollection> {
     }
 
     setState(() {
-      // 1. Añade o actualiza filas que vienen de Firestore
       for (final item in items) {
         final existingIndex = _rows.indexWhere((r) => r.id == item.id);
 
         if (existingIndex == -1) {
-          // Fila nueva — controllers ya creados arriba
           final insertAt = _rows.lastIndexWhere((r) => !r.isLocal) + 1;
           _rows.insert(insertAt, ItemRow(id: item.id, state: RowState.synced));
         } else {
-          // Fila que ya conocemos — actualiza texto solo si no tiene foco
           final row = _rows[existingIndex];
           if (!row.isPendingDelete) {
             if (!(_nameFocus[item.id]?.hasFocus ?? false)) {
@@ -124,8 +130,6 @@ class _ItemsCollectionState extends State<ItemsCollection> {
         }
       }
 
-      // 2. Elimina filas synced/dirty que Firestore ya no devuelve
-      //    (borradas desde otro dispositivo)
       _rows.removeWhere((row) {
         if (row.isLocal) return false;
         if (incomingIds.contains(row.id)) return false;
@@ -138,16 +142,15 @@ class _ItemsCollectionState extends State<ItemsCollection> {
   // ── Helpers de controllers / focus ─────────────────────────────────────────
 
   FocusNode _buildFocusNode(String id) {
-    // Capturamos el provider aquí, una sola vez, antes de cualquier closure.
-    // Es seguro porque el provider vive por encima en el árbol y no se destruye.
-    final provider = context.read<EditingSessionProvider>();
+    // Capturamos la referencia guardada, no context.read.
+    final session = _editingSession;
     final node = FocusNode();
     node.addListener(() {
       if (!mounted) return;
       if (node.hasFocus) {
-        provider.onUserStartedEditing();
+        session?.onUserStartedEditing();
       } else {
-        provider.onUserStoppedEditing();
+        session?.onUserStoppedEditing();
       }
     });
     node.onKeyEvent = (_, event) {
@@ -174,7 +177,6 @@ class _ItemsCollectionState extends State<ItemsCollection> {
 
   void _addLocalRow() {
     final id = 'local_${_tempId++}';
-    // Controllers y focus nodes creados ANTES del setState por la misma razón.
     _nameControllers[id] = TextEditingController();
     _qtyControllers[id] = TextEditingController();
     _nameFocus[id] = _buildFocusNode(id);
@@ -183,12 +185,12 @@ class _ItemsCollectionState extends State<ItemsCollection> {
       _rows.add(ItemRow(id: id, state: RowState.localOnly));
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       _nameFocus[id]?.requestFocus();
     });
   }
 
   void _onBackspaceOnEmpty(String id) {
-    // Snapshot de filas visibles ANTES de marcar para borrado
     final visibleRows = _rows.where((r) => r.isVisible).toList();
     final index = visibleRows.indexWhere((r) => r.id == id);
 
@@ -296,8 +298,6 @@ class _ItemsCollectionState extends State<ItemsCollection> {
       debugPrint('Error actualizando item ${row.id}: $e');
     }
   }
-
-  // ── Marcado de dirty ────────────────────────────────────────────────────────
 
   void _markDirtyIfNeeded(String id) {
     final index = _rows.indexWhere((r) => r.id == id);

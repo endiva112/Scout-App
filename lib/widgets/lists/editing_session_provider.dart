@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-/// Callback que cada ItemsCollection registra para que el provider
-/// pueda pedirle que guarde cuando el timer dispara.
 typedef SaveCallback = Future<void> Function();
 
 class EditingSessionProvider extends ChangeNotifier {
@@ -11,7 +9,6 @@ class EditingSessionProvider extends ChangeNotifier {
 
   bool get isEditing => _isEditing;
 
-  // Cada ItemsCollection se registra aquí con su función de guardado.
   final Map<String, SaveCallback> _saveCallbacks = {};
 
   void registerSaveCallback(String key, SaveCallback cb) {
@@ -22,26 +19,30 @@ class EditingSessionProvider extends ChangeNotifier {
     _saveCallbacks.remove(key);
   }
 
-  /// Llámalo cuando cualquier campo gane foco.
   void onUserStartedEditing() {
     _inactivityTimer?.cancel();
     if (!_isEditing) {
       _isEditing = true;
-      notifyListeners(); // los streams se cancelan
+      notifyListeners();
     }
   }
 
-  /// Llámalo cuando cualquier campo pierda foco.
   void onUserStoppedEditing() {
     _inactivityTimer?.cancel();
     _inactivityTimer = Timer(const Duration(seconds: 1), _onInactivityTimerFired);
   }
 
   Future<void> _onInactivityTimerFired() async {
-    // Guarda todo lo pendiente en paralelo.
+    await saveNow();
+  }
+
+  /// Fuerza el guardado inmediato de todo lo pendiente.
+  /// Llamar antes de salir de la pantalla.
+  Future<void> saveNow() async {
+    _inactivityTimer?.cancel();
     await Future.wait(_saveCallbacks.values.map((cb) => cb()));
     _isEditing = false;
-    notifyListeners(); // los streams se reanudan
+    notifyListeners();
   }
 
   @override
