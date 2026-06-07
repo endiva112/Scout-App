@@ -16,6 +16,7 @@ class ShoppingList {
   //Expansión
   final int divisionCount;
   final int itemCount;
+  final String annotation;
 
   const ShoppingList({
     required this.id,
@@ -30,6 +31,7 @@ class ShoppingList {
     //Expansión de funciones
     this.divisionCount = 0,
     this.itemCount = 0,
+    this.annotation = ''
   });
 
   factory ShoppingList.fromMap(String id, Map<String, dynamic> map) {
@@ -52,6 +54,7 @@ class ShoppingList {
       //Expansión
       divisionCount: map['divisionCount'] as int? ?? 0,
       itemCount: map['itemCount'] as int? ?? 0,
+      annotation: map['annotation'] as String? ?? '',
     );
   }
 
@@ -79,6 +82,7 @@ class ShoppingList {
     //Expansión
     int? divisionCount,
     int? itemCount,
+    String? annotation,
 
   }) {
     return ShoppingList(
@@ -94,6 +98,7 @@ class ShoppingList {
       //Expansión
       divisionCount: divisionCount ?? this.divisionCount,
       itemCount: itemCount ?? this.itemCount,
+      annotation: annotation ?? this.annotation,
     );
   }
 }

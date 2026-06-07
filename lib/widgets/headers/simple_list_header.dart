@@ -5,10 +5,12 @@ import 'package:scout_app/widgets/common/return_arrow.dart';
 
 class SimpleListHeader extends StatelessWidget {
   final Future<void> Function() onBeforeReturn;
+  final String listId;
 
   const SimpleListHeader({
     super.key,
     required this.onBeforeReturn,
+    required this.listId,
   });
 
   @override
@@ -28,11 +30,11 @@ class SimpleListHeader extends StatelessWidget {
             ),
             HeaderIcon(
               icon: Icons.edit_note_rounded,
-              route: '/lists/simple_list/annotations',
-            ),
-          ],
-        ),
-      ),
+              route: '/lists/simple_list/$listId/annotation',
+            )
+          ]
+        )
+      )
     );
   }
 }

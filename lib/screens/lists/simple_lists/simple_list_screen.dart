@@ -147,7 +147,7 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SimpleListHeader(onBeforeReturn: _saveBeforeLeaving),
+                SimpleListHeader(onBeforeReturn: _saveBeforeLeaving, listId: _list!.id),
                 Expanded(
                   // .value porque el provider ya está instanciado como campo del State
                   child: ChangeNotifierProvider.value(

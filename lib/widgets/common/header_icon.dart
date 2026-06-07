@@ -5,12 +5,12 @@ import 'package:scout_app/widgets/common/bordered_container.dart';
 
 class HeaderIcon extends StatelessWidget {
   final IconData icon;
-  final String? route;
+  final String route;
 
   const HeaderIcon({
     super.key,
     required this.icon,
-    this.route,
+    required this.route,
   });
 
   @override
@@ -18,7 +18,7 @@ class HeaderIcon extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () => route != null ? context.push(route!) : context.pop(),
+        onTap: () => context.push(route),
         child: BorderedContainer(
           backgroundColor: AppColors.bgPrimary,
           elevation: 1.2,
@@ -29,9 +29,9 @@ class HeaderIcon extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(5),
             child: Icon(icon, color: AppColors.textPrimary, size: 38),
-          ),
-        ),
-      ),
+          )
+        )
+      )
     );
   }
 }

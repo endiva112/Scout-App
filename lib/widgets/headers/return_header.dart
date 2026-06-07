@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-
 import 'package:go_router/go_router.dart';
 
 class ReturnHeader extends StatelessWidget {
-  const ReturnHeader({super.key,});
+  final Future<void> Function()? onBeforeReturn;
+
+  const ReturnHeader({
+    super.key,
+    this.onBeforeReturn,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        minHeight: 70,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.bgPrimary,
-      ),
+      constraints: const BoxConstraints(minHeight: 70),
+      decoration: const BoxDecoration(color: AppColors.bgPrimary),
       child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 10),
+        padding: const EdgeInsetsDirectional.fromSTEB(20, 10, 20, 10),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -24,17 +24,20 @@ class ReturnHeader extends StatelessWidget {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                onTap: () => context.pop(),
-                child: Icon(
+                onTap: () async {
+                  await onBeforeReturn?.call();
+                  if (context.mounted) context.pop();
+                },
+                child: const Icon(
                   Icons.arrow_back,
                   color: AppColors.textPrimary,
                   size: 40,
-                )
-              )
-            )
-          ]
-        )
-      )
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -208,4 +208,10 @@ class ShoppingListRepository {
       'itemCount': FieldValue.increment(-1),
     });
   }
+
+  Future<void> saveAnnotation(String listId, String annotation) async {
+    await _db.collection('lists').doc(listId).update({
+      'annotation': annotation,
+    });
+  }
 }

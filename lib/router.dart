@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:scout_app/screens/profile/set_alias_screen.dart';
 
-
 // Listas
 import 'screens/lists/shopping_lists_screen.dart';
+import 'package:scout_app/screens/lists/list_annotation_screen.dart';
 
 // Simples
 import 'package:scout_app/screens/lists/simple_lists/simple_list_screen.dart';
@@ -92,6 +92,12 @@ final GoRouter router = GoRouter(
       builder: (context, state) => SimpleListScreen(
         listId: state.pathParameters['listId']!,
         mode: state.uri.queryParameters['mode'] ?? 'planning',
+      ),
+    ),
+    GoRoute(
+      path: '/lists/simple_list/:listId/annotation',
+      builder: (context, state) => ListAnnotationScreen(
+        listId: state.pathParameters['listId']!,
       ),
     ),
 
