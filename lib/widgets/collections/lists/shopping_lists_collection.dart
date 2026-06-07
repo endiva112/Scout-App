@@ -50,7 +50,7 @@ class ShoppingListsCollection extends StatelessWidget {
               items: list.itemCount,
               extraInfo: '${list.divisionCount} tiendas o supermercados',
               listId: list.id,
-              onEdit: () => context.push(
+              onEdit: () => context.go(
                 list.type == ListType.simple
                     ? '/lists/simple_list/${list.id}'
                     : '/lists/collaborative_list/${list.id}',

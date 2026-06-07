@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:scout_app/models/lists/division.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/models/lists/shopping_list.dart';
 import 'package:scout_app/repositories/lists/shopping_list_repository.dart';
 import 'package:scout_app/widgets/footers/simple_list_footer.dart';
 import 'package:scout_app/widgets/headers/simple_list_header.dart';
+import 'package:scout_app/widgets/lists/editing_session_provider.dart';
 import 'package:scout_app/widgets/lists/simple_planning_body.dart';
 
 class SimpleListScreen extends StatefulWidget {
@@ -55,13 +59,12 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
     _saveTimer = Timer(const Duration(seconds: 2), _saveList);
   }
 
+  //Guardar una lista
   Future<void> _saveList() async {
     if (_list == null) return;
-
     final saved = await _repository.saveList(
       _list!.copyWith(title: _titleController.text),
     );
-
     if (!mounted) return;
     setState(() => _list = saved ?? _list);
   }
@@ -72,32 +75,53 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
     _scheduleSave();
   }
 
+  //Controla que tipo de lista cargar o crea una nueva si el id esta vacio.
   Future<void> _loadList() async {
-    if (widget.listId == null) {
+    // Lista existente: cargamos de Firestore
+    if (widget.listId != null) {
+
+      final list = await _repository.getList(widget.listId!);
+
+      if (!mounted) {return;}
+
+      if (list == null) {return;}
+
       setState(() {
-        _list = ShoppingList(
-          id: '',
-          ownerId: FirebaseAuth.instance.currentUser!.uid,
-          type: ListType.simple,
-          status: ListStatus.shopping,
-          title: '',
-          collaborators: const [],
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        );
+        _list = list;
+        _titleController.text = list.title;
         _initialized = true;
       });
+
       return;
     }
 
-    final list = await _repository.getList(widget.listId!);
-    if (!mounted || list == null) return;
+    // Lista nueva: creamos en Firestore, creamos división por defecto y redirigimos
+    final newList = ShoppingList(
+      id: '',
+      ownerId: FirebaseAuth.instance.currentUser!.uid,
+      type: ListType.simple,
+      status: ListStatus.shopping,
+      title: '',
+      collaborators: const [],
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
 
-    setState(() {
-      _list = list;
-      _titleController.text = list.title;
-      _initialized = true;
-    });
+    final saved = await _repository.saveList(newList);
+
+    if (!mounted) {return;}
+
+    if (saved == null) {return;}
+
+    await _repository.saveDivision(
+      saved.id,
+      const Division(id: '', name: 'Sin tienda asignada'),
+    );
+
+    await _repository.incrementDivisionCount(saved.id);
+    if (!mounted) {return;}
+
+    GoRouter.of(context).go('/lists/simple_list/${saved.id}');
   }
 
   @override
@@ -124,11 +148,14 @@ class _SimpleListScreenState extends State<SimpleListScreen> {
               children: [
                 SimpleListHeader(onBeforeReturn: _saveBeforeLeaving),
                 Expanded(
-                  child: SimplePlanningBody(
-                    listId: _list!.id,
-                    titleController: _titleController,
-                    updatedAt: _list!.updatedAt,
-                    onChanged: _onTitleChanged,
+                  child: ChangeNotifierProvider(
+                    create: (_) => EditingSessionProvider(),
+                    child: SimplePlanningBody(
+                      listId: _list!.id,
+                      titleController: _titleController,
+                      updatedAt: _list!.updatedAt,
+                      onChanged: _onTitleChanged,
+                    )
                   )
                 ),
                 SimpleListFooter(listId: _list!.id, mode: widget.mode)
