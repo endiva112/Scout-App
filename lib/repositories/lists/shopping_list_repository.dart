@@ -133,29 +133,34 @@ class ShoppingListRepository {
 
   Stream<List<Item>> getItems(String listId, String divisionId) {
     return _db
-        .collection('lists')
-        .doc(listId)
-        .collection('divisions')
-        .doc(divisionId)
-        .collection('items')
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Item.fromMap(doc.id, doc.data()))
-            .toList());
+      .collection('lists')
+      .doc(listId)
+      .collection('divisions')
+      .doc(divisionId)
+      .collection('items')
+      .orderBy('createdAt', descending: false) // ← añade esto
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => Item.fromMap(doc.id, doc.data()))
+          .toList());
   }
 
   Future<Item> saveItem(String listId, String divisionId, Item item) async {
     if (item.id.isEmpty) {
+      final now = Timestamp.fromDate(DateTime.now());
       final doc = await _db
           .collection('lists')
           .doc(listId)
           .collection('divisions')
           .doc(divisionId)
           .collection('items')
-          .add(item.toMap());
+          .add({
+            ...item.toMap(),
+            'createdAt': now, // ← añade esto
+          });
       return item.copyWith(id: doc.id);
     }
-
+    // el update no toca createdAt
     await _db
         .collection('lists')
         .doc(listId)

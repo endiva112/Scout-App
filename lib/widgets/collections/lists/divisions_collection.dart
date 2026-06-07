@@ -73,7 +73,7 @@ class _DivisionsCollectionState extends State<DivisionsCollection> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: _divisions.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 10),
+      separatorBuilder: (_, _) => const SizedBox(height: 10),
       itemBuilder: (_, index) {
         final division = _divisions[index];
         return DivisionCard(
