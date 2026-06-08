@@ -89,6 +89,7 @@ class ShoppingListsScreen extends StatelessWidget {
             },
           ),
           const SizedBox(height: 12),
+          /*
           SheetOption(
             icon: Icons.group_rounded,
             title: 'Lista recurrente',
@@ -99,7 +100,7 @@ class ShoppingListsScreen extends StatelessWidget {
                 const SnackBar(content: Text('Función no implementada')),
               );
             },
-          )
+          )*/
         ],
       ),
     );

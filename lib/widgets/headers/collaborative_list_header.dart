@@ -28,9 +28,23 @@ class CollaborativeListHeader extends StatelessWidget {
               customRoute: '/',
               onBeforeReturn: onBeforeReturn,
             ),
-            HeaderIcon(
-              icon: Icons.edit_note_rounded,
-              route: '/lists/collaborative_list/$listId/annotation',
+            Row(
+              children: [
+                HeaderIcon(
+                  icon: Icons.attach_money_rounded,
+                  route: '/payments/collaborative_list/expenses'
+                ),
+                SizedBox(width: 10),
+                HeaderIcon(
+                  icon: Icons.edit_note_rounded,
+                  route: '/lists/collaborative_list/$listId/annotation',
+                ),
+                SizedBox(width: 10),
+                HeaderIcon(
+                  icon: Icons.group_rounded,
+                  route: '/lists/a/collaborative_list/details'
+                )
+              ]
             )
           ]
         )

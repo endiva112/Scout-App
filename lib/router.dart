@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:scout_app/screens/collaborators/list_details_screen.dart';
+import 'package:scout_app/screens/payments/collaborative_lists_payments/collaborative_expenses_screen.dart';
 import 'package:scout_app/screens/profile/set_alias_screen.dart';
 
 // Listas
@@ -119,17 +121,24 @@ final GoRouter router = GoRouter(
         listId: state.pathParameters['listId']!,
       ),
     ),
+    GoRoute(
+      path: '/lists/a/collaborative_list/details',//TODO fix route
+      builder: (context, state) => const ListDetailsScreen(),
+    ),
 
 
-    // Pagos
-      // Listas colaborativas
+    // Listas colaborativas
+    GoRoute(
+      path: '/payments/collaborative_list/expenses',
+      builder: (context, state) => const CollaborativeExpensesScreen(),
+    ),
     GoRoute(
       path: '/payments/collaborative_list/balances',
       builder: (context, state) => const CollaborativeBalancesScreen(),
     ),
 
 
-      // Listas recurrentes
+    // Listas recurrentes
     GoRoute(
       path: '/payments/recurring_lists/expenses',
       builder: (context, state) => const RecurringExpensesScreen(),

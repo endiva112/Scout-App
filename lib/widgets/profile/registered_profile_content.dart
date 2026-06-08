@@ -38,9 +38,9 @@ class RegisteredProfileContent extends StatelessWidget {
             const SizedBox(height: 30),
             _buildProfileSettings(context),
             const SizedBox(height: 30),
-            _buildSubHeader(),
-            const SizedBox(height: 5),
-            _buildSettings(context),
+            //_buildSubHeader(),
+            //const SizedBox(height: 5),
+            //_buildSettings(context),
             const SizedBox(height: 30),
             CustomButton(
               label: 'Cerrar sesión',
