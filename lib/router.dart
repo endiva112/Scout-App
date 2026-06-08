@@ -108,11 +108,16 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/lists/collaborative_list/:listId',
-      builder: (context, state) {
-        final listId = state.pathParameters['listId']!;
-        final mode = state.uri.queryParameters['mode'] ?? 'planning';
-        return CollaborativeListScreen(listId: listId, mode: mode);
-      },
+      builder: (context, state) => CollaborativeListScreen(
+        listId: state.pathParameters['listId']!,
+        mode: state.uri.queryParameters['mode'] ?? 'planning',
+      ),
+    ),
+    GoRoute(
+      path: '/lists/collaborative_list/:listId/annotation',
+      builder: (context, state) => ListAnnotationScreen(
+        listId: state.pathParameters['listId']!,
+      ),
     ),
 
 
