@@ -217,29 +217,6 @@
       });
     }
 
-    void _onBackspaceOnEmpty(String id) {
-      final visibleRows = _rows.where((r) => r.isVisible).toList();
-      final index = visibleRows.indexWhere((r) => r.id == id);
-
-      _markRowForDeletion(id);
-
-      if (index <= 0) return;
-
-      final previousId = visibleRows[index - 1].id;
-
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        final focusNode = _nameFocus[previousId];
-        final controller = _nameControllers[previousId];
-        if (focusNode == null || controller == null) return;
-
-        focusNode.requestFocus();
-        controller.selection = TextSelection.collapsed(
-          offset: controller.text.length,
-        );
-      });
-    }
-
     void _markRowForDeletion(String id) {
       final index = _rows.indexWhere((r) => r.id == id);
       if (index == -1) return;

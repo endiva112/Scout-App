@@ -42,7 +42,7 @@ class CollaborativeListHeader extends StatelessWidget {
                 SizedBox(width: 10),
                 HeaderIcon(
                   icon: Icons.group_rounded,
-                  route: '/lists/a/collaborative_list/details'
+                  route: '/lists/collaborative_list/$listId/details'
                 )
               ]
             )

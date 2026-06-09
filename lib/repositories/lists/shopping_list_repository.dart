@@ -353,4 +353,11 @@ class ShoppingListRepository {
       await saveAnnotation(saved.id, original.annotation);
     }
   }
+
+  // Borrar colaborador
+  Future<void> removeCollaborator(String listId, String collaboratorId) async {
+    await _db.collection('lists').doc(listId).update({
+      'collaborators': FieldValue.arrayRemove([collaboratorId]),
+    });
+  }
 }

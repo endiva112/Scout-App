@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:scout_app/models/lists/shopping_list.dart';
+import 'package:scout_app/repositories/lists/shopping_list_repository.dart';
+import 'package:scout_app/theme/app_colors.dart';
+import 'package:scout_app/widgets/buttons/custom_button.dart';
+import 'package:scout_app/widgets/collections/lists/collaborators_collection.dart';
+import 'package:scout_app/widgets/common/custom_bottom_sheet.dart';
+import 'package:scout_app/widgets/common/title_text_field.dart';
+import 'package:scout_app/widgets/headers/return_header.dart';
 
 class ListDetailsScreen extends StatefulWidget {
-  const ListDetailsScreen({super.key});
+  final String listId;
 
-  static const String routeName = 'agregar-colaborador';
-  static const String routePath = '/agregarColaborador';
+  const ListDetailsScreen({super.key, required this.listId});
 
   @override
   State<ListDetailsScreen> createState() => _ListDetailsScreenState();
 }
 
 class _ListDetailsScreenState extends State<ListDetailsScreen> {
-  final _titleController = TextEditingController(text: 'Compras de la semana');
+  final _repository = ShoppingListRepository();
+  final _titleController = TextEditingController();
+
+  ShoppingList? _list;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadList();
+  }
 
   @override
   void dispose() {
@@ -19,329 +36,145 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
     super.dispose();
   }
 
+  Future<void> _loadList() async {
+    final list = await _repository.getList(widget.listId);
+    if (!mounted) return;
+    setState(() {
+      _list = list;
+      _titleController.text = list?.title ?? '';
+      _loading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.bgPrimary,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _Header(),
+            ReturnHeader(),
             Expanded(
-              child: Container(
-                color: const Color(0xFFF1F4F8),
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 10),
-                    const _SectionLabel('Título'),
-                    _TitleField(controller: _titleController),
-                    const SizedBox(height: 10),
-                    const _SectionLabel('Colaboradores'),
-                    const SizedBox(height: 5),
-                    const Expanded(child: _CollaboratorList()),
-                    const SizedBox(height: 5),
-                    _AddButton(),
-                  ],
-                ),
-              ),
+              child: _loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _list == null
+                      ? const Center(child: Text('Lista no encontrada'))
+                      : _buildContent(),
             ),
           ],
         ),
       ),
     );
   }
-}
 
-// ── Header ───────────────────────────────────────────────────────────────────
-
-class _Header extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildContent() {
     return Container(
-      color: Colors.white,
-      constraints: const BoxConstraints(minHeight: 70),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Row(
-        children: const [
-          Icon(Icons.arrow_back, size: 40, color: Colors.black),
-          SizedBox(width: 20),
-          Text(
-            'Editar lista',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w500,
-              fontFamily: 'Inter',
-            ),
+      color: AppColors.bgSecondary,
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Título',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-// ── Section label ─────────────────────────────────────────────────────────────
-
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel(this.text);
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(fontSize: 16, fontFamily: 'Inter'),
-    );
-  }
-}
-
-// ── Title text field ──────────────────────────────────────────────────────────
-
-class _TitleField extends StatelessWidget {
-  const _TitleField({required this.controller});
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    final border = OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.transparent),
-      borderRadius: BorderRadius.circular(12),
-    );
-
-    return TextFormField(
-      controller: controller,
-      style: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        fontFamily: 'Inter',
-      ),
-      decoration: InputDecoration(
-        isDense: true,
-        filled: true,
-        fillColor: Colors.white,
-        hintText: 'TextField',
-        enabledBorder: border,
-        focusedBorder: border,
-        errorBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.red),
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-    );
-  }
-}
-
-// ── Collaborator list ─────────────────────────────────────────────────────────
-
-class _CollaboratorList extends StatelessWidget {
-  const _CollaboratorList();
-
-  // accent3 in FlutterFlow default theme is typically a light grey border color
-  //static const Color _accent = Color(0xFFE0E3E7);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.only(bottom: 40),
-      children: [
-        // Owner row (top rounded)
-        _CollabTile(
-          name: 'Enrique (Yo)',
-          trailing: const _OwnerBadge(),
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
+          TitleTextField(
+            titleController: _titleController,
+            onChanged: () {},
           ),
-          topBorder: true,
-        ),
-        // Collaborator with long name
-        _CollabTile(
-          name: 'Michael el del nombre tan largo que da miedo, '
-              'a ver como se comporta esto',
-          trailing: const _RemoveIcon(),
-        ),
-        // Pending invitations row
-        _CollabTile(
-          leading: const Text(
-            '2',
-            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Inter'),
+          const SizedBox(height: 20),
+          const Text(
+            'Colaboradores',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           ),
-          name: 'invitaciones pendiente...',
-          trailing: const _RemoveIcon(),
-        ),
-        // Last collaborator (bottom rounded)
-        _CollabTile(
-          name: 'User0874A',
-          trailing: const _RemoveIcon(),
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(12),
-            bottomRight: Radius.circular(12),
-          ),
-          bottomBorder: true,
-        ),
-        const SizedBox(height: 8),
-        // Standalone bordered card (duplicate owner — as designed)
-        _StandaloneOwnerCard(),
-      ],
-    );
-  }
-}
-
-// ── Generic collaborator tile ─────────────────────────────────────────────────
-
-class _CollabTile extends StatelessWidget {
-  const _CollabTile({
-    this.leading,
-    required this.name,
-    required this.trailing,
-    this.borderRadius = BorderRadius.zero,
-    this.topBorder = false,
-    this.bottomBorder = false,
-  });
-
-  final Widget? leading;
-  final String name;
-  final Widget trailing;
-  final BorderRadius borderRadius;
-  final bool topBorder;
-  final bool bottomBorder;
-
-  static const Color _accent = Color(0xFFE0E3E7);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: _accent, borderRadius: borderRadius),
-      padding: EdgeInsets.fromLTRB(
-        2,
-        topBorder ? 2 : 0,
-        2,
-        bottomBorder ? 2 : 0,
-      ),
-      child: Container(
-        decoration: BoxDecoration(color: Colors.white, borderRadius: borderRadius),
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            if (leading != null) ...[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: leading!,
-              ),
-            ],
-            Expanded(
-              child: Text(
-                name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontFamily: 'Inter'),
-              ),
-            ),
-            trailing,
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ── Standalone owner card (bordered) ─────────────────────────────────────────
-
-class _StandaloneOwnerCard extends StatelessWidget {
-  static const Color _accent = Color(0xFFE0E3E7);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _accent, width: 2),
-      ),
-      padding: const EdgeInsets.all(10),
-      child: Row(
-        children: const [
+          const SizedBox(height: 5),
           Expanded(
-            child: Text(
-              'Enrique (Yo)',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontFamily: 'Inter'),
+            child: ListView(
+              children: [
+                CollaboratorsCollection(
+                  ownerId: _list!.ownerId,
+                  collaboratorIds: _list!.collaborators,
+                  onRemoveTap: (collaboratorId, displayName) => {
+                    _showDeleteCollabSheet(context, collaboratorId, displayName)
+                  },
+                ),
+              ],
             ),
           ),
-          _OwnerBadge(),
-        ],
-      ),
-    );
-  }
-}
-
-// ── Small reusable widgets ────────────────────────────────────────────────────
-
-class _OwnerBadge extends StatelessWidget {
-  const _OwnerBadge();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(10),
-      child: Text(
-        'PROPIETARIO',
-        style: TextStyle(
-          fontSize: 10,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF57636C),
-          fontFamily: 'Inter',
-        ),
-      ),
-    );
-  }
-}
-
-class _RemoveIcon extends StatelessWidget {
-  const _RemoveIcon();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Icon(Icons.close_rounded, color: Colors.black),
-    );
-  }
-}
-
-// ── Add collaborator button ───────────────────────────────────────────────────
-
-class _AddButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.6,
-        child: ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFEE8B60),
-            padding: const EdgeInsets.all(16),
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(color: Color(0xFFEE8B60)),
-            ),
-          ),
-          child: const Text(
-            'Agregar colaborador',
-            style: TextStyle(
-              color: Colors.white,
+          const SizedBox(height: 5),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(40, 40, 40, 20),
+            child: CustomButton(
               fontSize: 22,
               fontWeight: FontWeight.w500,
-              fontFamily: 'Inter',
+              label: 'Agregar colaborador',
+              onPressed: () {},//TODO
             ),
           ),
-        ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteCollabSheet(BuildContext context, String collaboratorId, String displayName) {
+    CustomBottomSheet.show(
+      context,
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 8),
+
+          Text(
+            '¿Eliminar a $displayName?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: AppColors.textPrimary,
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // BOTÓN DE ELIMINAR
+          SizedBox(
+            width: double.infinity,
+            child: CustomButton(
+              label: 'SÍ, ELIMINAR',
+              onPressed: () async {
+                Navigator.pop(context);
+                _repository.removeCollaborator(widget.listId, collaboratorId);
+                await _loadList(); // recarga la pantalla con los datos frescos
+              },
+              backgroundColor: AppColors.bgPrimary,
+              textColor: AppColors.actionPrimary,
+              borderColor: AppColors.bgPrimary,
+              borderRadius: 12,
+              elevation: 2,
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          // BOTÓN CANCELAR
+          SizedBox(
+            width: double.infinity,
+            child: CustomButton(
+              label: 'CANCELAR',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              backgroundColor: AppColors.actionPrimary,
+              textColor: AppColors.bgPrimary,
+              borderColor: AppColors.actionPrimary,
+              borderRadius: 12,
+              elevation: 0,
+            ),
+          ),
+
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

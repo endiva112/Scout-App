@@ -122,8 +122,10 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/lists/a/collaborative_list/details',//TODO fix route
-      builder: (context, state) => const ListDetailsScreen(),
+      path: '/lists/collaborative_list/:listId/details',
+      builder: (context, state) => ListDetailsScreen(
+        listId: state.pathParameters['listId']!,
+      ),
     ),
 
 
