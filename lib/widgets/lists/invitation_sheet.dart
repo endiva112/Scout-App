@@ -4,6 +4,7 @@ import 'package:scout_app/repositories/lists/invitation_repository.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/buttons/custom_button.dart';
 import 'package:scout_app/widgets/common/custom_bottom_sheet.dart';
+import 'package:share_plus/share_plus.dart';
 
 class InvitationSheet {
   static void show({
@@ -135,8 +136,11 @@ class _InvitationSheetContentState extends State<_InvitationSheetContent> {
           label: 'Compartir enlace',
           fontSize: 18,
           onPressed: _state is _Ready
-              ? () => Navigator.pop(context) // TODO: share nativo
-              : () {}, // no-op mientras carga
+              ? () {
+                  Navigator.pop(context);
+                  Share.share((_state as _Ready).url);
+                }
+              : () {},
           backgroundColor: AppColors.bgPrimary,
           textColor: AppColors.actionPrimary,
           borderColor: AppColors.bgPrimary,
@@ -154,7 +158,7 @@ class _InvitationSheetContentState extends State<_InvitationSheetContent> {
           borderRadius: 12,
           elevation: 0,
         ),
-      ],//https://scoutapp.com/invite/r3s2fcd96phHrt8Ta1oP/Hh3YfzHFIyJZMgMoWwiVe5fJHiW56Ik0
+      ],
     );
   }
 
