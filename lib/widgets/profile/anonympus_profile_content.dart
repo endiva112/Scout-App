@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
-import 'package:go_router/go_router.dart';
+//import 'package:go_router/go_router.dart';
 import 'package:scout_app/widgets/common/bordered_container.dart';
-import 'package:scout_app/widgets/profile/custom_setting.dart';
+//import 'package:scout_app/widgets/profile/custom_setting.dart';
 import 'package:scout_app/widgets/profile/version_text.dart';
 
 class AnonympusProfileContent extends StatelessWidget {
@@ -100,6 +100,7 @@ class AnonympusProfileContent extends StatelessWidget {
     );
   }
 
+  /*
   Widget _buildSubHeader() {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -128,5 +129,5 @@ class AnonympusProfileContent extends StatelessWidget {
         ],
       ),
     );
-  }
+  }*/
 }

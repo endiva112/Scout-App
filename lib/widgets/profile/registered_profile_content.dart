@@ -5,7 +5,7 @@ import 'package:scout_app/models/app_user.dart';
 import 'package:scout_app/widgets/common/bordered_container.dart';
 import 'package:scout_app/widgets/buttons/custom_button.dart';
 import 'package:scout_app/widgets/profile/custom_profile_setting.dart';
-import 'package:scout_app/widgets/profile/custom_setting.dart';
+//import 'package:scout_app/widgets/profile/custom_setting.dart';
 import 'package:scout_app/widgets/profile/delete_profile_sheet.dart';
 import 'package:scout_app/widgets/profile/version_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -92,6 +92,7 @@ class RegisteredProfileContent extends StatelessWidget {
     );
   }
 
+  /*
   Widget _buildSubHeader() {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -100,7 +101,7 @@ class RegisteredProfileContent extends StatelessWidget {
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
       ),
     );
-  }
+  }*/
 
   Widget _buildProfileSettings(BuildContext context) {
     return BorderedContainer(
@@ -139,6 +140,7 @@ class RegisteredProfileContent extends StatelessWidget {
     );
   }
 
+  /*
   Widget _buildSettings(BuildContext context) {
     return BorderedContainer(
       borderWidth: 2,
@@ -161,5 +163,5 @@ class RegisteredProfileContent extends StatelessWidget {
         ],
       ),
     );
-  }
+  }*/
 }
