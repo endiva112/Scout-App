@@ -1,7 +1,8 @@
 import 'package:go_router/go_router.dart';
-import 'package:scout_app/screens/collaborators/list_details_screen.dart';
+
+
 import 'package:scout_app/screens/payments/collaborative_lists_payments/collaborative_expenses_screen.dart';
-import 'package:scout_app/screens/profile/set_alias_screen.dart';
+
 
 // Listas
 import 'screens/lists/shopping_lists_screen.dart';
@@ -12,6 +13,11 @@ import 'package:scout_app/screens/lists/simple_lists/simple_list_screen.dart';
 
 // Colaborativas
 import 'package:scout_app/screens/lists/collaborative_lists/collaborative_list_screen.dart';
+
+
+//Colaboradores
+import 'package:scout_app/screens/collaborators/list_details_screen.dart';
+import 'package:scout_app/screens/collaborators/invite_redirect_page.dart';
 
 // Recurrentes
 // Recortada del PMV
@@ -36,6 +42,7 @@ import 'screens/profile/profile_screen.dart';
 import 'package:scout_app/screens/profile/set_notifications_screen.dart';
 import 'package:scout_app/screens/profile/set_language_screen.dart';
 import 'package:scout_app/screens/profile/set_theme_screen.dart';
+import 'package:scout_app/screens/profile/set_alias_screen.dart';
 
 
 
@@ -128,8 +135,17 @@ final GoRouter router = GoRouter(
       ),
     ),
 
+    //Invitaciones DEEP LINK
+    GoRoute(
+      path: '/invite/:listId/:token',
+      builder: (context, state) => InviteRedirectPage(
+        listId: state.pathParameters['listId']!,
+        token: state.pathParameters['token']!,
+      ),
+    ),
 
-    // Listas colaborativas
+
+    //Pagos de listas colaborativas
     GoRoute(
       path: '/payments/collaborative_list/expenses',
       builder: (context, state) => const CollaborativeExpensesScreen(),

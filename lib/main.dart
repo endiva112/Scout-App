@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scout_app/core/deep_link_handler.dart';
 import 'router.dart';
 
 // Imports para Firebase
@@ -29,10 +30,22 @@ void main() async {
 }
 
 // MiApp es el Widget principal, la raiz de toda la UI
-class MyApp extends StatelessWidget {
-  const MyApp({super.key}); //Constructor, usando un identificador interno que flutter comprende
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
-  //Sin esto, mi widget no sabria que pintar
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final _deepLinkHandler = DeepLinkHandler();
+
+  @override
+  void initState() {
+    super.initState();
+    _deepLinkHandler.init(router);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.endiva.scout_app",
+    "sha256_cert_fingerprints": ["F7:A1:BB:DF:CC:6B:53:CE:DB:24:1A:F9:E5:A0:2A:4B:30:4C:A0:05:68:09:DA:34:4D:2C:6B:CE:70:5E:9A:27"]
+  }
+}]

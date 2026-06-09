@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:scout_app/repositories/lists/invitation_repository.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/buttons/custom_button.dart';
 import 'package:scout_app/widgets/common/custom_bottom_sheet.dart';
@@ -9,23 +10,29 @@ class InvitationSheet {
     required BuildContext context,
     required String listId,
   }) {
-    final inviteUrl = 'https://scoutapp.com/invite/$listId/estoEsUnTest';
-
     CustomBottomSheet.show(
       context,
-      content: _InvitationSheetContent(
-        inviteUrl: inviteUrl,
-      ),
+      content: _InvitationSheetContent(listId: listId),
     );
   }
 }
 
-class _InvitationSheetContent extends StatefulWidget {
-  final String inviteUrl;
+// ── Estados internos ─────────────────────────────────────────────────────────
 
-  const _InvitationSheetContent({
-    required this.inviteUrl,
-  });
+sealed class _InvitationState {}
+class _Loading extends _InvitationState {}
+class _Ready extends _InvitationState {
+  final String url;
+  _Ready(this.url);
+}
+class _Error extends _InvitationState {}
+
+// ── Widget ───────────────────────────────────────────────────────────────────
+
+class _InvitationSheetContent extends StatefulWidget {
+  final String listId;
+
+  const _InvitationSheetContent({required this.listId});
 
   @override
   State<_InvitationSheetContent> createState() =>
@@ -33,12 +40,15 @@ class _InvitationSheetContent extends StatefulWidget {
 }
 
 class _InvitationSheetContentState extends State<_InvitationSheetContent> {
+  final _repo = InvitationRepository();
   late final TextEditingController _controller;
+  _InvitationState _state = _Loading();
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.inviteUrl);
+    _controller = TextEditingController();
+    _generateInvitation();
   }
 
   @override
@@ -47,22 +57,33 @@ class _InvitationSheetContentState extends State<_InvitationSheetContent> {
     super.dispose();
   }
 
+  Future<void> _generateInvitation() async {
+    try {
+      final invitation = await _repo.createInvitation(widget.listId);
+      final url = 'scout://invite/${widget.listId}/${invitation.token}';
+
+      if (!mounted) return;
+      setState(() {
+        _state = _Ready(url);
+        _controller.text = url;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _state = _Error());
+    }
+  }
+
   void _showTopToast(String message) {
     final overlay = Overlay.of(context);
-    if (overlay == null) return;
-
     final entry = OverlayEntry(
-      builder: (context) => Positioned(
-        top: MediaQuery.of(context).padding.top + 20,
+      builder: (ctx) => Positioned(
+        top: MediaQuery.of(ctx).padding.top + 20,
         left: 20,
         right: 20,
         child: Material(
           color: Colors.transparent,
           child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: AppColors.actionPrimary,
               borderRadius: BorderRadius.circular(12),
@@ -79,12 +100,8 @@ class _InvitationSheetContentState extends State<_InvitationSheetContent> {
         ),
       ),
     );
-
     overlay.insert(entry);
-
-    Future.delayed(const Duration(seconds: 2), () {
-      entry.remove();
-    });
+    Future.delayed(const Duration(seconds: 2), entry.remove);
   }
 
   @override
@@ -97,93 +114,36 @@ class _InvitationSheetContentState extends State<_InvitationSheetContent> {
           'Invitar a la lista',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w500,
-            color: AppColors.bgPrimary,
-          ),
+              fontSize: 24,
+              fontWeight: FontWeight.w500,
+              color: AppColors.bgPrimary),
         ),
         const SizedBox(height: 10),
         const Text(
           'Comparte el enlace con quien quieras\nCaduca en 48 horas',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w400,
-            color: AppColors.bgPrimary,
-            height: 1.3,
-          ),
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              color: AppColors.bgPrimary,
+              height: 1.3),
         ),
         const SizedBox(height: 20),
-
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          decoration: BoxDecoration(
-            color: AppColors.bgPrimary,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.link_rounded,
-                  size: 18, color: AppColors.textSecondary),
-              const SizedBox(width: 8),
-
-              Expanded(
-                child: TextField(
-                  controller: _controller,
-                  readOnly: true,
-                  maxLines: 1,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    isCollapsed: true,
-                  ),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ),
-
-              SizedBox(width: 5),
-
-              GestureDetector(
-                onTap: () {
-                  Clipboard.setData(
-                    ClipboardData(text: _controller.text),
-                  );
-
-                  _showTopToast('¡Enlace copiado!');
-                },
-                child: const Text(
-                  'Copiar',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.actionPrimary,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-
+        _buildUrlBox(),
         const SizedBox(height: 10),
-
         CustomButton(
           label: 'Compartir enlace',
           fontSize: 18,
-          onPressed: () {
-            // TODO: share nativo
-            Navigator.pop(context);
-          },
+          onPressed: _state is _Ready
+              ? () => Navigator.pop(context) // TODO: share nativo
+              : () {}, // no-op mientras carga
           backgroundColor: AppColors.bgPrimary,
           textColor: AppColors.actionPrimary,
           borderColor: AppColors.bgPrimary,
           borderRadius: 12,
           elevation: 2,
         ),
-
         const SizedBox(height: 5),
-
         CustomButton(
           label: 'Cancelar',
           fontSize: 18,
@@ -194,7 +154,60 @@ class _InvitationSheetContentState extends State<_InvitationSheetContent> {
           borderRadius: 12,
           elevation: 0,
         ),
-      ],
+      ],//https://scoutapp.com/invite/r3s2fcd96phHrt8Ta1oP/Hh3YfzHFIyJZMgMoWwiVe5fJHiW56Ik0
+    );
+  }
+
+  Widget _buildUrlBox() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+          color: AppColors.bgPrimary, borderRadius: BorderRadius.circular(12)),
+      child: switch (_state) {
+        _Loading() => const Center(
+            child: SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          ),
+        _Error() => const Text(
+            'No se pudo generar el enlace. Inténtalo de nuevo.',
+            style: TextStyle(color: Colors.red, fontSize: 13),
+          ),
+        _Ready() => Row(
+            children: [
+              const Icon(Icons.link_rounded,
+                  size: 18, color: AppColors.textSecondary),
+              const SizedBox(width: 8),
+              Expanded(
+                child: TextField(
+                  controller: _controller,
+                  readOnly: true,
+                  maxLines: 1,
+                  decoration: const InputDecoration(
+                      border: InputBorder.none, isCollapsed: true),
+                  style: const TextStyle(
+                      fontSize: 14, color: AppColors.textSecondary),
+                ),
+              ),
+              const SizedBox(width: 5),
+              GestureDetector(
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: _controller.text));
+                  _showTopToast('¡Enlace copiado!');
+                },
+                child: const Text(
+                  'Copiar',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.actionPrimary),
+                ),
+              ),
+            ],
+          ),
+      },
     );
   }
 }
