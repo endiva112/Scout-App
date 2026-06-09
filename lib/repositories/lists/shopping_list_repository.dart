@@ -113,6 +113,11 @@ class ShoppingListRepository {
     await _db.collection('lists').doc(listId).delete();
   }
 
+  // Salir de una lista como colaborador — sin borrarla
+  Future<void> leaveList(String listId, String userId) async {
+    await removeCollaborator(listId, userId);
+  }
+
   // --- Divisions ---
 
   Stream<List<Division>> getDivisions(String listId) {
@@ -362,5 +367,12 @@ class ShoppingListRepository {
     await _db.collection('lists').doc(listId).update({
       'collaborators': FieldValue.arrayRemove([collaboratorId]),
     });
+  }
+
+  //Retorna verdadero si el uid que se le pasa es el del dueño de la lista
+  Future<bool> isOwner(String listId, String userId) async {
+    final doc = await _db.collection('lists').doc(listId).get();
+    if (!doc.exists) return false;
+    return doc.data()?['ownerId'] == userId;
   }
 }

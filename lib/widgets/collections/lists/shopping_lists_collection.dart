@@ -56,7 +56,14 @@ class ShoppingListsCollection extends StatelessWidget {
                     ? '/lists/simple_list/${list.id}'
                     : '/lists/collaborative_list/${list.id}',
               ),
-              onDelete: () => _repository.deleteList(list.id),
+              onDelete: () async {
+                final owner = await _repository.isOwner(list.id, _userId);
+                if (owner) {
+                  await _repository.deleteList(list.id);
+                } else {
+                  await _repository.leaveList(list.id, _userId);
+                }
+              }
             );
           },
         );

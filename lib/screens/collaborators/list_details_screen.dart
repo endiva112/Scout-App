@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scout_app/models/lists/shopping_list.dart';
 import 'package:scout_app/repositories/lists/shopping_list_repository.dart';
@@ -117,6 +118,7 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
               children: [
                 CollaboratorsCollection(
                   ownerId: _list!.ownerId,
+                  currentUserId: FirebaseAuth.instance.currentUser!.uid,
                   collaboratorIds: _list!.collaborators,
                   onRemoveTap: (collaboratorId, displayName) =>
                       _showDeleteCollabSheet(context, collaboratorId, displayName),

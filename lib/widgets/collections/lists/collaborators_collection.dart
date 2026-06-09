@@ -5,12 +5,14 @@ import 'package:scout_app/widgets/common/bordered_container.dart';
 
 class CollaboratorsCollection extends StatelessWidget {
   final String ownerId;
+  final String currentUserId;
   final List<String> collaboratorIds;
   final void Function(String collaboratorId, String displayName)? onRemoveTap;
 
   const CollaboratorsCollection({
     super.key,
     required this.ownerId,
+    required this.currentUserId,
     required this.collaboratorIds,
     this.onRemoveTap,
   });
@@ -33,6 +35,7 @@ class CollaboratorsCollection extends StatelessWidget {
           return _CollaboratorTile(
             uid: uid,
             isOwner: uid == ownerId,
+            canRemove: currentUserId == ownerId && uid != ownerId,  //Lógica para evitar que un colaborador pueda expulsar a otros colaboradores
             onRemoveTap: onRemoveTap,
           );
         },
@@ -44,11 +47,13 @@ class CollaboratorsCollection extends StatelessWidget {
 class _CollaboratorTile extends StatefulWidget {
   final String uid;
   final bool isOwner;
+  final bool canRemove;
   final void Function(String collaboratorId, String displayName)? onRemoveTap;
 
   const _CollaboratorTile({
     required this.uid,
     required this.isOwner,
+    required this.canRemove,
     this.onRemoveTap,
   });
 
@@ -108,13 +113,15 @@ class _CollaboratorTileState extends State<_CollaboratorTile> {
                 color: AppColors.textSecondary,
               ),
             )
-          : IconButton(
+          : widget.canRemove
+          ? IconButton(
               icon: const Icon(Icons.close, size: 20),
               onPressed: () => widget.onRemoveTap?.call(
                 widget.uid,
                 _displayName ?? widget.uid,
               ),
-            ),
+            )
+          : null,
     );
   }
 }
