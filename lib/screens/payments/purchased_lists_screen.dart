@@ -36,7 +36,7 @@ class PurchasedListsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SimpleTitle(title: 'Listas por pagar'),
-          _buildSummary(0),// TODO calcular el valor real
+          //_buildSummary(0), // calcular el valor real
           Expanded(
             child: PurchasedListsCollection()
           )
@@ -45,6 +45,7 @@ class PurchasedListsScreen extends StatelessWidget {
     );
   }
 
+  /*
   Widget _buildSummary(int balance) {
     return Column(
       children: [
@@ -63,5 +64,5 @@ class PurchasedListsScreen extends StatelessWidget {
         )
       ],
     );
-  }
+  }*/
 }

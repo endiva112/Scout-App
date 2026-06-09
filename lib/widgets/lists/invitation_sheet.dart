@@ -7,14 +7,15 @@ import 'package:scout_app/widgets/common/custom_bottom_sheet.dart';
 class InvitationSheet {
   static void show({
     required BuildContext context,
-    required String inviteUrl,
-    VoidCallback? onShare,
+    required String listId,
   }) {
+    // TODO: lógica real de generación de enlace
+    final inviteUrl = 'https://scoutapp.com/invite/$listId/estoEsUnTest';
+
     CustomBottomSheet.show(
       context,
       content: _InvitationSheetContent(
         inviteUrl: inviteUrl,
-        onShare: onShare,
       ),
     );
   }
@@ -22,11 +23,9 @@ class InvitationSheet {
 
 class _InvitationSheetContent extends StatelessWidget {
   final String inviteUrl;
-  final VoidCallback? onShare;
 
   const _InvitationSheetContent({
     required this.inviteUrl,
-    this.onShare,
   });
 
   @override
@@ -35,8 +34,6 @@ class _InvitationSheetContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 8),
-
-        /// TITLE
         const Text(
           'Invitar a la lista',
           textAlign: TextAlign.center,
@@ -46,10 +43,7 @@ class _InvitationSheetContent extends StatelessWidget {
             color: AppColors.textPrimary,
           ),
         ),
-
         const SizedBox(height: 8),
-
-        /// SUBTITLE
         const Text(
           'Comparte el enlace con quien quieras\nCaduca en 48 horas',
           textAlign: TextAlign.center,
@@ -60,10 +54,7 @@ class _InvitationSheetContent extends StatelessWidget {
             height: 1.3,
           ),
         ),
-
         const SizedBox(height: 20),
-
-        /// LINK BOX
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
@@ -74,7 +65,6 @@ class _InvitationSheetContent extends StatelessWidget {
             children: [
               const Icon(Icons.link_rounded, size: 18, color: AppColors.textSecondary),
               const SizedBox(width: 8),
-
               Expanded(
                 child: Text(
                   inviteUrl,
@@ -85,7 +75,6 @@ class _InvitationSheetContent extends StatelessWidget {
                   ),
                 ),
               ),
-
               GestureDetector(
                 onTap: () {
                   Clipboard.setData(ClipboardData(text: inviteUrl));
@@ -105,14 +94,12 @@ class _InvitationSheetContent extends StatelessWidget {
             ],
           ),
         ),
-
         const SizedBox(height: 20),
-
-        /// SHARE BUTTON
         CustomButton(
           label: 'Compartir enlace',
           onPressed: () {
-            onShare?.call();
+            // TODO: share nativo
+            Navigator.pop(context);
           },
           backgroundColor: AppColors.bgPrimary,
           textColor: AppColors.actionPrimary,
@@ -120,10 +107,7 @@ class _InvitationSheetContent extends StatelessWidget {
           borderRadius: 12,
           elevation: 2,
         ),
-
         const SizedBox(height: 12),
-
-        /// CANCEL BUTTON
         CustomButton(
           label: 'Cancelar',
           onPressed: () => Navigator.pop(context),
@@ -133,7 +117,6 @@ class _InvitationSheetContent extends StatelessWidget {
           borderRadius: 12,
           elevation: 0,
         ),
-
         const SizedBox(height: 20),
       ],
     );

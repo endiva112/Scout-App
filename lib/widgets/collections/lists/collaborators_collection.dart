@@ -27,7 +27,7 @@ class CollaboratorsCollection extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: allIds.length,
-        separatorBuilder: (_, __) => const Divider(height: 1, thickness: 1),
+        separatorBuilder: (_, _) => const Divider(height: 1, thickness: 1),
         itemBuilder: (context, index) {
           final uid = allIds[index];
           return _CollaboratorTile(

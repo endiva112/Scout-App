@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/common/bordered_container.dart';
-import 'package:go_router/go_router.dart';
+//import 'package:go_router/go_router.dart';
 
 class _PaidListCardStyle {
   final Color borderColor;
@@ -88,9 +88,7 @@ class PaidListCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.only(right: 20, top: 10, bottom: 10),
                   child: InkWell(
-                    onTap: () => context.push(
-                      '/payments/collaborative_list/balances',
-                    ),
+                    onTap: () => {}, // TODO modificar, que las que esten en pendientes de pago lleven a un sitio y las que estan en el historial lleven a otro o a ningun sitio
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,

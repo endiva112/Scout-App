@@ -29,14 +29,10 @@ class CollaborativeListScreen extends StatefulWidget {
 
 class _CollaborativeListScreenState extends State<CollaborativeListScreen> {
   final _repository = ShoppingListRepository();
-  final _titleController = TextEditingController();
-
-  // El provider vive aquí, no en el build, para poder accederlo desde _saveBeforeLeaving
   final _editingSession = EditingSessionProvider();
 
   ShoppingList? _list;
   bool _initialized = false;
-  Timer? _saveTimer;
 
   @override
   void initState() {
@@ -46,41 +42,12 @@ class _CollaborativeListScreenState extends State<CollaborativeListScreen> {
 
   @override
   void dispose() {
-    _saveTimer?.cancel();
-    _titleController.dispose();
     _editingSession.dispose();
     super.dispose();
   }
 
   Future<void> _saveBeforeLeaving() async {
-    _saveTimer?.cancel();
-    if (_list == null) return;
-
-    // 1. Fuerza el guardado inmediato de todos los items pendientes
     await _editingSession.saveNow();
-
-    // 2. Guarda el título de la lista
-    await _repository.saveList(_list!.copyWith(title: _titleController.text));
-  }
-
-  void _scheduleSave() {
-    _saveTimer?.cancel();
-    _saveTimer = Timer(const Duration(seconds: 2), _saveList);
-  }
-
-  Future<void> _saveList() async {
-    if (_list == null) return;
-    final saved = await _repository.saveList(
-      _list!.copyWith(title: _titleController.text),
-    );
-    if (!mounted) return;
-    setState(() => _list = saved ?? _list);
-  }
-
-  void _onTitleChanged() {
-    if (!_initialized || _list == null) return;
-    _list = _list!.copyWith(title: _titleController.text);
-    _scheduleSave();
   }
 
   Future<void> _loadList() async {
@@ -90,7 +57,6 @@ class _CollaborativeListScreenState extends State<CollaborativeListScreen> {
       if (list == null) return;
       setState(() {
         _list = list;
-        _titleController.text = list.title;
         _initialized = true;
       });
       return;
@@ -131,7 +97,6 @@ class _CollaborativeListScreenState extends State<CollaborativeListScreen> {
     }
 
     return PopScope(
-      // canPop false para interceptar el botón físico de atrás del sistema
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
@@ -147,28 +112,29 @@ class _CollaborativeListScreenState extends State<CollaborativeListScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                CollaborativeListHeader(onBeforeReturn: _saveBeforeLeaving, listId: _list!.id),
+                CollaborativeListHeader(
+                  onBeforeReturn: _saveBeforeLeaving,
+                  listId: _list!.id,
+                ),
                 Expanded(
-                  // .value porque el provider ya está instanciado como campo del State
                   child: ChangeNotifierProvider.value(
                     value: _editingSession,
                     child: widget.mode == 'shopping'
-                    ? CollaborativeShoppingBody(
-                        listId: _list!.id,
-                        updatedAt: _list!.updatedAt,
-                      )
-                    : ChangeNotifierProvider.value(
-                        value: _editingSession,
-                        child: CollaborativePlanningBody(
-                          listId: _list!.id,
-                          titleController: _titleController,
-                          updatedAt: _list!.updatedAt,
-                          onChanged: _onTitleChanged,
-                      )
-                    )
-                  )
+                        ? CollaborativeShoppingBody(
+                            listId: _list!.id,
+                            updatedAt: _list!.updatedAt,
+                          )
+                        : CollaborativePlanningBody(
+                            listId: _list!.id,
+                            updatedAt: _list!.updatedAt,
+                          ),
+                  ),
                 ),
-                CollaborativeListFooter(onBeforeReturn: _saveBeforeLeaving, listId: _list!.id, mode: widget.mode),
+                CollaborativeListFooter(
+                  onBeforeReturn: _saveBeforeLeaving,
+                  listId: _list!.id,
+                  mode: widget.mode,
+                ),
               ],
             ),
           ),

@@ -7,6 +7,8 @@ import 'package:scout_app/widgets/collections/lists/collaborators_collection.dar
 import 'package:scout_app/widgets/common/custom_bottom_sheet.dart';
 import 'package:scout_app/widgets/common/title_text_field.dart';
 import 'package:scout_app/widgets/headers/return_header.dart';
+import 'package:go_router/go_router.dart';
+import 'package:scout_app/widgets/lists/invitation_sheet.dart';
 
 class ListDetailsScreen extends StatefulWidget {
   final String listId;
@@ -36,6 +38,11 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
     super.dispose();
   }
 
+  Future<void> _saveBeforeLeaving() async {
+    if (_list == null) return;
+    await _repository.saveList(_list!.copyWith(title: _titleController.text));
+  }
+
   Future<void> _loadList() async {
     final list = await _repository.getList(widget.listId);
     if (!mounted) return;
@@ -46,23 +53,39 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
     });
   }
 
+  void _onTitleChanged() {
+    if (_list == null) return;
+    _list = _list!.copyWith(title: _titleController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ReturnHeader(),
-            Expanded(
-              child: _loading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _list == null
-                      ? const Center(child: Text('Lista no encontrada'))
-                      : _buildContent(),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        await _saveBeforeLeaving();
+        if (context.mounted) context.pop();
+      },
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          backgroundColor: AppColors.bgPrimary,
+          body: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ReturnHeader(onBeforeReturn: _saveBeforeLeaving),
+                Expanded(
+                  child: _loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : _list == null
+                          ? const Center(child: Text('Lista no encontrada'))
+                          : _buildContent(),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -81,7 +104,7 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
           ),
           TitleTextField(
             titleController: _titleController,
-            onChanged: () {},
+            onChanged: _onTitleChanged,
           ),
           const SizedBox(height: 20),
           const Text(
@@ -95,9 +118,8 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
                 CollaboratorsCollection(
                   ownerId: _list!.ownerId,
                   collaboratorIds: _list!.collaborators,
-                  onRemoveTap: (collaboratorId, displayName) => {
-                    _showDeleteCollabSheet(context, collaboratorId, displayName)
-                  },
+                  onRemoveTap: (collaboratorId, displayName) =>
+                      _showDeleteCollabSheet(context, collaboratorId, displayName),
                 ),
               ],
             ),
@@ -109,7 +131,7 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
               fontSize: 22,
               fontWeight: FontWeight.w500,
               label: 'Agregar colaborador',
-              onPressed: () {},//TODO
+              onPressed: () => InvitationSheet.show(context: context, listId: widget.listId)
             ),
           ),
         ],
@@ -124,28 +146,23 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 8),
-
           Text(
             '¿Eliminar a $displayName?',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w400,
-              color: AppColors.textPrimary,
             ),
           ),
-
           const SizedBox(height: 24),
-
-          // BOTÓN DE ELIMINAR
           SizedBox(
             width: double.infinity,
             child: CustomButton(
               label: 'SÍ, ELIMINAR',
               onPressed: () async {
                 Navigator.pop(context);
-                _repository.removeCollaborator(widget.listId, collaboratorId);
-                await _loadList(); // recarga la pantalla con los datos frescos
+                await _repository.removeCollaborator(widget.listId, collaboratorId);
+                await _loadList();
               },
               backgroundColor: AppColors.bgPrimary,
               textColor: AppColors.actionPrimary,
@@ -154,17 +171,12 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
               elevation: 2,
             ),
           ),
-
           const SizedBox(height: 12),
-
-          // BOTÓN CANCELAR
           SizedBox(
             width: double.infinity,
             child: CustomButton(
               label: 'CANCELAR',
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               backgroundColor: AppColors.actionPrimary,
               textColor: AppColors.bgPrimary,
               borderColor: AppColors.actionPrimary,
@@ -172,7 +184,6 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
               elevation: 0,
             ),
           ),
-
           const SizedBox(height: 20),
         ],
       ),
