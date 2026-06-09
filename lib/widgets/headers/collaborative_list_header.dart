@@ -30,10 +30,12 @@ class CollaborativeListHeader extends StatelessWidget {
             ),
             Row(
               children: [
+                /*
                 HeaderIcon(
                   icon: Icons.attach_money_rounded,
                   route: '/payments/collaborative_list/expenses'
                 ),
+                */
                 SizedBox(width: 10),
                 HeaderIcon(
                   icon: Icons.edit_note_rounded,

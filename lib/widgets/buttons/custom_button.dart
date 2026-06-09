@@ -11,6 +11,7 @@ class CustomButton extends StatelessWidget {
   final FontWeight fontWeight;
   final double borderRadius;
   final double elevation;
+  final EdgeInsetsGeometry padding;
 
   const CustomButton({
     super.key,
@@ -22,7 +23,8 @@ class CustomButton extends StatelessWidget {
     this.fontSize = 16,
     this.fontWeight = FontWeight.w500,
     this.borderRadius = 24,
-    this.elevation = 2
+    this.elevation = 2,
+    this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
   });
 
   @override
@@ -33,7 +35,7 @@ class CustomButton extends StatelessWidget {
         backgroundColor: backgroundColor,
         foregroundColor: textColor,
         elevation: elevation,
-        padding: const EdgeInsets.all(5),
+        padding: padding,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
           side: BorderSide(color: borderColor),

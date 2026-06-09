@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scout_app/theme/app_colors.dart';
+import 'package:scout_app/widgets/buttons/custom_button.dart';
 import 'package:scout_app/widgets/lists/switch_view_button.dart';
 
 class CollaborativeListFooter extends StatelessWidget {
@@ -59,10 +60,24 @@ class CollaborativeListFooter extends StatelessWidget {
     return Container(
       height: 70,
       color: AppColors.bgPrimary,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          /* TODO agregar lógica más adelante
+          CustomButton(
+            backgroundColor: AppColors.bgSecondary,
+            borderColor: AppColors.bgSecondary,
+            borderRadius: 5,
+            textColor: AppColors.textPrimary,
+            fontSize: 24,
+            fontWeight: FontWeight.w400,
+            elevation: 5,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            label: 'Finalizar compra',
+            onPressed: () => context.go('/'),
+          ),
+          */
           SwitchViewButton(
             icon: Icons.draw_rounded,
             onTap: listId.isEmpty

@@ -181,7 +181,7 @@ class ShoppingListRepository {
       .collection('divisions')
       .doc(divisionId)
       .collection('items')
-      .orderBy('createdAt', descending: false) // ← añade esto
+      .orderBy('createdAt', descending: false)
       .snapshots()
       .map((snapshot) => snapshot.docs
           .map((doc) => Item.fromMap(doc.id, doc.data()))
@@ -199,7 +199,7 @@ class ShoppingListRepository {
           .collection('items')
           .add({
             ...item.toMap(),
-            'createdAt': now, // ← añade esto
+            'createdAt': now,
           });
       return item.copyWith(id: doc.id);
     }

@@ -180,7 +180,7 @@ class _CollaborativeExpensesScreenState extends State<CollaborativeExpensesScree
             const Expanded(
               flex: 2,
               child: Text(
-                'Númerop de personas adicionales',
+                'Número de personas adicionales',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
             ),
