@@ -59,9 +59,9 @@ class ListCard extends StatelessWidget {
       case ListType.simple:
         return '/lists/simple_list/$listId?mode=shopping';
       case ListType.collaborative:
-        return '/lists/collaborative_list/$listId?shopping/';
+        return '/lists/collaborative_list/$listId?mode=shopping';
       case ListType.recurring:
-        return '/lists/recurring_list/$listId?planning/';
+        return '/lists/recurring_list/$listId?planning';
     }
   }
 

@@ -27,10 +27,13 @@ class ShoppingListRepository {
   }
 
   //#region Obtener listas por su atributo
-    Stream<List<ShoppingList>> getShoppingLists(String ownerId) {
+  Stream<List<ShoppingList>> getShoppingLists(String userId) {
     return _db
         .collection('lists')
-        .where('ownerId', isEqualTo: ownerId)
+        .where(Filter.or(
+          Filter('ownerId', isEqualTo: userId),
+          Filter('collaborators', arrayContains: userId),
+        ))
         .where('status', isEqualTo: ListStatus.shopping.name)
         .orderBy('updatedAt', descending: true)
         .snapshots()
