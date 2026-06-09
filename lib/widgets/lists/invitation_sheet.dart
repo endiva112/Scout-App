@@ -60,7 +60,7 @@ class _InvitationSheetContentState extends State<_InvitationSheetContent> {
   Future<void> _generateInvitation() async {
     try {
       final invitation = await _repo.createInvitation(widget.listId);
-      final url = 'https://endiva112.github.io/Scout-App/invite/${widget.listId}/${invitation.token}';
+      final url = 'https://endiva112.github.io/invite/${widget.listId}/${invitation.token}';
 
       if (!mounted) return;
       setState(() {
