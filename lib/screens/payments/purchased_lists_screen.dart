@@ -45,7 +45,7 @@ class PurchasedListsScreen extends StatelessWidget {
     );
   }
 
-  /*
+  /* COMENTATO, IMPLEMENTAR A FUTURO SI SE DESEA MAS INFO EN ESTA VISTA
   Widget _buildSummary(int balance) {
     return Column(
       children: [

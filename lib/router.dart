@@ -26,8 +26,6 @@ import 'package:scout_app/screens/collaborators/invite_redirect_page.dart';
 import 'screens/payments/purchased_lists_screen.dart';
 import 'screens/payments/collaborative_lists_payments/collaborative_balances_screen.dart';
 
-import 'screens/payments/recurring_lists_payments/recurring_expenses_screen.dart';
-
 // Notas
 import 'screens/notes/notes_screen.dart';
 import 'screens/notes/note_screen.dart';
@@ -153,13 +151,6 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/payments/collaborative_list/balances',
       builder: (context, state) => const CollaborativeBalancesScreen(),
-    ),
-
-
-    // Listas recurrentes
-    GoRoute(
-      path: '/payments/recurring_lists/expenses',
-      builder: (context, state) => const RecurringExpensesScreen(),
     ),
 
     //Notas
