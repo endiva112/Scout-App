@@ -184,7 +184,6 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
               elevation: 0,
             ),
           ),
-          const SizedBox(height: 20),
         ],
       ),
     );
