@@ -68,17 +68,10 @@ class InvitationRepository {
     final invitation = await verifyToken(listId, token);
     if (invitation == null) return false;
 
-    final memberRef = _db
-        .collection('lists')
-        .doc(listId)
-        .collection('members')
-        .doc(userId);
-
-    final memberSnap = await memberRef.get();
-    if (memberSnap.exists) {
-      // Ya es miembro: no gastamos el token
-      return true;
-    }
+    final listSnap = await _db.collection('lists').doc(listId).get();
+    if (!listSnap.exists) return false;
+    final collaborators = List<String>.from(listSnap.data()?['collaborators'] ?? []);
+    if (collaborators.contains(userId)) return true;
 
     // Escritura atómica: marcar used + crear miembro
     final batch = _db.batch();
@@ -92,11 +85,12 @@ class InvitationRepository {
       {'status': InvitationStatus.used.name},
     );
 
-    batch.set(memberRef, {
-      'userId': userId,
-      'role': 'member',
-      'joinedAt': FieldValue.serverTimestamp(),
-    });
+    batch.update(
+      _db.collection('lists').doc(listId),
+      {
+        'collaborators': FieldValue.arrayUnion([userId]),
+      },
+    );
 
     await batch.commit();
     return true;

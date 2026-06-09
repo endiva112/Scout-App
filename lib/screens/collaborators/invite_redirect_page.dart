@@ -42,7 +42,7 @@ class _InviteRedirectPageState extends State<InviteRedirectPage> {
 
     if (success) {
       // Navegar a la lista recién unida
-      context.go('/lists/${widget.listId}');
+      context.go('/lists/collaborative_list/${widget.listId}');
     } else {
       // Token inválido, expirado o ya usado → volver al inicio con aviso
       context.go('/');
