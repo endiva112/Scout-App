@@ -54,10 +54,13 @@ class ShoppingListRepository {
             .toList());
   }
 
-  Stream<List<ShoppingList>> getArchivedLists(String ownerId) {
+  Stream<List<ShoppingList>> getArchivedLists(String userId) {
     return _db
         .collection('lists')
-        .where('ownerId', isEqualTo: ownerId)
+        .where(Filter.or(
+          Filter('ownerId', isEqualTo: userId),
+          Filter('collaborators', arrayContains: userId),
+        ))
         .where('status', isEqualTo: ListStatus.archived.name)
         .orderBy('updatedAt', descending: true)
         .snapshots()

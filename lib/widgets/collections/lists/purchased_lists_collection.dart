@@ -53,8 +53,8 @@ class PurchasedListsCollection extends StatelessWidget {
   ) {
     final items = <Widget>[];
 
-    items.add(const CustomDivider(separatorText: 'Pendientes de pago'));
-
+    //items.add(const CustomDivider(separatorText: 'Pendientes de pago'));
+    /*
     if (settling.isEmpty) {
       items.add(const DefaultTipText(
         tip: 'PARECE QUE NO QUEDAN LISTAS POR PAGAR',
@@ -64,7 +64,7 @@ class PurchasedListsCollection extends StatelessWidget {
         items.add(PaidListCard(
           title: list.title,
           statusLabel: 'Comprado: ' ,
-          amount: 'B',
+          amount: _formatDate(list.updatedAt),
           isPaid: false,
           /* TODO 2 esto no debe tener editar y borrar es algo que solo deberia poder hacer el dueño
           onEdit: () => context.push('/lists/simple_list/${list.id}'),
@@ -73,7 +73,7 @@ class PurchasedListsCollection extends StatelessWidget {
       }
     }
 
-    items.add(const SizedBox(height: 50));
+    items.add(const SizedBox(height: 50));*/
     items.add(const CustomDivider(separatorText: 'Historial'));
 
     if (archived.isEmpty) {
@@ -85,14 +85,29 @@ class PurchasedListsCollection extends StatelessWidget {
         items.add(PaidListCard(
           title: list.title,
           statusLabel: 'Último pago: ' ,
-          amount: 'B',
+          amount: _formatDate(list.updatedAt),
           isPaid: true,
           onReuse: () => _repository.reuseList(list.id, _userId),
-          onDelete: () => _repository.deleteList(list.id),
+          onDelete: () async {
+            final owner = await _repository.isOwner(list.id, _userId);
+            if (owner) {
+              await _repository.deleteList(list.id);
+            } else {
+              await _repository.leaveList(list.id, _userId);
+            }
+          }
         ));
       }
     }
 
     return items;
+  }
+
+  String _formatDate(DateTime date) {
+    const months = [
+      'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+      'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+    ];
+    return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 }

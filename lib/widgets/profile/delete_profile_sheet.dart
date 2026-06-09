@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scout_app/theme/app_colors.dart';
 import 'package:scout_app/widgets/buttons/custom_button.dart';
 import 'package:scout_app/widgets/common/custom_bottom_sheet.dart';
+import 'package:go_router/go_router.dart';
 
 class DeleteProfileSheet extends StatelessWidget {
   final VoidCallback onConfirm;
@@ -51,7 +52,11 @@ class DeleteProfileSheet extends StatelessWidget {
           fontSize: 18,
           borderRadius: 12,
           elevation: 0,
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+            onConfirm();
+            GoRouter.of(context).go('/');
+          } 
         ),
       ],
     );
